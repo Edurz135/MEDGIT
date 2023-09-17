@@ -1,10 +1,11 @@
+import React from "react";
+import { Routes, Route } from "react-router-dom";
+import UnauthorizedLayout from "./views/layouts/unauthorized/unauthorized.layout";
 
-function App() {
+export default function App() {
   return (
-    <div className="App">
-     Hola
-    </div>
+    <Routes>
+      <Route path="/*" element={<UnauthorizedLayout />} />
+    </Routes>
   );
 }
-
-export default App;
