@@ -2,7 +2,7 @@ import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import LoginPage from "../../pages/loginPage/loginPage";
 import RegisterPage from "../../pages/registerPage/registerPage";
-import MainPage from "../../pages/mainPage/MainPage";
+import MainPage from "../../pages/mainPage/mainPage";
 
 export default function UnauthorizedLayout() {
   return (
