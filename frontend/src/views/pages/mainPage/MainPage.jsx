@@ -5,28 +5,29 @@ import "./main.style.css";
 
 export default function MainPage({ ...props }) {
   return (
-    <div className="container">
+    <Row className="container">
       <div className="bg">
         <img src={landingImageSmall}></img>
       </div>
-      <Col className="content" span={12}>
-        <Row>
-          <Col className="logo">MedGit</Col>
-        </Row>
-        <Row justify="center">
-          <Col span={16} className="title">
-            La Plataforma Dedicada a tu Cuidado
-          </Col>
-          <Col span={16} className="description">
+
+      <Col span={24} className="header">
+        <p className="logo">MedGit</p>
+      </Col>
+      <Col span={12} className="content">
+        <Col span={24} className="title">
+          <span>La Plataforma Dedicada a tu Cuidado</span>
+        </Col>
+        <Col span={24} className="description">
+          <span>
             Una plataforma que centraliza los historiales clínicos para los
             doctores
-          </Col>
-          <Divider />
-          <Col span={16}>
-            <Button type="primary">Sign In</Button>
-          </Col>
-        </Row>
+          </span>
+        </Col>
+        <Divider/>
+        <Col span={24}>
+          <Button type="primary">Sign In</Button>
+        </Col>
       </Col>
-    </div>
+    </Row>
   );
 }
