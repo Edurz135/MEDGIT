@@ -12,6 +12,8 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-db.model1 = require("./models/model1.js")(sequelize, Sequelize);
+db.medico = require("./models/medico.js")(sequelize, Sequelize);
+db.paciente = require("./models/paciente.js")(sequelize, Sequelize);
+db.cita = require("./models/cita.js")(sequelize, Sequelize);
 
 module.exports = db;
