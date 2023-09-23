@@ -11,9 +11,6 @@ module.exports = (sequelize, Sequelize) => {
         hora: {
             type: Sequelize.TIME,
         },
-        estado: {
-            type: Sequelize.INTEGER,
-        },
         tipo: {
             type: Sequelize.STRING,
         },
