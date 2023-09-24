@@ -25,7 +25,6 @@ const server = () => {
   return {
     app,
     run,
-    // db,
   };
 };
 

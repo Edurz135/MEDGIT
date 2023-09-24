@@ -7,31 +7,38 @@ const jwt = require("jsonwebtoken");
 // put - update
 // delete - delete
 
-const getAllUsers = async (req, res) => {
-  // Validate request parameters, queries using express-validator
-
+const registerPaciente = async (req, res) => {
   try {
-    const result = UserService.getAllUsersApi();
+    const username = req.body.username;
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+
+    const result = await UserService.registerPacienteApi(
+      username,
+      hashedPassword
+    );
     return res.status(200).json({
       status: 200,
       result: result,
-      message: "Succesfully Users Retrieved",
+      message: "Succesfully Patient Created",
     });
   } catch (e) {
     return res.status(400).json({ status: 400, message: e.message });
   }
 };
 
-const registerUser = async (req, res) => {
+const registerMedico = async (req, res) => {
   try {
     const username = req.body.username;
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
-    const result = await UserService.registerUserApi(username, hashedPassword);
+    const result = await UserService.registerMedicoApi(
+      username,
+      hashedPassword
+    );
     return res.status(200).json({
       status: 200,
       result: result,
-      message: "Succesfully User Created",
+      message: "Succesfully Doctor Created",
     });
   } catch (e) {
     return res.status(400).json({ status: 400, message: e.message });
@@ -41,9 +48,16 @@ const registerUser = async (req, res) => {
 const loginUser = async (req, res) => {
   try {
     const username = req.body.username;
-    const user = await UserService.getPacienteApi(username);
-    console.log(req.body.password)
-    const match = await bcrypt.compare(req.body.password, user.dataValues.contrasena);
+    var user = undefined;
+    if (req.body.type == "paciente") {
+      user = await UserService.getPacienteApi(username);
+    } else {
+      user = await UserService.getMedicoApi(username);
+    }
+    const match = await bcrypt.compare(
+      req.body.password,
+      user.dataValues.contrasena
+    );
     const accessToken = jwt.sign(
       JSON.stringify(user),
       "token secret, need to be changed"
@@ -64,4 +78,8 @@ const loginUser = async (req, res) => {
   }
 };
 
-module.exports = { getAllUsers, registerUser, loginUser };
+module.exports = {
+  loginUser,
+  registerMedico,
+  registerPaciente,
+};

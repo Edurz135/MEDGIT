@@ -1,10 +1,16 @@
-const Router = require('express')
-const { getAllUsers, registerUser, loginUser } = require('../controllers/user.controller')
+const Router = require("express");
+const {
+  loginUser,
+  registerMedico,
+  registerPaciente,
+} = require("../controllers/user.controller");
+const { userLoginValidate, patientRegisterValidate, doctorRegisterValidate } = require("../validations/user.validation");
 
-const userRouter = Router()
+const userRouter = Router();
 
-userRouter.get('/api/getAllUsers', getAllUsers)
-userRouter.post('/api/register', registerUser)
-userRouter.post('/api/login', loginUser)
+userRouter.post("/api/login", userLoginValidate, loginUser);
 
-module.exports = userRouter
+userRouter.post("/api/registerMedico", doctorRegisterValidate, registerMedico);
+userRouter.post("/api/registerPaciente", patientRegisterValidate, registerPaciente);
+
+module.exports = userRouter;
