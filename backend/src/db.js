@@ -3,8 +3,7 @@ const dbConfig = require("./config/db.config.js");
 const Sequelize = require("sequelize");
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
   host: dbConfig.HOST,
-  dialect: dbConfig.dialect,
-  operatorsAliases: false,
+  dialect: dbConfig.DIALECT,
 });
 
 const db = {};
@@ -13,12 +12,12 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 // Storing models
-db.medico = require("./models/medico.js")(sequelize, Sequelize);
-db.paciente = require("./models/paciente.js")(sequelize, Sequelize);
-db.cita = require("./models/cita.js")(sequelize, Sequelize);
+const Medico = require("./models/medico.model.js")(sequelize, Sequelize);
+const Paciente = require("./models/paciente.model.js")(sequelize, Sequelize);
+const Cita = require("./models/cita.model.js")(sequelize, Sequelize);
 
 // Associations
-db.cita.hasOne(db.medico);
-db.cita.hasOne(db.paciente);
+Cita.hasOne(Medico);
+Cita.hasOne(Paciente);
 
-module.exports = db;
+module.exports = { db, Medico, Paciente, Cita };

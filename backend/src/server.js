@@ -12,15 +12,15 @@ const server = () => {
     app.listen(port);
   };
 
-  // const db = require("./db");
-  // db.sequelize
-  //   .sync()
-  //   .then(() => {
-  //     console.log("DB Synced.");
-  //   })
-  //   .catch((err) => {
-  //     console.log("Failed to sync db: " + err.message);
-  //   });
+  const { db } = require("./db");
+  db.sequelize
+    .sync()
+    .then(() => {
+      console.log("DB Synced.");
+    })
+    .catch((err) => {
+      console.log("Failed to sync db: " + err.message);
+    });
 
   return {
     app,
