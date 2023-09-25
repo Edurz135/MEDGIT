@@ -1,21 +1,14 @@
-const UserService = require("../service/user.service");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+const {
+  registerPatientService,
+  loginPatientService,
+} = require("../service/user.service");
 
-// get - Select
-// post - insert/create
-// put - update
-// delete - delete
-
-const registerPaciente = async (req, res) => {
+const registerPatient = async (req, res) => {
   try {
-    const username = req.body.username;
-    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    const email = req.body.email;
+    const password = req.body.password;
 
-    const result = await UserService.registerPacienteApi(
-      username,
-      hashedPassword
-    );
+    const result = await registerPatientService(email, password);
     return res.status(200).json({
       status: 200,
       result: result,
@@ -26,15 +19,12 @@ const registerPaciente = async (req, res) => {
   }
 };
 
-const registerMedico = async (req, res) => {
+const registerDoctor = async (req, res) => {
   try {
     const username = req.body.username;
-    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    const password = req.body.password;
 
-    const result = await UserService.registerMedicoApi(
-      username,
-      hashedPassword
-    );
+    const result = await UserService.registerDoctorService(username, password);
     return res.status(200).json({
       status: 200,
       result: result,
@@ -45,41 +35,26 @@ const registerMedico = async (req, res) => {
   }
 };
 
-const loginUser = async (req, res) => {
+const loginPatient = async (req, res) => {
   try {
-    const username = req.body.username;
-    var user = undefined;
-    if (req.body.type == "paciente") {
-      user = await UserService.getPacienteApi(username);
-    } else {
-      user = await UserService.getMedicoApi(username);
-    }
-    const match = await bcrypt.compare(
-      req.body.password,
-      user.dataValues.contrasena
-    );
-    const accessToken = jwt.sign(
-      JSON.stringify(user),
-      "token secret, need to be changed"
-    );
-    if (match) {
-      return res.status(200).json({
-        status: 200,
-        accessToken: accessToken,
-        message: "Succesfully User Logging",
-      });
-    } else {
-      return res
-        .status(400)
-        .json({ status: 400, message: "Invalid credentials" });
-    }
+    const email = req.body.email;
+    const password = req.body.password;
+
+    const accessToken = await loginPatientService(email, password);
+    return res.status(200).json({
+      status: 200,
+      accessToken: accessToken,
+      message: "Succesfully User Logging",
+    });
   } catch (e) {
-    console.log(e);
+    return res
+      .status(400)
+      .json({ status: 400, message: "Invalid credentials" });
   }
 };
 
 module.exports = {
-  loginUser,
-  registerMedico,
-  registerPaciente,
+  registerDoctor,
+  registerPatient,
+  loginPatient,
 };

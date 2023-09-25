@@ -7,17 +7,21 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
 });
 
 const db = {};
-
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 // Storing models
-const Medico = require("./models/medico.model.js")(sequelize, Sequelize);
-const Paciente = require("./models/paciente.model.js")(sequelize, Sequelize);
-const Cita = require("./models/cita.model.js")(sequelize, Sequelize);
+const Models = {};
+const Doctor = require("./models/doctor.model.js")(sequelize, Sequelize);
+const Patient = require("./models/patient.model.js")(sequelize, Sequelize);
+const Appointment = require("./models/appointment.model.js")(sequelize, Sequelize);
 
 // Associations
-Cita.hasOne(Medico);
-Cita.hasOne(Paciente);
+Patient.hasOne(Appointment);
+Doctor.hasOne(Appointment);
 
-module.exports = { db, Medico, Paciente, Cita };
+Models.Doctor = Doctor;
+Models.Patient = Patient;
+Models.Appointment = Appointment;
+
+module.exports = { db, Models };

@@ -1,64 +1,87 @@
-const { Paciente, Medico } = require("../db.js");
+const { Models } = require("../db.js");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
-const registerPacienteApi = async (username, password) => {
+const registerPatientService = async (email, password) => {
   try {
-    const registeredUser = await Paciente.create({
-      nombre: username,
-      apellido: username,
-      correo: username,
-      contrasena: password,
-      dni: 123,
-      genero: "masculino",
-      celular: 980123456,
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const patient = await Models.Patient.create({
+      name: email,
+      lastName: email,
+      email: email,
+      password: hashedPassword,
+      identityDoc: 123,
+      gender: "masculino",
+      phone: 980123456,
     });
-    return registeredUser;
+    return patient;
   } catch (e) {
     throw Error("Error while creating User");
   }
 };
 
-const registerMedicoApi = async (username, password) => {
+const registerDoctorService = async (username, password) => {
   try {
-    const registeredUser = await Medico.create({
-      nombre: username,
-      apellido: username,
-      correo: username,
-      contrasena: password,
-      dni: 123,
-      genero: "masculino",
-      celular: 980123456,
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const doctor = await Models.Doctor.create({
+      name: username,
+      lastName: username,
+      email: username,
+      password: hashedPassword,
+      identityDoc: 123,
+      gender: "masculino",
+      phone: 980123456,
     });
-    return registeredUser;
+    return doctor;
   } catch (e) {
     throw Error("Error while creating User");
   }
 };
 
-const getPacienteApi = async (username) => {
+const loginPatientService = async (email, password) => {
   try {
-    const paciente = await Paciente.findOne({
-      where: { nombre: username },
-    });
-    return paciente;
+    const patient = await getPatientService(email);
+    const match = await bcrypt.compare(password, patient.dataValues.password);
+    if (!match) throw new Error("Invalid credentials");
+
+    const accessToken = await jwt.sign(
+      JSON.stringify(patient),
+      process.env.TOKEN_SECRET
+    );
+    return accessToken;
   } catch (e) {
     throw Error("Error while finding a User");
   }
 };
 
-const getMedicoApi = async (username) => {
+const getPatientService = async (email) => {
   try {
-    const paciente = await Medico.findOne({
-      where: { nombre: username },
+    const patient = await Models.Patient.findOne({
+      where: { email: email },
     });
-    return paciente;
+    return patient;
   } catch (e) {
-    throw Error("Error while finding a User");
+    throw Error("Error while finding a Patient");
+  }
+};
+
+const getDoctorService = async (email) => {
+  try {
+    const doctor = await Models.Doctor.findOne({
+      where: { email: email },
+    });
+    return doctor;
+  } catch (e) {
+    throw Error("Error while finding a Doctor");
   }
 };
 
 module.exports = {
-  registerMedicoApi,
-  registerPacienteApi,
-  getPacienteApi,
-  getMedicoApi
+  registerPatientService,
+  registerDoctorService,
+  getPatientService,
+  getDoctorService,
+  loginPatientService,
 };
