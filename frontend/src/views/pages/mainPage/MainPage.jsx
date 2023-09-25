@@ -4,6 +4,12 @@ import landingImageSmall from "../../../imgs/landingImageSmall.png";
 import "./main.style.css";
 
 export default function MainPage({ ...props }) {
+
+  const handleSignInClick = () => {
+    // Redirige a la página de inicio de sesión cuando se hace clic en el botón
+    window.location.href = '/login';
+  };
+
   return (
     <Row className="container">
       <div className="bg">
@@ -25,7 +31,7 @@ export default function MainPage({ ...props }) {
         </Col>
         <Divider/>
         <Col span={24}>
-          <Button type="primary">Sign In</Button>
+          <Button type="primary" onClick={handleSignInClick}>Sign In</Button>
         </Col>
       </Col>
     </Row>
