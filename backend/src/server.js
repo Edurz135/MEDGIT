@@ -1,12 +1,14 @@
 const express = require("express");
 const serverConfig = require("./config/server-config");
 const userRouter = require("./routes/user.routes");
+const doctorRouter = require("./routes/doctor.routes");
 
 const server = () => {
   const app = express();
-  
+
   app.use(serverConfig);
   app.use(userRouter);
+  app.use(doctorRouter);
 
   const run = (port) => {
     app.listen(port);
