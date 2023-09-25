@@ -1,27 +1,26 @@
 const Router = require("express");
 const {
-  loginUser,
   registerDoctor,
   registerPatient,
   loginPatient,
+  loginDoctor,
 } = require("../controllers/user.controller");
 const {
-  userLoginValidate,
-  patientRegisterValidate,
-  doctorRegisterValidate,
+  patientRegisterValidator,
+  doctorRegisterValidator,
+  loginValidator,
 } = require("../validations/user.validation");
 
 const userRouter = Router();
 
-// userRouter.post("/api/login", userLoginValidate, loginUser);
-userRouter.post("/api/loginPatient", userLoginValidate, loginPatient);
+userRouter.post("/api/loginPatient", loginValidator, loginPatient);
+userRouter.post("/api/loginDoctor", loginValidator, loginDoctor);
 
-userRouter.post("/api/registerPatient", patientRegisterValidate, registerPatient);
-// userRouter.post("/api/registerMedico", doctorRegisterValidate, registerDoctor);
-// userRouter.post(
-//   "/api/registerPaciente",
-//   patientRegisterValidate,
-//   registerPatient
-// );
+userRouter.post(
+  "/api/registerPatient",
+  patientRegisterValidator,
+  registerPatient
+);
+userRouter.post("/api/registerDoctor", doctorRegisterValidator, registerDoctor);
 
 module.exports = userRouter;

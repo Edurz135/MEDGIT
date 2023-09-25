@@ -1,14 +1,13 @@
 const {
   registerPatientService,
+  registerDoctorService,
   loginPatientService,
+  loginDoctorService,
 } = require("../service/user.service");
 
 const registerPatient = async (req, res) => {
   try {
-    const email = req.body.email;
-    const password = req.body.password;
-
-    const result = await registerPatientService(email, password);
+    const result = await registerPatientService(req.body);
     return res.status(200).json({
       status: 200,
       result: result,
@@ -21,10 +20,7 @@ const registerPatient = async (req, res) => {
 
 const registerDoctor = async (req, res) => {
   try {
-    const username = req.body.username;
-    const password = req.body.password;
-
-    const result = await UserService.registerDoctorService(username, password);
+    const result = await registerDoctorService(req.body);
     return res.status(200).json({
       status: 200,
       result: result,
@@ -53,8 +49,27 @@ const loginPatient = async (req, res) => {
   }
 };
 
+const loginDoctor = async (req, res) => {
+  try {
+    const email = req.body.email;
+    const password = req.body.password;
+
+    const accessToken = await loginDoctorService(email, password);
+    return res.status(200).json({
+      status: 200,
+      accessToken: accessToken,
+      message: "Succesfully User Logging",
+    });
+  } catch (e) {
+    return res
+      .status(400)
+      .json({ status: 400, message: "Invalid credentials" });
+  }
+};
+
 module.exports = {
   registerDoctor,
   registerPatient,
   loginPatient,
+  loginDoctor,
 };

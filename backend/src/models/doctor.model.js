@@ -14,11 +14,16 @@ module.exports = (sequelize, Sequelize) => {
     email: {
       type: Sequelize.STRING,
       unique: true,
+      allowNull: false,
     },
     password: {
       type: Sequelize.STRING,
+      allowNull: false,
     },
     identityDoc: {
+      type: Sequelize.INTEGER,
+    },
+    nroColegiatura: {
       type: Sequelize.INTEGER,
     },
     gender: {

@@ -3,40 +3,45 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
-const registerPatientService = async (email, password) => {
+const registerPatientService = async (body) => {
   try {
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(body.password, 10);
+    const identityDoc = parseInt(body.identityDoc);
+
     const patient = await Models.Patient.create({
-      name: email,
-      lastName: email,
-      email: email,
+      name: body.name,
+      lastName: body.lastName,
+      email: body.email,
       password: hashedPassword,
-      identityDoc: 123,
-      gender: "masculino",
-      phone: 980123456,
+      identityDoc: identityDoc,
+      gender: body.gender,
+      phone: 0,
     });
     return patient;
   } catch (e) {
-    throw Error("Error while creating User");
+    throw Error("Error while creating User: " + e);
   }
 };
 
-const registerDoctorService = async (username, password) => {
+const registerDoctorService = async (body) => {
   try {
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(body.password, 10);
+    const identityDoc = parseInt(body.identityDoc);
+    const nroColegiatura = parseInt(body.nroColegiatura);
 
     const doctor = await Models.Doctor.create({
-      name: username,
-      lastName: username,
-      email: username,
+      name: body.name,
+      lastName: body.lastName,
+      email: body.email,
       password: hashedPassword,
-      identityDoc: 123,
-      gender: "masculino",
-      phone: 980123456,
+      identityDoc: identityDoc,
+      nroColegitura: nroColegiatura,
+      gender: body.gender,
+      phone: 0,
     });
     return doctor;
   } catch (e) {
-    throw Error("Error while creating User");
+    throw Error("Error while creating User: " + e);
   }
 };
 
@@ -48,6 +53,22 @@ const loginPatientService = async (email, password) => {
 
     const accessToken = await jwt.sign(
       JSON.stringify(patient),
+      process.env.TOKEN_SECRET
+    );
+    return accessToken;
+  } catch (e) {
+    throw Error("Error while finding a User");
+  }
+};
+
+const loginDoctorService = async (email, password) => {
+  try {
+    const doctor = await getDoctorService(email);
+    const match = await bcrypt.compare(password, doctor.dataValues.password);
+    if (!match) throw new Error("Invalid credentials");
+
+    const accessToken = await jwt.sign(
+      JSON.stringify(doctor),
       process.env.TOKEN_SECRET
     );
     return accessToken;
@@ -84,4 +105,5 @@ module.exports = {
   getPatientService,
   getDoctorService,
   loginPatientService,
+  loginDoctorService,
 };
