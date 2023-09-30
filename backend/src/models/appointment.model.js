@@ -1,3 +1,4 @@
+// Cita
 module.exports = (sequelize, Sequelize) => {
   const Appointment = sequelize.define("Appointment", {
     id: {
