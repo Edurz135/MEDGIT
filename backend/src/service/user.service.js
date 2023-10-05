@@ -45,6 +45,28 @@ const registerDoctorService = async (body) => {
   }
 };
 
+const registerLabAnalystService = async (body) => {
+  try {
+    const hashedPassword = await bcrypt.hash(body.password, 10);
+    const identityDoc = parseInt(body.identityDoc);
+    const nroColegiatura = parseInt(body.nroColegiatura);
+
+    const LabAnalyst = await Models.LabAnalyst.create({
+      name: body.name,
+      lastName: body.lastName,
+      email: body.email,
+      password: hashedPassword,
+      identityDoc: identityDoc,
+      nroColegitura: nroColegiatura,
+      gender: body.gender,
+      phone: 0,
+    });
+    return LabAnalyst;
+  } catch (e) {
+    throw Error("Error while creating User: " + e);
+  }
+};
+
 const loginPatientService = async (email, password) => {
   try {
     const patient = await getPatientService(email);
@@ -77,6 +99,22 @@ const loginDoctorService = async (email, password) => {
   }
 };
 
+const loginLabAnalystService = async (email, password) => {
+  try {
+    const  labAnalyst = await getLabAnalystService(email);
+    const match = await bcrypt.compare(password, labAnalyst.dataValues.password);
+    if (!match) throw new Error("Invalid credentials");
+
+    const accessToken = await jwt.sign(
+      JSON.stringify(labAnalyst),
+      process.env.TOKEN_SECRET
+    );
+    return accessToken;
+  } catch (e) {
+    throw Error("Error while finding a User");
+  }
+};
+
 const getPatientService = async (email) => {
   try {
     const patient = await Models.Patient.findOne({
@@ -99,11 +137,25 @@ const getDoctorService = async (email) => {
   }
 };
 
+const getLabAnalystService = async (email) => {
+  try {
+    const labAnalyst = await Models.LabAnalyst.findOne({
+      where: { email: email },
+    });
+    return labAnalyst;
+  } catch (e) {
+    throw Error("Error while finding a LabAnalyst");
+  }
+};
+
 module.exports = {
   registerPatientService,
   registerDoctorService,
+  registerLabAnalystService,
   getPatientService,
   getDoctorService,
+  getLabAnalystService,
   loginPatientService,
   loginDoctorService,
+  loginLabAnalystService,
 };

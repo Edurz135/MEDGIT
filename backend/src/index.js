@@ -7,6 +7,7 @@ const init = async () => {
   console.log('Server listening on port', port)
 
   app.run(port)
+  const{QueryTypes}=require('sequelize');
 }
 
 init()
