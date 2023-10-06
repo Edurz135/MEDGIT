@@ -1,8 +1,8 @@
 const { Models } = require("../db.js");
-const getPastAppointmentsServices = async (idDoctor) => {
+const getPastAppointmentsServices = async (idLabAnalyst) => {
     try {
       const appointments = await Models.Appointment.findAll({
-        where: { id_Doctor: idDoctor },
+        where: { id_LabAnalista: idLabAnalyst },
         //falta agregar el token temporal
       });
       return appointments;
