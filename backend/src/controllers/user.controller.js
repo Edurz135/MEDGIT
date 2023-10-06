@@ -79,7 +79,7 @@ const loginDoctor = async (req, res) => {
   } catch (e) {
     return res
       .status(400)
-      .json({ status: 400, message: "Invalid credentials" });
+      .json({ status: 400, message: "Invalid credentials", error:e });
   }
 };
 
