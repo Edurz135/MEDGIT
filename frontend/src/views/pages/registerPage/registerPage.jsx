@@ -66,7 +66,7 @@ const RegisterPage = () => {
     };
 
     axios
-      .post('http://localhost:3100/api/registerLaboratory', formData)
+      .post('http://localhost:3100/api/registerLabAnalyst', formData)
       .then((response) => {
         console.log('Respuesta del servidor (Laboratorio):', response.data);
       })
@@ -217,7 +217,7 @@ const RegisterPage = () => {
           )}
           <Form.Item>
             <Button type="primary" htmlType="submit">
-              Continuar
+              Registrar
             </Button>
           </Form.Item>
           <Form.Item>
