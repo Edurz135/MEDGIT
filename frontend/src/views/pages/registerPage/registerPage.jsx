@@ -121,7 +121,7 @@ const RegisterPage = () => {
           >
             <Radio.Group optionType="button" onChange={handleRadioChange}>
               <Radio value="paciente">Paciente</Radio>
-              <Radio value="trabajador">Medico</Radio>
+              <Radio value="trabajador">Médico</Radio>
               <Radio value="laboratorio">Laboratorio</Radio>
             </Radio.Group>
           </Form.Item>
@@ -201,7 +201,7 @@ const RegisterPage = () => {
           >
             <Input.Password />
           </Form.Item>
-          {isWorker && (
+          {(isWorker || isLaboratory) && ( // Muestra el campo de colegiatura si es "Trabajador" o "Laboratorio"
             <Form.Item
               label="Número de Colegiatura"
               name="colegiatura"

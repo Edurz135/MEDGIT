@@ -17,41 +17,32 @@ const LoginPage = () => {
       puesto: selectedPuesto,
     };
 
+    let loginRoute = '';
+
     if (selectedPuesto === 'paciente') {
-      axios
-        .post('http://localhost:3100/api/loginPatient', requestData, {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        })
-        .then((response) => {
-          console.log('Inicio de sesión exitoso para paciente:', JSON.stringify(response.data));
-          setLoggedIn(true);
-          setError(null);
-          navigate('/');
-        })
-        .catch((error) => {
-          console.log('Error en el inicio de sesión para paciente:', error);
-          setError('Inicio de sesión fallido. Verifica tus credenciales.');
-        });
+      loginRoute = 'http://localhost:3100/api/loginPatient';
     } else if (selectedPuesto === 'medico') {
-      axios
-        .post('http://localhost:3100/api/loginDoctor', requestData, {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        })
-        .then((response) => {
-          console.log('Inicio de sesión exitoso para médico:', JSON.stringify(response.data));
-          setLoggedIn(true);
-          setError(null);
-          navigate('/');
-        })
-        .catch((error) => {
-          console.log('Error en el inicio de sesión para médico:', error);
-          setError('Inicio de sesión fallido. Verifica tus credenciales.');
-        });
+      loginRoute = 'http://localhost:3100/api/loginDoctor';
+    } else if (selectedPuesto === 'laboratorio') {
+      loginRoute = 'http://localhost:3100/api/loginLabAnalyst';
     }
+
+    axios
+      .post(loginRoute, requestData, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then((response) => {
+        console.log('Inicio de sesión exitoso:', JSON.stringify(response.data));
+        setLoggedIn(true);
+        setError(null);
+        navigate('/');
+      })
+      .catch((error) => {
+        console.log('Error en el inicio de sesión:', error);
+        setError('Inicio de sesión fallido. Verifica tus credenciales.');
+      });
   };
 
   return (
