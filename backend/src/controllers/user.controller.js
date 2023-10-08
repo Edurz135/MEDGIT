@@ -36,7 +36,7 @@ const registerDoctor = async (req, res) => {
 
 const registerLabAnalyst = async (req, res) => {
   try {
-    const result = await registerDoctorService(req.body);
+    const result = await registerLabAnalystService(req.body);
     return res.status(200).json({
       status: 200,
       result: result,
@@ -88,7 +88,7 @@ const loginLabAnalyst = async (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
 
-    const accessToken = await loginPatientService(email, password);
+    const accessToken = await loginLabAnalystService(email, password);
     return res.status(200).json({
       status: 200,
       accessToken: accessToken,

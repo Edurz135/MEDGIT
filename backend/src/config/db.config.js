@@ -1,7 +1,7 @@
 module.exports = {
   HOST: "localhost",
-  USER: "medgit",
-  PASSWORD: "medgit",
+  USER: "postgres",
+  PASSWORD: "1234",
   DB: "medgitDB",
   DIALECT: "postgres",
 };
