@@ -1,0 +1,78 @@
+/* Contenido */
+.contenido {
+  margin: 24px 16px;
+  padding: 24px;
+  background: white;
+  min-height: calc(100vh - 64px); /* Resta la altura del encabezado */
+}
+.encabezado{
+  
+  padding: 0;
+  background: lightgray;
+  
+}
+
+/* Contenedor principal */
+.barra-container {
+  height: 100%;
+  overflow: hidden;
+}
+
+
+
+
+/* .barra-lateral {
+  font-size: 16px;
+}
+*/
+.menu-container {
+  position: relative;
+  height: 100%; /* Asegura que el contenedor ocupe toda la altura de la barra lateral */
+}
+
+/* Estilo para el elemento key4 (Log Out) */
+.menu-container2  {
+  position: absolute;
+  top: 680px;
+}
+
+
+.menu-container .ant-menu-item:hover .anticon{
+  color:blue
+}
+.menu-container2 .ant-menu-item:hover .anticon {
+  color: red;
+}
+
+
+.menu-container.encabezado.anticon{
+  color: blue;
+}
+
+
+.botonPerfil{
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  color: blue;
+  border:10%;
+  border-color: black;
+  margin-right: 10px; /* Ajusta el espacio entre la imagen y el texto */
+  cursor: pointer;  
+  padding-left: 8px;
+}
+.botonPerfil.menu-container.encabezado.ant-menu-item:last-child{
+  max-width: 100%; 
+  max-height: 100%;
+}
+
+
+
+
+
+
+
+
+
+
+
