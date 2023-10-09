@@ -3,9 +3,12 @@ const { authenticateToken } = require("../middlewares/auth.middleware");
 
 const doctorRouter = Router();
 
-doctorRouter.post("/api/doctor/prueba", authenticateToken, async (req, res) => {
+doctorRouter.post("/api/doctor/pastGetAppointment", authenticateToken, async (req, res) => {
     console.log(req)
-  res.status(200).send("Funcina la validacion con token");
+  res.status(200).send("Funciona la validacion con token");
 });
-
+doctorRouter.post("/api/doctor/futureGetAppointment", authenticateToken, async (req, res) => {
+  console.log(req)
+res.status(200).send("Funciona la validacion con token");
+});
 module.exports = doctorRouter;
