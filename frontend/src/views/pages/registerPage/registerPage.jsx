@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
-import './register.style.css';
-import { Form, Input, Button, Radio, Modal } from 'antd';
-import { Link } from 'react-router-dom';
-import axios from 'axios';
+import React, { useState } from "react";
+import "./register.style.css";
+import { Form, Input, Button, Radio, Modal } from "antd";
+import { Link } from "react-router-dom";
+import axios from "axios";
 
 const RegisterPage = () => {
   const [isWorker, setIsWorker] = useState(false);
   const [isLaboratory, setIsLaboratory] = useState(false);
   const [isPopupVisible, setPopupVisible] = useState(false);
-
+  const [popUpInformation, setPopUpInformation] = useState("");
   const [form] = Form.useForm();
 
   const onFinish = (values) => {
@@ -26,12 +26,12 @@ const RegisterPage = () => {
   };
 
   const onFinishFailed = (errorInfo) => {
-    console.log('Falló la validación:', errorInfo);
+    console.log("Falló la validación:", errorInfo);
   };
 
   const handleRadioChange = (e) => {
-    setIsWorker(e.target.value === 'trabajador');
-    setIsLaboratory(e.target.value === 'laboratorio');
+    setIsWorker(e.target.value === "trabajador");
+    setIsLaboratory(e.target.value === "laboratorio");
   };
 
   const sendWorkerRegistrationRequest = (values) => {
@@ -42,16 +42,22 @@ const RegisterPage = () => {
       password: values.password,
       gender: values.genero,
       identityDoc: values.dni,
-      nroColegiatura: values.colegiatura || '',
+      nroColegiatura: values.colegiatura || "",
     };
 
     axios
-      .post('http://localhost:3100/api/registerDoctor', formData)
+      .post("http://localhost:3100/api/registerDoctor", formData)
       .then((response) => {
-        console.log('Respuesta del servidor (Trabajador):', response.data);
+        if (response.data.status == 200) {
+          setPopUpInformation(
+            "El usuario ha sido registrado satisfactoriamente."
+          );
+        }
+        console.log("Respuesta del servidor (Trabajador):", response.data);
       })
       .catch((error) => {
-        console.error('Error en la solicitud (Trabajador):', error);
+        setPopUpInformation(error.response.data.message);
+        console.error("Error en la solicitud (Trabajador):", error);
       });
   };
 
@@ -66,12 +72,18 @@ const RegisterPage = () => {
     };
 
     axios
-      .post('http://localhost:3100/api/registerLabAnalyst', formData)
+      .post("http://localhost:3100/api/registerLabAnalyst", formData)
       .then((response) => {
-        console.log('Respuesta del servidor (Laboratorio):', response.data);
+        if (response.data.status == 200) {
+          setPopUpInformation(
+            "El usuario ha sido registrado satisfactoriamente."
+          );
+        }
+        console.log("Respuesta del servidor (Laboratorio):", response.data);
       })
       .catch((error) => {
-        console.error('Error en la solicitud (Laboratorio):', error);
+        setPopUpInformation(error.response.data.message);
+        console.error("Error en la solicitud (Laboratorio):", error);
       });
   };
 
@@ -86,12 +98,18 @@ const RegisterPage = () => {
     };
 
     axios
-      .post('http://localhost:3100/api/registerPatient', formData)
+      .post("http://localhost:3100/api/registerPatient", formData)
       .then((response) => {
-        console.log('Respuesta del servidor (Paciente):', response.data);
+        if (response.data.status == 200) {
+          setPopUpInformation(
+            "El usuario ha sido registrado satisfactoriamente."
+          );
+        }
+        console.log("Respuesta del servidor (Paciente):", response.data);
       })
       .catch((error) => {
-        console.error('Error en la solicitud (Paciente):', error);
+        setPopUpInformation(error.response.data.message);
+        console.error("Error en la solicitud (Paciente):", error);
       });
   };
 
@@ -107,7 +125,7 @@ const RegisterPage = () => {
           onFinishFailed={onFinishFailed}
           initialValues={{
             remember: true,
-            puesto: 'paciente',
+            puesto: "paciente",
           }}
           requiredMark="optional"
         >
@@ -115,7 +133,7 @@ const RegisterPage = () => {
             name="puesto"
             rules={[
               {
-                message: 'Por favor, selecciona tu género',
+                message: "Por favor, selecciona tu género",
               },
             ]}
           >
@@ -131,7 +149,7 @@ const RegisterPage = () => {
             rules={[
               {
                 required: true,
-                message: 'Por favor, ingresa tu nombre',
+                message: "Por favor, ingresa tu nombre",
               },
             ]}
           >
@@ -143,7 +161,7 @@ const RegisterPage = () => {
             rules={[
               {
                 required: true,
-                message: 'Por favor, ingresa tu apellido',
+                message: "Por favor, ingresa tu apellido",
               },
             ]}
           >
@@ -155,7 +173,7 @@ const RegisterPage = () => {
             rules={[
               {
                 required: true,
-                message: 'Por favor, selecciona tu género',
+                message: "Por favor, selecciona tu género",
               },
             ]}
           >
@@ -170,7 +188,7 @@ const RegisterPage = () => {
             rules={[
               {
                 required: true,
-                message: 'Por favor, ingresa tu DNI',
+                message: "Por favor, ingresa tu DNI",
               },
             ]}
           >
@@ -182,8 +200,8 @@ const RegisterPage = () => {
             rules={[
               {
                 required: true,
-                type: 'email',
-                message: 'Por favor, ingresa un correo electrónico válido',
+                type: "email",
+                message: "Por favor, ingresa un correo electrónico válido",
               },
             ]}
           >
@@ -195,8 +213,9 @@ const RegisterPage = () => {
             rules={[
               {
                 required: true,
-                message: 'Por favor, ingresa tu contraseña',
+                message: "Por favor, ingresa tu contraseña",
               },
+              { min: 6, message: "Contraseña debe tener mínimo 6 carácteres." },
             ]}
           >
             <Input.Password />
@@ -208,7 +227,7 @@ const RegisterPage = () => {
               rules={[
                 {
                   required: true,
-                  message: 'Por favor, ingresa tu número de colegiatura',
+                  message: "Por favor, ingresa tu número de colegiatura",
                 },
               ]}
             >
@@ -224,7 +243,8 @@ const RegisterPage = () => {
             ¿Ya tienes una cuenta? <Link to="/login">Inicia sesión aquí</Link>
           </Form.Item>
           <Form.Item>
-            Únete a la plataforma de almacenaje de historias clínicas compartidas más grandes de Perú
+            Únete a la plataforma de almacenaje de historias clínicas
+            compartidas más grandes de Perú
           </Form.Item>
         </Form>
       </div>
@@ -235,7 +255,7 @@ const RegisterPage = () => {
         onOk={() => setPopupVisible(false)}
         onCancel={() => setPopupVisible(false)}
       >
-        ¡El usuario ha sido registrado con éxito!
+        {popUpInformation}
       </Modal>
     </div>
   );

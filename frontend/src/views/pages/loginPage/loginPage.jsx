@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import './login.style.css';
-import { Form, Input, Button, Radio, Alert } from 'antd';
-import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import React, { useState } from "react";
+import "./login.style.css";
+import { Form, Input, Button, Radio, Alert } from "antd";
+import { Link, useNavigate } from "react-router-dom";
+import { LocalStorageServices } from "../../../services";
+import axios from "axios";
 
 const LoginPage = () => {
-  const [selectedPuesto, setSelectedPuesto] = useState('paciente');
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [selectedPuesto, setSelectedPuesto] = useState("paciente");
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
@@ -17,31 +17,49 @@ const LoginPage = () => {
       puesto: selectedPuesto,
     };
 
-    let loginRoute = '';
+    let loginRoute = "";
 
-    if (selectedPuesto === 'paciente') {
-      loginRoute = 'http://localhost:3100/api/loginPatient';
-    } else if (selectedPuesto === 'medico') {
-      loginRoute = 'http://localhost:3100/api/loginDoctor';
-    } else if (selectedPuesto === 'laboratorio') {
-      loginRoute = 'http://localhost:3100/api/loginLabAnalyst';
+    if (selectedPuesto === "paciente") {
+      loginRoute = "http://localhost:3100/api/loginPatient";
+    } else if (selectedPuesto === "medico") {
+      loginRoute = "http://localhost:3100/api/loginDoctor";
+    } else if (selectedPuesto === "laboratorio") {
+      loginRoute = "http://localhost:3100/api/loginLabAnalyst";
     }
 
     axios
       .post(loginRoute, requestData, {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       })
       .then((response) => {
-        console.log('Inicio de sesión exitoso:', JSON.stringify(response.data));
-        setLoggedIn(true);
-        setError(null);
-        navigate('/');
+        console.log("Inicio de sesión exitoso:", JSON.stringify(response.data));
+        if ((response.status = 200)) {
+          LocalStorageServices.SetData("isLoggedIn", true);
+          LocalStorageServices.SetData(
+            "accessToken",
+            response.status.accessToken
+          );
+          var loggedRoute = "";
+          if (selectedPuesto === "paciente") {
+            loggedRoute = "/auth/patient/inicio";
+          } else if (selectedPuesto === "medico") {
+            loggedRoute = "/auth/doctor/inicio";
+          } else if (selectedPuesto === "laboratorio") {
+            loggedRoute = "/auth/laboratory/inicio";
+          }
+
+          navigate(loggedRoute);
+          setError(null);
+        } else {
+          LocalStorageServices.SetData("isLoggedIn", false);
+          LocalStorageServices.SetData("accessToken", "");
+        }
       })
       .catch((error) => {
-        console.log('Error en el inicio de sesión:', error);
-        setError('Inicio de sesión fallido. Verifica tus credenciales.');
+        console.log("Error en el inicio de sesión:", error);
+        setError("Inicio de sesión fallido. Verifica tus credenciales.");
       });
   };
 
@@ -51,13 +69,13 @@ const LoginPage = () => {
         <h2 className="register-title">Bienvenido a MedGit</h2>
 
         {error && <Alert message={error} type="error" showIcon />}
-        
+
         <Form
           name="login"
           onFinish={onFinish}
           initialValues={{
             remember: true,
-            puesto: 'paciente',
+            puesto: "paciente",
           }}
           requiredMark="optional"
         >
@@ -65,7 +83,7 @@ const LoginPage = () => {
             name="puesto"
             rules={[
               {
-                message: 'Por favor, selecciona tu puesto',
+                message: "Por favor, selecciona tu puesto",
               },
             ]}
           >
@@ -85,8 +103,8 @@ const LoginPage = () => {
             rules={[
               {
                 required: true,
-                type: 'email',
-                message: 'Por favor, ingresa un correo electrónico válido',
+                type: "email",
+                message: "Por favor, ingresa un correo electrónico válido",
               },
             ]}
           >
@@ -98,7 +116,7 @@ const LoginPage = () => {
             rules={[
               {
                 required: true,
-                message: 'Por favor, ingresa tu contraseña',
+                message: "Por favor, ingresa tu contraseña",
               },
             ]}
           >
@@ -110,10 +128,12 @@ const LoginPage = () => {
             </Button>
           </Form.Item>
           <Form.Item>
-            ¿No tienes una cuenta? <Link to="/register">Registra tu usuario aquí</Link>
+            ¿No tienes una cuenta?{" "}
+            <Link to="/register">Registra tu usuario aquí</Link>
           </Form.Item>
           <Form.Item>
-            Únete a la plataforma de almacenamiento de historias clínicas compartidas más grandes de Perú
+            Únete a la plataforma de almacenamiento de historias clínicas
+            compartidas más grandes de Perú
           </Form.Item>
         </Form>
       </div>
