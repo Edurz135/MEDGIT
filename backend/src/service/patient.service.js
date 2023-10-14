@@ -1,49 +1,30 @@
 const { Models } = require("../db.js");
-const getPastAppointmentsServices = async (idPatient) => {
+
+// Trae citas pasadas: fecha, tiempo, tipo, diagnostico y comentario
+const getPastAppointmentsService = async (PatientId) => {
   try {
     const appointments = await Models.Appointment.findAll({
+      attributes: ['date', 'time', 'type', 'diagnostic'],
       where: {
-        id_Paciente: idPatient,
-        attributes: ['date', 'time', 'type', 'diagnostic']
-      }, include: {
-        model: Models.ExaMed,
-        attributes: ['id', 'state', 'comment'],
-        where: {
-          state: 0
-        }
-      }
-
-      //falta agregar el token temporal
+        PatientId: PatientId,
+      },
+      include: [
+        {
+          model: Models.ExaMed,
+          attributes: ['comment'],
+          where: {
+            state: 0,
+          },
+        },
+      ],
     });
-    return appointments;
-  } catch (e) {
-    throw Error("Error while finding previous appointments");
-  }
-};
-module.exports = {
-  getPastAppointmentsServices
-};
-const getFutureAppointmentsServices = async (idPatient) => {
-  try {
-    const appointments = await Models.Appointment.findAll({
-      where: {
-        id_Paciente: idPatient,
-        attributes: ['date', 'time', 'type', 'diagnostic']
-      }, include: {
-        model: Models.ExaMed,
-        attributes: ['id', 'state', 'comment'],
-        where: {
-          state: 1
-        }
-      }
 
-    });
     return appointments;
-  } catch (e) {
-    throw Error("Error while finding previous appointments");
+  } catch (error) {
+    console.error(error);
   }
-};
+}
 module.exports = {
-  getPastAppointmentsServices,
-  getFutureAppointmentsServices
+  getPastAppointmentsService
 };
+
