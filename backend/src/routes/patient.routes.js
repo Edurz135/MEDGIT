@@ -1,14 +1,7 @@
 const Router = require("express");
-const { authenticateToken } = require("../middlewares/auth.middleware");
-
 const patientRouter = Router();
+const { authenticateToken } = require("../middlewares/auth.middleware");
+const { getPastAppointments } = require("../controllers/patient.controller");
+patientRouter.get("/api/patient/pastGetAppointments",  authenticateToken, getPastAppointments);
 
-patientRouter.post("/api/patient/pastGetExam", authenticateToken, async (req, res) => {
-    console.log(req)
-  res.status(200).send("Funciona la validacion con token");
-});
-patientRouter.post("/api/patient/futureGetExam", authenticateToken, async (req, res) => {
-  console.log(req)
-res.status(200).send("Funciona la validacion con token");
-});
 module.exports = patientRouter;
