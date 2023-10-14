@@ -1,23 +1,11 @@
 import React, { useState } from "react";
 import "./laboratory.layout.style.css";
 import { Typography } from "antd";
-import {
-  HomeOutlined,
-  FolderOpenOutlined,
-  LogoutOutlined,
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
-
+import {HomeOutlined,FolderOpenOutlined,LogoutOutlined,MenuFoldOutlined,MenuUnfoldOutlined,UserOutlined } from "@ant-design/icons";
 import { Layout, Menu, Button, theme } from "antd";
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
 
-import {
-  LaboratoryMainPage,
-  LaboratoryExamenPage,
-  LaboratoryPerfilPage,
-} from "../../../pages";
+import {LaboratoryMainPage, LaboratoryExamenPage, LaboratoryPerfilPage, } from "../../../pages";
 import { MainPage } from "../../../pages";
 import { LocalStorageServices } from "../../../../services";
 
@@ -87,7 +75,6 @@ export default function DoctorLayout() {
             M
           </Typography.Title>
 
-          {/* menú para opciones principales */}
           <Menu
             mode="inline"
             defaultSelectedKeys={["0"]}
@@ -102,7 +89,6 @@ export default function DoctorLayout() {
             ))}
           </Menu>
 
-          {/*LogOut*/}
           <Menu mode="inline" className="menu-container2">
             {logoutItems.map((logout) => (
               <Menu.Item key={logout.index} onClick={logout.onClick}>

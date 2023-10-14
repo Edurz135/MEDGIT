@@ -1,23 +1,11 @@
 import React, { useState } from "react";
 import "./doctor.layout.style.css";
 import { Typography } from "antd";
-import {
-  HomeOutlined,
-  FolderOpenOutlined,
-  LogoutOutlined,
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
-
+import {HomeOutlined,FolderOpenOutlined,LogoutOutlined,MenuFoldOutlined,MenuUnfoldOutlined,UserOutlined,} from "@ant-design/icons";
 import { Layout, Menu, Button, theme } from "antd";
-import { Routes, Route, Link, useNavigate } from "react-router-dom"; // Importa useNavigate
+import { Routes, Route, Link, useNavigate } from "react-router-dom";
 
-import {
-  DoctorMainPage,
-  DoctorCitasPage,
-  DoctorPerfilPage,
-} from "../../../pages";
+import { DoctorMainPage, DoctorCitasPage, DoctorPerfilPage } from "../../../pages";
 import { MainPage } from "../../../pages";
 import { LocalStorageServices } from "../../../../services";
 
@@ -45,6 +33,7 @@ export default function DoctorLayout() {
       label: "Inicio",
       url: "inicio",
     },
+
     {
       index: 1,
       icon: <FolderOpenOutlined />,
@@ -72,11 +61,11 @@ export default function DoctorLayout() {
 
   return (
     <Layout className="barra-container">
-      <Sider
-        collapsed={!collapsed}
-        className="barra-lateral"
-        style={{ background: "white" }}
-      >
+      <Sider 
+        collapsed={!collapsed}  
+        className="barra-lateral"  
+        style={{ background: "white" 
+      }}>
         <div className="menu">
           <Typography.Title
             level={1}
@@ -85,7 +74,6 @@ export default function DoctorLayout() {
             M
           </Typography.Title>
 
-          {/* menú para opciones principales */}
           <Menu
             mode="inline"
             defaultSelectedKeys={["0"]}
@@ -100,7 +88,6 @@ export default function DoctorLayout() {
             ))}
           </Menu>
 
-          {/*LogOut*/}
           <Menu mode="inline" className="menu-container2">
             {logoutItems.map((logout) => (
               <Menu.Item key={logout.index} onClick={logout.onClick}>

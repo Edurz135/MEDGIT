@@ -1,33 +1,16 @@
 import React, { useState } from "react";
 import "./patient.layout.style.css";
 import { Typography } from "antd";
-import {
-  HomeOutlined,
-  FolderOpenOutlined,
-  ReadOutlined,
-  LogoutOutlined,
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
-
+import {HomeOutlined,FolderOpenOutlined,ReadOutlined,LogoutOutlined,MenuFoldOutlined,MenuUnfoldOutlined,UserOutlined,} from "@ant-design/icons";
 import { Layout, Menu, Button, theme } from "antd";
-import { Routes, Route, Link, useNavigate } from "react-router-dom"; // Importa useNavigate
+import { Routes, Route, Link, useNavigate } from "react-router-dom";
 
-import {
-  PatientMainPage,
-  PatientCitasPage,
-  PatientHistorialPage,
-  PatientPerfilPage,
-} from "../../../pages";
+import {PatientMainPage,PatientCitasPage,PatientHistorialPage,PatientPerfilPage,} from "../../../pages";
 import { MainPage } from "../../../pages";
 import { LocalStorageServices } from "../../../../services";
 
 export default function PatientLayout() {
-  // Utiliza useNavigate para obtener la función de navegación
   const navigate = useNavigate();
-
-  //const [currentTabIndex, setCurrentTabIndex] = useState(0);
 
   // Mantén un estado para la URL de la página actual
   const [currentPageUrl, setCurrentPageUrl] = useState("/auth/patient/inicio");
@@ -41,9 +24,8 @@ export default function PatientLayout() {
     window.location.href = "/";
   };
 
-  // Función para manejar el clic en el botón "Perfil"
   const handlePerfilClick = () => {
-    navigate("/auth/patient/perfil"); // Ruta a la página de perfil
+    navigate("/auth/patient/perfil");
   };
 
   const tabsData = [
@@ -101,7 +83,6 @@ export default function PatientLayout() {
             M
           </Typography.Title>
 
-          {/* menú para opciones principales */}
           <Menu
             mode="inline"
             defaultSelectedKeys={["0"]}
@@ -116,7 +97,6 @@ export default function PatientLayout() {
             ))}
           </Menu>
 
-          {/*LogOut*/}
           <Menu mode="inline" className="menu-container2">
             {logoutItems.map((logout) => (
               <Menu.Item key={logout.index} onClick={logout.onClick}>

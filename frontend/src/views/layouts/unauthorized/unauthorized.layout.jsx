@@ -3,7 +3,6 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import LoginPage from "../../pages/loginPage/loginPage";
 import RegisterPage from "../../pages/registerPage/registerPage";
 import MainPage from "../../pages/mainPage/MainPage";
-
 import PatientLayout from "../auth/patientLayout/patient.layout";
 import DoctorLayout from "../auth/doctorLayout/doctor.layout";
 import LaboratoryLayout from "../auth/laboratoryLayout/laboratory.layout";
