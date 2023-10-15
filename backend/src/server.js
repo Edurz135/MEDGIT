@@ -1,6 +1,7 @@
 const express = require("express");
 const serverConfig = require("./config/server-config");
 const userRouter = require("./routes/user.routes");
+const patientRouter = require("./routes/patient.routes");
 const doctorRouter = require("./routes/doctor.routes");
 const labAnalystRouter = require("./routes/labAnalyst.routes");
 
@@ -11,7 +12,7 @@ const server = () => {
   app.use(userRouter);
   app.use(doctorRouter);
   app.use(labAnalystRouter);
-
+  app.use(patientRouter);
   const run = (port) => {
     app.listen(port);
   };
