@@ -1,6 +1,6 @@
-const LabAnalyst = require("../models/tipoexamed.model");
+const TipExMed = require("../models/tipoexamed.model");
 const { faker } = require('@faker-js/faker');
-const routes = require("express").routes();
+const routes = require("express").Router();
 
 routes.get("/tipoexamed", async (req, res) => {
     try {
@@ -86,3 +86,4 @@ routes.delete("/tipoexamed/:id", async(req, res) =>{
         return res.status(400).json({ status: 400, message: e.message });
     }
 });
+module.exports={routes};

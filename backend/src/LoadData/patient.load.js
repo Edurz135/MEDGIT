@@ -1,6 +1,6 @@
 const Patient = require("../models/patient.model");
 const { faker } = require('@faker-js/faker');
-const routes = require("express").routes();
+const routes = require("express").Router();
 
 routes.get("/patient", async (req, res) => {
     try {
@@ -98,3 +98,4 @@ routes.delete("/patient/:id", async(req, res) =>{
         return res.status(400).json({ status: 400, message: e.message });
     }
 });
+module.exports={routes};
