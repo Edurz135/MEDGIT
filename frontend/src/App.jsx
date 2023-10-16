@@ -6,6 +6,8 @@ import { DoctorLayout } from "./views/layouts";
 import { LaboratoryLayout } from "./views/layouts";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 
+const app = express();
+app.use(express.json());
 export default function App() {
   return (
     <Routes>

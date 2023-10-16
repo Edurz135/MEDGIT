@@ -1,23 +1,23 @@
-const Patient = require("../models/patient.model");
+const Doctor = require("../models/doctor.model");
 const { faker } = require('@faker-js/faker');
 const routes = require("express").routes();
 
-routes.get("/patient", async (req, res) => {
+routes.get("/doctor", async (req, res) => {
     try {
-        const result = await Patient.findAll();
+        const result = await Doctor.findAll();
         res.status(200).json({
             status: 200,
             result: result,
-            message: "Succesfully Patients Returned"
+            message: "Succesfully Doctors Returned"
         })
     } catch (e) {
         return res.status(400).json({ status: 400, message: e.message });
     }
 });
-routes.get("/patient/:id", async (req, res) => {
+routes.get("/doctor/:id", async (req, res) => {
     try {
         const id = req.params.id;
-        const result = await Patient.findOne({
+        const result = await Doctor.findOne({
             where: {
                 id,
             }
@@ -25,48 +25,49 @@ routes.get("/patient/:id", async (req, res) => {
         res.status(200).json({
             status: 200,
             result: result,
-            message: "Succesfully Patient Returned"
+            message: "Succesfully Doctor Returned"
         })
     } catch (e) {
         return res.status(400).json({ status: 400, message: e.message });
     }
 });
-routes.post("/patient", async (req, res) => {
+routes.post("/doctor", async (req, res) => {
 
     try {
-        await Patient.sync()
-        const result = await Patient.create({
+        await Doctor.sync()
+        const result = await Doctor.create({
             name: faker.internet.userName(),
             lastName: faker.person.lastName(),
             email: faker.internet.email(),
             password: faker.internet.password(),
-            identityDoc: faker.number({ min: 10000000000, max: 99999999999}),
+            identityDoc: faker.number({ min: 100000000, max: 999999999 }),
+            nroColegiatura:faker.number({ min: 10000000000, max: 99999999999 }),
             gender: faker.person.gender(),
             phone: faker.phone.number(),
         })
         res.status(200).json({
             status: 200,
             result: result,
-            message: "Succesfully Patient Created"
+            message: "Succesfully Doctor Created"
         })
     } catch (e) {
         return res.status(400).json({ status: 400, message: e.message });
     }
 })
-routes.put("/patient/:id", async(req, res) =>{
+routes.put("/doctor/:id", async(req, res) =>{
     try{
         const id = req.params.id;
-        const dataPatient = req.body;
-        await Patient.sync()
-        const result = await Patient.update({
-            name: dataPatient.name,
-            lastName: dataPatient.lastName,
-            email: dataPatient.email,
-            password: dataPatient.password,
-            identityDoc: dataPatient.identityDoc,
-            gender: dataPatient.gender,
-            phone: dataPatient.phone,
-            AllergyId: dataPatient.AllergyId,
+        const dataDoctor = req.body;
+        await Doctor.sync()
+        const result = await Doctor.update({
+            name: dataDoctor.name,
+            lastName: dataDoctor.lastName,
+            email: dataDoctor.email,
+            password: dataDoctor.password,
+            identityDoc: dataDoctor.identityDoc,
+            nroColegiatura: dataDoctor.nroColegiatura,
+            gender: dataDoctor.gender,
+            phone: dataDoctor.phone,
         },{
             where:{
                 id,
@@ -75,16 +76,16 @@ routes.put("/patient/:id", async(req, res) =>{
         res.status(200).json({
             status: 200,
             result: result,
-            message: "Succesfully Patient Update"
+            message: "Succesfully Doctor Update"
         })
     } catch (e) {
         return res.status(400).json({ status: 400, message: e.message });
     }
 });
-routes.delete("/patient/:id", async(req, res) =>{
+routes.delete("/doctor/:id", async(req, res) =>{
     try{
         const id = req.params.id;
-        const result = await Patient.destroy({
+        const result = await Doctor.destroy({
             where:{
                 id,
             }
@@ -92,7 +93,7 @@ routes.delete("/patient/:id", async(req, res) =>{
         res.status(204).json({
             status: 204,
             result: result,
-            message: "Succesfully Patient Delete"
+            message: "Succesfully Doctor Delete"
         })
     } catch (e) {
         return res.status(400).json({ status: 400, message: e.message });
