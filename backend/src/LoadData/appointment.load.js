@@ -1,10 +1,10 @@
-const Appointment = require("../models/appointment.model");
+const { Models } = require("../db.js");
 const { faker } = require('@faker-js/faker');
-const routes = require("express").routes();
+const routesAppointment = require("express").Router();
 
-routes.get("/appointment", async (req, res) => {
+routesAppointment.get("/appointment", async (req, res) => {
     try {
-        const result = await Appointment.findAll();
+        const result = await Models.Appointment.findAll();
         res.status(200).json({
             status: 200,
             result: result,
@@ -14,10 +14,10 @@ routes.get("/appointment", async (req, res) => {
         return res.status(400).json({ status: 400, message: e.message });
     }
 });
-routes.get("/appointment/:id", async (req, res) => {
+routesAppointment.get("/appointment/:id", async (req, res) => {
     try {
         const id = req.params.id;
-        const result = await Appointment.findOne({
+        const result = await Models.Appointment.findOne({
             where: {
                 id,
             }
@@ -31,13 +31,18 @@ routes.get("/appointment/:id", async (req, res) => {
         return res.status(400).json({ status: 400, message: e.message });
     }
 });
-routes.post("/appointment", async (req, res) => {
+routesAppointment.post("/appointment", async (req, res) => {
 
     try {
-        await Appointment.sync()
-        const result = await Appointment.create({
-            date: faker.datatype(),
-            time: faker.date.soon(),
+        await Models.Appointment.sync()
+        // Creo la fecha en el pasado
+        let pastDate = faker.date.past();
+        let timestamp = pastDate.getTime();// Lo convierto en timestamp
+        let futureDate = faker.date.soon();
+        let time = futureDate.getHours() + ":" + futureDate.getMinutes() + ":" + futureDate.getSeconds();//Consigo el tiempo 
+        const result = await Models.Appointment.create({
+            date: timestamp,
+            time: time,
             type: faker.commerce.product(),
             diagnostic: faker.commerce.productAdjective(),
         })
@@ -50,12 +55,12 @@ routes.post("/appointment", async (req, res) => {
         return res.status(400).json({ status: 400, message: e.message });
     }
 })
-routes.put("/appointment/:id", async(req, res) =>{
+routesAppointment.put("/appointment/:id", async(req, res) =>{
     try{
         const id = req.params.id;
         const dataAppointment = req.body;
-        await Appointment.sync()
-        const result = await LabAnalyst.update({
+        await Models.Appointment.sync()
+        const result = await Models.Appointment.update({
             date: dataAppointment.date,
             time: dataAppointment.time,
             type: dataAppointment.type,
@@ -76,10 +81,10 @@ routes.put("/appointment/:id", async(req, res) =>{
         return res.status(400).json({ status: 400, message: e.message });
     }
 });
-routes.delete("/appointment/:id", async(req, res) =>{
+routesAppointment.delete("/appointment/:id", async(req, res) =>{
     try{
         const id = req.params.id;
-        const result = await Appointment.destroy({
+        const result = await Models.Appointment.destroy({
             where:{
                 id,
             }
@@ -93,3 +98,4 @@ routes.delete("/appointment/:id", async(req, res) =>{
         return res.status(400).json({ status: 400, message: e.message });
     }
 });
+module.exports={routesAppointment};

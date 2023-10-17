@@ -1,10 +1,10 @@
-const TipExMed = require("../models/tipoexamed.model");
+const { Models } = require("../db.js");
 const { faker } = require('@faker-js/faker');
-const routes = require("express").Router();
+const routesTipExMed = require("express").Router();
 
-routes.get("/tipoexamed", async (req, res) => {
+routesTipExMed.get("/tipoexamed", async (req, res) => {
     try {
-        const result = await TipExMed.findAll();
+        const result = await Models.TipExMed.findAll();
         res.status(200).json({
             status: 200,
             result: result,
@@ -14,10 +14,10 @@ routes.get("/tipoexamed", async (req, res) => {
         return res.status(400).json({ status: 400, message: e.message });
     }
 });
-routes.get("/tipoexamed/:id", async (req, res) => {
+routesTipExMed.get("/tipoexamed/:id", async (req, res) => {
     try {
         const id = req.params.id;
-        const result = await TipExMed.findOne({
+        const result = await Models.TipExMed.findOne({
             where: {
                 id,
             }
@@ -31,11 +31,11 @@ routes.get("/tipoexamed/:id", async (req, res) => {
         return res.status(400).json({ status: 400, message: e.message });
     }
 });
-routes.post("/tipoexamed", async (req, res) => {
+routesTipExMed.post("/tipoexamed", async (req, res) => {
 
     try {
         await TipExMed.sync()
-        const result = await TipExMed.create({
+        const result = await Models.TipExMed.create({
             name: faker.company.name(),
             
         })
@@ -48,12 +48,12 @@ routes.post("/tipoexamed", async (req, res) => {
         return res.status(400).json({ status: 400, message: e.message });
     }
 })
-routes.put("/tipoexamed/:id", async(req, res) =>{
+routesTipExMed.put("/tipoexamed/:id", async(req, res) =>{
     try{
         const id = req.params.id;
         const dataTipExMed = req.body;
-        await TipExMed.sync()
-        const result = await TipExMed.update({
+        await Models.TipExMed.sync()
+        const result = await Models.TipExMed.update({
             name: dataTipExMed.name,
         },{
             where:{
@@ -69,10 +69,10 @@ routes.put("/tipoexamed/:id", async(req, res) =>{
         return res.status(400).json({ status: 400, message: e.message });
     }
 });
-routes.delete("/tipoexamed/:id", async(req, res) =>{
+routesTipExMed.delete("/tipoexamed/:id", async(req, res) =>{
     try{
         const id = req.params.id;
-        const result = await TipExMed.destroy({
+        const result = await Models.TipExMed.destroy({
             where:{
                 id,
             }
@@ -86,4 +86,4 @@ routes.delete("/tipoexamed/:id", async(req, res) =>{
         return res.status(400).json({ status: 400, message: e.message });
     }
 });
-module.exports={routes};
+module.exports={routesTipExMed};

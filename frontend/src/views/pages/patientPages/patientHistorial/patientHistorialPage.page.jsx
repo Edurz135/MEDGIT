@@ -66,3 +66,6 @@ export default class PatientHistorialPage extends Component {
     );
   }
 }
+
+
+

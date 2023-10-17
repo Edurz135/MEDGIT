@@ -25,6 +25,8 @@ const ContenMedAle = require("./models/contenMedAle.model.js")(sequelize, Sequel
 const ContenMedCi = require("./models/contenMedCi.model.js")(sequelize, Sequelize);
 const ContenPacAle = require("./models/contenPacAle.model.js")(sequelize, Sequelize);
 
+
+
 // Associations
 
 //Uno a muchos --> 1 a N

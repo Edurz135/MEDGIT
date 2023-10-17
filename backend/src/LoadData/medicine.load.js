@@ -1,10 +1,10 @@
-const Medicine = require("../models/medicine.model");
+const { Models } = require("../db.js");
 const { faker } = require('@faker-js/faker');
-const routes = require("express").routes();
+const routesMedicine = require("express").Router();
 
-routes.get("/medicine", async (req, res) => {
+routesMedicine.get("/medicine", async (req, res) => {
     try {
-        const result = await Medicine.findAll();
+        const result = await Models.Medicine.findAll();
         res.status(200).json({
             status: 200,
             result: result,
@@ -14,10 +14,10 @@ routes.get("/medicine", async (req, res) => {
         return res.status(400).json({ status: 400, message: e.message });
     }
 });
-routes.get("/medicine/:id", async (req, res) => {
+routesMedicine.get("/medicine/:id", async (req, res) => {
     try {
         const id = req.params.id;
-        const result = await Medicine.findOne({
+        const result = await Models.Medicine.findOne({
             where: {
                 id,
             }
@@ -31,11 +31,11 @@ routes.get("/medicine/:id", async (req, res) => {
         return res.status(400).json({ status: 400, message: e.message });
     }
 });
-routes.post("/medicine", async (req, res) => {
+routesMedicine.post("/medicine", async (req, res) => {
 
     try {
-        await Medicine.sync()
-        const result = await Medicine.create({
+        await Models.Medicine.sync()
+        const result = await Models.Medicine.create({
             name: faker.commerce.productName(),
             dose: faker.commerce.price(),
             instruction: faker.commerce.productMaterial(),
@@ -50,12 +50,12 @@ routes.post("/medicine", async (req, res) => {
         return res.status(400).json({ status: 400, message: e.message });
     }
 })
-routes.put("/medicine/:id", async(req, res) =>{
+routesMedicine.put("/medicine/:id", async(req, res) =>{
     try{
         const id = req.params.id;
         const dataMedicine = req.body;
         await Medicine.sync()
-        const result = await Medicine.update({
+        const result = await Models.Medicine.update({
             name: dataMedicine.name,
             dose: dataMedicine.dose,
             instruction: dataMedicine.instruction,
@@ -74,10 +74,10 @@ routes.put("/medicine/:id", async(req, res) =>{
         return res.status(400).json({ status: 400, message: e.message });
     }
 });
-routes.delete("/medicine/:id", async(req, res) =>{
+routesMedicine.delete("/medicine/:id", async(req, res) =>{
     try{
         const id = req.params.id;
-        const result = await Medicine.destroy({
+        const result = await Models.Medicine.destroy({
             where:{
                 id,
             }
@@ -91,3 +91,4 @@ routes.delete("/medicine/:id", async(req, res) =>{
         return res.status(400).json({ status: 400, message: e.message });
     }
 });
+module.exports={routesMedicine};
