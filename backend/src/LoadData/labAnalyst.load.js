@@ -1,10 +1,10 @@
-const LabAnalyst = require("../models/labAnalyst.model");
+const { Models } = require("../db.js");
 const { faker } = require('@faker-js/faker');
-const routes = require("express").routes();
+const routesLabAnalyst = require("express").Router();
 
-routes.get("/labAnalyst", async (req, res) => {
+routesLabAnalyst.get("/labAnalyst", async (req, res) => {
     try {
-        const result = await LabAnalyst.findAll();
+        const result = await Models.LabAnalyst.findAll();
         res.status(200).json({
             status: 200,
             result: result,
@@ -14,10 +14,10 @@ routes.get("/labAnalyst", async (req, res) => {
         return res.status(400).json({ status: 400, message: e.message });
     }
 });
-routes.get("/labAnalyst/:id", async (req, res) => {
+routesLabAnalyst.get("/labAnalyst/:id", async (req, res) => {
     try {
         const id = req.params.id;
-        const result = await LabAnalyst.findOne({
+        const result = await Models.LabAnalyst.findOne({
             where: {
                 id,
             }
@@ -31,19 +31,19 @@ routes.get("/labAnalyst/:id", async (req, res) => {
         return res.status(400).json({ status: 400, message: e.message });
     }
 });
-routes.post("/labAnalyst", async (req, res) => {
+routesLabAnalyst.post("/labAnalyst", async (req, res) => {
 
     try {
-        await LabAnalyst.sync()
-        const result = await LabAnalyst.create({
+        await Models.LabAnalyst.sync()
+        const result = await Models.LabAnalyst.create({
             name: faker.internet.userName(),
             lastName: faker.person.lastName(),
             email: faker.internet.email(),
             password: faker.internet.password(),
-            identityDoc: faker.number({ min: 100000000, max: 999999999 }),
-            nroColegiatura:faker.number({ min: 10000000000, max: 99999999999 }),
+            identityDoc: 2311,
+            nroColegiatura:23444,
             gender: faker.person.gender(),
-            phone: faker.phone.number(),
+            phone: 780239421,
         })
         res.status(200).json({
             status: 200,
@@ -54,12 +54,12 @@ routes.post("/labAnalyst", async (req, res) => {
         return res.status(400).json({ status: 400, message: e.message });
     }
 })
-routes.put("/labAnalyst/:id", async(req, res) =>{
+routesLabAnalyst.put("/labAnalyst/:id", async(req, res) =>{
     try{
         const id = req.params.id;
         const dataLabAnalyst = req.body;
-        await LabAnalyst.sync()
-        const result = await LabAnalyst.update({
+        await Models.LabAnalyst.sync()
+        const result = await Models.LabAnalyst.update({
             name: dataLabAnalyst.name,
             lastName: dataLabAnalyst.lastName,
             email: dataLabAnalyst.email,
@@ -83,10 +83,10 @@ routes.put("/labAnalyst/:id", async(req, res) =>{
         return res.status(400).json({ status: 400, message: e.message });
     }
 });
-routes.delete("/labAnalyst/:id", async(req, res) =>{
+routesLabAnalyst.delete("/labAnalyst/:id", async(req, res) =>{
     try{
         const id = req.params.id;
-        const result = await LabAnalyst.destroy({
+        const result = await Models.LabAnalyst.destroy({
             where:{
                 id,
             }
@@ -100,3 +100,4 @@ routes.delete("/labAnalyst/:id", async(req, res) =>{
         return res.status(400).json({ status: 400, message: e.message });
     }
 });
+module.exports={routesLabAnalyst};

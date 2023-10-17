@@ -1,10 +1,10 @@
-const Doctor = require("../models/doctor.model");
+const { Models } = require("../db.js");
 const { faker } = require('@faker-js/faker');
-const routes = require("express").routes();
+const routesDoctor = require("express").Router();
 
-routes.get("/doctor", async (req, res) => {
+routesDoctor.get("/doctor", async (req, res) => {
     try {
-        const result = await Doctor.findAll();
+        const result = await Models.Doctor.findAll();
         res.status(200).json({
             status: 200,
             result: result,
@@ -14,10 +14,10 @@ routes.get("/doctor", async (req, res) => {
         return res.status(400).json({ status: 400, message: e.message });
     }
 });
-routes.get("/doctor/:id", async (req, res) => {
+routesDoctor.get("/doctor/:id", async (req, res) => {
     try {
         const id = req.params.id;
-        const result = await Doctor.findOne({
+        const result = await Models.Doctor.findOne({
             where: {
                 id,
             }
@@ -31,19 +31,19 @@ routes.get("/doctor/:id", async (req, res) => {
         return res.status(400).json({ status: 400, message: e.message });
     }
 });
-routes.post("/doctor", async (req, res) => {
+routesDoctor.post("/doctor", async (req, res) => {
 
     try {
-        await Doctor.sync()
-        const result = await Doctor.create({
+        await Models.Doctor.sync()
+        const result = await Models.Doctor.create({
             name: faker.internet.userName(),
             lastName: faker.person.lastName(),
             email: faker.internet.email(),
             password: faker.internet.password(),
-            identityDoc: faker.number({ min: 100000000, max: 999999999 }),
-            nroColegiatura:faker.number({ min: 10000000000, max: 99999999999 }),
+            identityDoc: 3456789,
+            nroColegiatura:5647,
             gender: faker.person.gender(),
-            phone: faker.phone.number(),
+            phone: 889976434,
         })
         res.status(200).json({
             status: 200,
@@ -54,12 +54,12 @@ routes.post("/doctor", async (req, res) => {
         return res.status(400).json({ status: 400, message: e.message });
     }
 })
-routes.put("/doctor/:id", async(req, res) =>{
+routesDoctor.put("/doctor/:id", async(req, res) =>{
     try{
         const id = req.params.id;
         const dataDoctor = req.body;
-        await Doctor.sync()
-        const result = await Doctor.update({
+        await Models.Doctor.sync()
+        const result = await Models.Doctor.update({
             name: dataDoctor.name,
             lastName: dataDoctor.lastName,
             email: dataDoctor.email,
@@ -82,10 +82,10 @@ routes.put("/doctor/:id", async(req, res) =>{
         return res.status(400).json({ status: 400, message: e.message });
     }
 });
-routes.delete("/doctor/:id", async(req, res) =>{
+routesDoctor.delete("/doctor/:id", async(req, res) =>{
     try{
         const id = req.params.id;
-        const result = await Doctor.destroy({
+        const result = await Models.Doctor.destroy({
             where:{
                 id,
             }
@@ -99,3 +99,4 @@ routes.delete("/doctor/:id", async(req, res) =>{
         return res.status(400).json({ status: 400, message: e.message });
     }
 });
+module.exports={routesDoctor};

@@ -5,6 +5,7 @@ import { PatientLayout } from "./views/layouts";
 import { DoctorLayout } from "./views/layouts";
 import { LaboratoryLayout } from "./views/layouts";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
+import express from "express";
 
 const app = express();
 app.use(express.json());
