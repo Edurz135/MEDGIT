@@ -1,91 +1,95 @@
-const Allergy = require("../models/allergy.model");
+const { Models } = require("../db.js");
 const { faker } = require('@faker-js/faker');
-const routes = require("express").Router();
+const routesAllergy = require("express").Router();
 
-routes.get("/allergy", async (req, res) => {
+routesAllergy.get("/allergy", async (req, res) => {
     try {
-        const result = await Allergy.findAll();
+        const getAllergys = await Models.Allergy.findAll();
         res.status(200).json({
             status: 200,
-            result: result,
+            result: getAllergys,
             message: "Succesfully Allergys Returned"
         })
     } catch (e) {
         return res.status(400).json({ status: 400, message: e.message });
     }
 });
-routes.get("/allergy/:id", async (req, res) => {
+routesAllergy.get("/allergy/:id", async (req, res) => {
+    
     try {
         const id = req.params.id;
-        const result = await Allergy.findOne({
+        const getAllergy = await Models.Allergy.findOne({
             where: {
                 id,
             }
         });
         res.status(200).json({
             status: 200,
-            result: result,
+            result: getAllergy,
             message: "Succesfully Allergy Returned"
         })
     } catch (e) {
         return res.status(400).json({ status: 400, message: e.message });
     }
 });
-routes.post("/allergy", async (req, res) => {
-
+routesAllergy.post("/allergy", async (req, res) => {
     try {
-        await Allergy.sync()
-        const result = await Allergy.create({
+        await Models.Allergy.sync()
+        const postAllergy = await Models.Allergy.create({
             name: faker.commerce.productName(),
             sick: faker.person.fullName(),
                 
         })
         res.status(200).json({
             status: 200,
-            result: result,
+            result: postAllergy,
             message: "Succesfully Allergy Created"
         })
     } catch (e) {
-        return res.status(400).json({ status: 400, message: e.message });
+        
+        return res.status(400).json({ status: 400, message: e.message});
     }
 })
-routes.put("/allergy/:id", async(req, res) =>{
+routesAllergy.put("/allergy/:id", async(req, res) =>{
+    console.log("========================")
+    console.log(req.params);
+    console.log("========================")
     try{
         const id = req.params.id;
         const dataAllergy = req.body;
-        await Allergy.sync()
-        const result = await Allergy.update({
+        await Models.Allergy.sync();
+        const putAllergy = await Models.Allergy.update({
             name: dataAllergy.name,
             sick: dataAllergy.sick,
         },{
             where:{
-                id,
+                id:id,
             }
         })
         res.status(200).json({
             status: 200,
-            result: result,
+            result: putAllergy,
             message: "Succesfully LabAnalyst Update"
         })
     } catch (e) {
         return res.status(400).json({ status: 400, message: e.message });
     }
 });
-routes.delete("/allergy/:id", async(req, res) =>{
+routesAllergy.delete("/allergy/:id", async(req, res) =>{
     try{
         const id = req.params.id;
-        const result = await Allergy.destroy({
+        const deleteAllergy = await Models.Allergy.destroy({
             where:{
                 id,
             }
         })
         res.status(204).json({
             status: 204,
-            result: result,
+            result: deleteAllergy,
             message: "Succesfully Allergy Delete"
         })
     } catch (e) {
         return res.status(400).json({ status: 400, message: e.message });
     }
 });
-module.exports={routes};
+module.exports={routesAllergy};

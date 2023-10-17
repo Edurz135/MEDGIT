@@ -1,10 +1,9 @@
-const ContenPacAle = require("../models/contenPacAle.model");
-const { faker } = require('@faker-js/faker');
-const routes = require("express").routes();
+const { Models } = require("../db.js");
+const routesContenPacAle = require("express").Router();
 
-routes.get("/contenPacAle", async (req, res) => {
+routesContenPacAle.get("/contenPacAle", async (req, res) => {
     try {
-        const result = await ContenPacAle.findAll();
+        const result = await Models.ContenPacAle.findAll();
         res.status(200).json({
             status: 200,
             result: result,
@@ -14,10 +13,10 @@ routes.get("/contenPacAle", async (req, res) => {
         return res.status(400).json({ status: 400, message: e.message });
     }
 });
-routes.get("/contenPacAle/:id", async (req, res) => {
+routesContenPacAle.get("/contenPacAle/:id", async (req, res) => {
     try {
         const id = req.params.id;
-        const result = await ContenPacAle.findOne({
+        const result = await Models.ContenPacAle.findOne({
             where: {
                 id,
             }
@@ -32,12 +31,12 @@ routes.get("/contenPacAle/:id", async (req, res) => {
     }
 });
 
-routes.put("/contenPacAle/:id", async(req, res) =>{
+routesContenPacAle.put("/contenPacAle/:id", async(req, res) =>{
     try{
         const id = req.params.id;
         const dataContenPacAle = req.body;
-        await ContenPacAle.sync()
-        const result = await ContenPacAle.update({
+        await Models.ContenPacAle.sync()
+        const result = await Models.ContenPacAle.update({
             AllergyId: dataContenPacAle.AllergyId,
             PatientId: dataContenPacAle.PatientId,
         },{
@@ -54,10 +53,10 @@ routes.put("/contenPacAle/:id", async(req, res) =>{
         return res.status(400).json({ status: 400, message: e.message });
     }
 });
-routes.delete("/contenPacAle/:id", async(req, res) =>{
+routesContenPacAle.delete("/contenPacAle/:id", async(req, res) =>{
     try{
         const id = req.params.id;
-        const result = await ContenPacAle.destroy({
+        const result = await Models.ContenPacAle.destroy({
             where:{
                 id,
             }
@@ -71,3 +70,4 @@ routes.delete("/contenPacAle/:id", async(req, res) =>{
         return res.status(400).json({ status: 400, message: e.message });
     }
 });
+module.exports={routesContenPacAle};
