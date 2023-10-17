@@ -58,7 +58,9 @@ export default class PatientHistorialPage extends Component {
           )}
         </div>
       </div>
-    </div>
-    
-  );
+    );
+  }
 }
+
+
+
