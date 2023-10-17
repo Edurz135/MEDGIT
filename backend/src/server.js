@@ -14,7 +14,8 @@ const server = () => {
   app.use(doctorRouter);
   app.use(labAnalystRouter);
   app.use(patientRouter);
-  app.use(patientLoadRouter);
+  // app.use(patientLoadRouter);
+
   const run = (port) => {
     app.listen(port);
   };

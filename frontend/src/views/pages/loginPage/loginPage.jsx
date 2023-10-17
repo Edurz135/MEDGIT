@@ -10,7 +10,7 @@ const LoginPage = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  const onFinish = (values) => {
+  const onFinish = async (values) => {
     const requestData = {
       email: values.email,
       password: values.password,
@@ -27,20 +27,17 @@ const LoginPage = () => {
       loginRoute = "http://localhost:3100/api/loginLabAnalyst";
     }
 
-    axios
+    await axios
       .post(loginRoute, requestData, {
         headers: {
           "Content-Type": "application/json",
         },
       })
-      .then((response) => {
-        console.log("Inicio de sesión exitoso:", JSON.stringify(response.data));
+      .then(async (response) => {
         if ((response.status = 200)) {
           LocalStorageServices.SetData("isLoggedIn", true);
-          LocalStorageServices.SetData(
-            "accessToken",
-            response.status.accessToken
-          );
+          const accessToken = await response.data.accessToken;
+          await LocalStorageServices.SetData("accessToken", accessToken);
           var loggedRoute = "";
           if (selectedPuesto === "paciente") {
             loggedRoute = "/auth/patient/inicio";

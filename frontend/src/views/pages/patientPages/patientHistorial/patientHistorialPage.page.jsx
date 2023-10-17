@@ -1,32 +1,44 @@
 import "./patientHistorialPage.styles.css";
-import React, { Component } from 'react';
-import axios from 'axios';
+import React, { Component } from "react";
+import axios from "axios";
 import { LocalStorageServices } from "../../../../services";
 import { ConstantLocalStorage } from "../../../../utils/constant";
 
-
 export default class PatientHistorialPage extends Component {
   state = {
-    citasPasadas: null, // Variable para almacenar los datos de la solicitud
+    citasPasadas: [], // Variable para almacenar los datos de la solicitud
   };
 
+  async componentDidMount() {
+    const accessToken = await LocalStorageServices.GetData("accessToken");
 
-  componentDidMount() {
-    const token = LocalStorageServices.GetData(ConstantLocalStorage.token_key);
-    axios.get('/api/patient/pastGetAppointments', token)
-      .then(response => {
+    let data = JSON.stringify({
+      token: accessToken,
+    });
+
+    let config = {
+      method: "post",
+      maxBodyLength: Infinity,
+      url: "http://localhost:3100/api/patient/pastGetAppointments",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: data,
+    };
+
+    axios
+      .request(config)
+      .then((response) => {
         this.setState({ citasPasadas: response.data });
-        console.log(response.data)
+        console.log(JSON.stringify(response.data));
       })
-      .catch(error => {
-        console.error('Error al obtener datos:', error);
+      .catch((error) => {
+        console.error("Error al obtener datos:", error);
       });
   }
 
-
   render() {
     const { citasPasadas } = this.state;
-
 
     return (
       <div>
@@ -34,12 +46,10 @@ export default class PatientHistorialPage extends Component {
           <h1>Historial</h1>
         </div>
 
-
         <div>
           {citasPasadas ? (
             <div>
               <p>Historial clínico:</p>
-
 
               {/* Renderiza la lista de citas pasadas */}
               <ul>
@@ -47,18 +57,12 @@ export default class PatientHistorialPage extends Component {
                   <li key={index}>{cita.date}</li>
                 ))}
               </ul>
-
-
-
-
-             
             </div>
           ) : (
             <p>Cargando datos...</p>
           )}
         </div>
       </div>
-    </div>
-    
-  );
+    );
+  }
 }
