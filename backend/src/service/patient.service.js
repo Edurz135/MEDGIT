@@ -4,14 +4,14 @@ const { Models } = require("../db.js");
 const getPastAppointmentsService = async (PatientId) => {
   try {
     const appointments = await Models.Appointment.findAll({
-      attributes: ['date', 'time', 'type', 'diagnostic'],
+      attributes: ["date", "time", "type", "diagnostic"],
       where: {
         PatientId: PatientId,
       },
       include: [
         {
           model: Models.ExaMed,
-          attributes: ['comment'],
+          attributes: ["comment"],
           where: {
             state: 0,
           },
@@ -19,12 +19,15 @@ const getPastAppointmentsService = async (PatientId) => {
       ],
     });
 
-    return appointments;
+    if (appointments == 0) {
+      return [];
+    } else {
+      return appointments;
+    }
   } catch (error) {
     console.error(error);
   }
-}
-module.exports = {
-  getPastAppointmentsService
 };
-
+module.exports = {
+  getPastAppointmentsService,
+};

@@ -29,7 +29,7 @@ export default class PatientHistorialPage extends Component {
     axios
       .request(config)
       .then((response) => {
-        this.setState({ citasPasadas: response.data });
+        this.setState({ citasPasadas:  response.data.result });
         console.log(JSON.stringify(response.data));
       })
       .catch((error) => {
