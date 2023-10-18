@@ -2,7 +2,6 @@ import "./patientHistorialPage.styles.css";
 import React, { Component } from "react";
 import axios from "axios";
 import { LocalStorageServices } from "../../../../services";
-import { ConstantLocalStorage } from "../../../../utils/constant";
 
 export default class PatientHistorialPage extends Component {
   state = {
@@ -44,15 +43,30 @@ export default class PatientHistorialPage extends Component {
         <div>
           {citasPasadas ? (
             <div>
-              <p>Historial clínico:</p>
+            <p>Historial clínico:</p>
 
-              {/* Renderiza la lista de citas pasadas */}
-              <ul>
+            {/* Renderiza una tabla con los atributos "date", "time", "type" y "diagnostic" */}
+            <table>
+              <thead>
+                <tr>
+                  <th>Fecha</th>
+                  <th>Hora</th>
+                  <th>Tipo</th>
+                  <th>Diagnóstico</th>
+                </tr>
+              </thead>
+              <tbody>
                 {citasPasadas.map((cita, index) => (
-                  <li key={index}>{cita.date}</li>
+                  <tr key={index}>
+                    <td>{cita.date}</td>
+                    <td>{cita.time}</td>
+                    <td>{cita.type}</td>
+                    <td>{cita.diagnostic}</td>
+                  </tr>
                 ))}
-              </ul>
-            </div>
+              </tbody>
+            </table>
+          </div>
           ) : (
             <p>Cargando datos...</p>
           )}

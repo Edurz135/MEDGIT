@@ -14,3 +14,7 @@ p {
     
     font-weight: bolder;
 }
+
+ul {
+    text-align: justify;
+}
