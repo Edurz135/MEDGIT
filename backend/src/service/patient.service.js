@@ -19,13 +19,14 @@ const getPastAppointmentsService = async (PatientId) => {
       ],
     });
 
-    if (appointments == 0) {
+    /* if (appointments == 0) {
       return [];
     } else {
       return appointments;
-    }
+    } */
+    return appointments;
   } catch (error) {
-    console.error(error);
+    throw new Error(e.message);
   }
 };
 module.exports = {

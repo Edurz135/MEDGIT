@@ -4,11 +4,10 @@ const getPastAppointments = async (req, res) => {
     // Envía el id del paciente
     console.log(req.user);
     const result = await getPastAppointmentsService(req.user.id) || [];
-    await console.log(result);
     return res.status(200).json({
       status: 200,
       result: result,
-      message: "Succesfully Appointsments Returned",
+      message: "Succesfully Appointments Returned",
     });
   } catch (e) {
     return res.status(400).json({ status: 400, message: e.message });

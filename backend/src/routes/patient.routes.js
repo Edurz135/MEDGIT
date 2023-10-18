@@ -4,6 +4,6 @@ const { getPastAppointments } = require("../controllers/patient.controller");
 
 const patientRouter = Router();
 
-patientRouter.post("/api/patient/pastGetAppointments",  authenticateToken, getPastAppointments);
+patientRouter.get("/api/patient/pastGetAppointments",  authenticateToken, getPastAppointments);
 
 module.exports = patientRouter;

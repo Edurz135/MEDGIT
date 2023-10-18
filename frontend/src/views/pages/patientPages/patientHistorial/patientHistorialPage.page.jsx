@@ -17,7 +17,7 @@ export default class PatientHistorialPage extends Component {
     });
 
     let config = {
-      method: "post",
+      method: "get",
       maxBodyLength: Infinity,
       url: "http://localhost:3100/api/patient/pastGetAppointments",
       headers: {
