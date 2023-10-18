@@ -77,7 +77,7 @@ const loginPatientService = async (email, password) => {
       JSON.stringify(patient),
       process.env.TOKEN_SECRET
     );
-    return accessToken;
+    return "Bearer " + accessToken;
   } catch (e) {
     throw Error("Error while finding a User");
   }
@@ -93,7 +93,7 @@ const loginDoctorService = async (email, password) => {
       JSON.stringify(doctor),
       process.env.TOKEN_SECRET
     );
-    return accessToken;
+    return "Bearer " + accessToken;
   } catch (e) {
     throw Error("Error while finding a User");
   }
@@ -109,7 +109,7 @@ const loginLabAnalystService = async (email, password) => {
       JSON.stringify(labAnalyst),
       process.env.TOKEN_SECRET
     );
-    return accessToken;
+    return "Bearer " + accessToken;
   } catch (e) {
     throw Error("Error while finding a User");
   }

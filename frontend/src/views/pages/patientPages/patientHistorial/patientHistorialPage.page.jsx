@@ -12,24 +12,19 @@ export default class PatientHistorialPage extends Component {
   async componentDidMount() {
     const accessToken = await LocalStorageServices.GetData("accessToken");
 
-    let data = JSON.stringify({
-      token: accessToken,
-    });
-
     let config = {
       method: "get",
       maxBodyLength: Infinity,
       url: "http://localhost:3100/api/patient/pastGetAppointments",
       headers: {
-        "Content-Type": "application/json",
+        Authorization: accessToken,
       },
-      data: data,
     };
 
     axios
       .request(config)
       .then((response) => {
-        this.setState({ citasPasadas:  response.data.result });
+        this.setState({ citasPasadas: response.data.result });
         console.log(JSON.stringify(response.data));
       })
       .catch((error) => {
@@ -66,6 +61,3 @@ export default class PatientHistorialPage extends Component {
     );
   }
 }
-
-
-
