@@ -2,6 +2,35 @@ import "./patientHistorialPage.styles.css";
 import React, { Component } from "react";
 import axios from "axios";
 import { LocalStorageServices } from "../../../../services";
+import {Table} from 'antd';
+
+const columns = [
+  {
+    title: 'Fecha',
+    dataIndex: 'fecha',
+    key: 'fecha',
+    width: 250,
+  },
+  {
+    title: 'Hora',
+    dataIndex: 'hora',
+    key: 'hora',
+    width: 150,
+  },
+  {
+    title: 'Tipo de Cita',
+    dataIndex: 'tipo',
+    key: 'tipo',
+  },
+  {
+    title: 'Diagnóstico',
+    dataIndex: 'diagnostico',
+    key: 'diagnostico',
+  },
+];
+
+
+
 
 export default class PatientHistorialPage extends Component {
   state = {
@@ -29,10 +58,22 @@ export default class PatientHistorialPage extends Component {
       .catch((error) => {
         console.error("Error al obtener datos:", error);
       });
+
+      
+
+    
   }
 
   render() {
     const { citasPasadas } = this.state;
+
+    const data = citasPasadas.map((cita, index) => ({
+      key: index.toString(), // Puedes usar un valor único como índice para "key".
+      fecha: cita.date,
+      hora: cita.time,
+      tipo: cita.type,
+      diagnostico: cita.diagnostic,
+    }));
 
     return (
       <div>
@@ -43,29 +84,9 @@ export default class PatientHistorialPage extends Component {
         <div>
           {citasPasadas ? (
             <div>
-            <p>Historial clínico:</p>
 
-            {/* Renderiza una tabla con los atributos "date", "time", "type" y "diagnostic" */}
-            <table>
-              <thead>
-                <tr>
-                  <th>Fecha</th>
-                  <th>Hora</th>
-                  <th>Tipo</th>
-                  <th>Diagnóstico</th>
-                </tr>
-              </thead>
-              <tbody>
-                {citasPasadas.map((cita, index) => (
-                  <tr key={index}>
-                    <td>{cita.date}</td>
-                    <td>{cita.time}</td>
-                    <td>{cita.type}</td>
-                    <td>{cita.diagnostic}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <Table columns={columns} dataSource={data} />
+          
           </div>
           ) : (
             <p>Cargando datos...</p>
