@@ -22,6 +22,24 @@ routesLabAnalyst.get("/labAnalyst/:id", async (req, res) => {
                 id,
             }
         });
+        const idExaMed = result.ExaMedId;
+        const exaMed = await Models.ExaMed.findOne({
+            where: {
+                id:idExaMed,
+            }
+        });
+        const resultado = {}
+        resultado["name"] = result.name
+        resultado["lastName"] = result.lastName
+        resultado["email"] = result.email
+        resultado["password"] = result.password
+        resultado["identityDoc"] = result.identityDoc
+        resultado["nroColegiatura"] = result.nroColegiatura
+        resultado["gender"] = result.gender
+        resultado["phone"] = result.phone
+        resultado["createdAt"] = result.createdAt
+        resultado["updatedAt"] = result.updatedAt
+        resultado["exaMed"] = exaMed
         res.status(200).json({
             status: 200,
             result: result,

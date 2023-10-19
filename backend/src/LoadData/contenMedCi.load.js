@@ -21,16 +21,41 @@ routesContenMedCi.get("/contenMedCi/:id", async (req, res) => {
                 id,
             }
         });
+        const idExaMed = result.ExaMedId;
+        const exaMed = await Models.ExaMed.findOne({
+            where: {
+                id:idExaMed,
+            }
+        });
+        const resultado = {}
+        resultado["createdAt"] = result.createdAt
+        resultado["updatedAt"] = result.updatedAt
+        resultado["exaMed"] = exaMed
         res.status(200).json({
             status: 200,
-            result: result,
+            result: resultado,
             message: "Succesfully ContenMedCi Returned"
         })
     } catch (e) {
         return res.status(400).json({ status: 400, message: e.message });
     }
 });
+routesContenMedCi.post("/contenMedCi", async (req, res) => {
 
+    try {
+        await Models.ContenMedCi.sync()
+        const result = await Models.ContenMedCi.create({
+
+        })
+        res.status(200).json({
+            status: 200,
+            result: result,
+            message: "Succesfully contenMedCi Created"
+        })
+    } catch (e) {
+        return res.status(400).json({ status: 400, message: e.message });
+    }
+})
 routesContenMedCi.put("/contenMedCi/:id", async(req, res) =>{
     try{
         const id = req.params.id;

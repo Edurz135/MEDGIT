@@ -22,6 +22,25 @@ routesExaMed.get("/examedico/:id", async (req, res) => {
                 id,
             }
         });
+        const idAppointment = result.AppointmentId;
+        const appointment = await Models.Appointment.findOne({
+            where: {
+                id:idAppointment,
+            }
+        });
+        const idTipExMed = result.TipExaMedId;
+        const tipExMed = await Models.TipExMed.findOne({
+            where: {
+                id:idTipExMed,
+            }
+        });
+        const resultado = {}
+        resultado["state"] = result.state
+        resultado["comment"] = result.comment
+        resultado["createdAt"] = result.createdAt
+        resultado["updatedAt"] = result.updatedAt
+        resultado["appointment"] = appointment
+        resultado["tipExMed"] = tipExMed
         res.status(200).json({
             status: 200,
             result: result,
@@ -56,8 +75,8 @@ routesExaMed.put("/examedico/:id", async(req, res) =>{
         const result = await Models.ExaMed.update({
             state: dataExaMed.state,
             comment: dataExaMed.comment,
-            Appointment: dataExaMed.Appointment,
-            TipExaMed: dataExaMed.TipExaMed,
+            AppointmentId: dataExaMed.AppointmentId,
+            TipExaMedId: dataExaMed.TipExaMedId,
         },{
             where:{
                 id,

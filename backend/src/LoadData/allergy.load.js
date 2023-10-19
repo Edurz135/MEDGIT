@@ -51,9 +51,6 @@ routesAllergy.post("/allergy", async (req, res) => {
     }
 })
 routesAllergy.put("/allergy/:id", async(req, res) =>{
-    console.log("========================")
-    console.log(req.params);
-    console.log("========================")
     try{
         const id = req.params.id;
         const dataAllergy = req.body;

@@ -22,9 +22,28 @@ routesPatient.get("/patient/:id", async (req, res) => {
                 id,
             }
         });
+        const idAllergy = result.AllergyId;
+        const allergy = await Models.Allergy.findOne({
+            where: {
+                id:idAllergy,
+            }
+        });
+
+        const resultado = {}
+        resultado["name"] = result.name
+        resultado["lastName"] = result.lastName
+        resultado["email"] = result.email
+        resultado["password"] = result.password
+        resultado["identityDoc"] = result.identityDoc
+        resultado["gender"] = result.gender
+        resultado["phone"] = result.phone
+        resultado["createdAt"] = result.createdAt
+        resultado["updatedAt"] = result.updatedAt
+        resultado["allergy"] = allergy
+        console.log(result);
         res.status(200).json({
             status: 200,
-            result: result,
+            result: resultado, 
             message: "Succesfully Patient Returned"
         })
     } catch (e) {

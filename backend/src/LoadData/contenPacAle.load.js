@@ -21,16 +21,48 @@ routesContenPacAle.get("/contenPacAle/:id", async (req, res) => {
                 id,
             }
         });
+        const idAllergy = result.AllergyId;
+        const allergy = await Models.Allergy.findOne({
+            where: {
+                id:idAllergy,
+            }
+        });
+        const idPatient = result.PatientId;
+        const patient = await Models.Patient.findOne({
+            where: {
+                id:idPatient,
+            }
+        });
+        const resultado = {}
+        resultado["createdAt"] = result.createdAt
+        resultado["updatedAt"] = result.updatedAt
+        resultado["allergy"] = allergy
+        resultado["patient"] = patient
         res.status(200).json({
             status: 200,
-            result: result,
+            result: resultado,
             message: "Succesfully ContenPacAle Returned"
         })
     } catch (e) {
         return res.status(400).json({ status: 400, message: e.message });
     }
 });
+routesContenPacAle.post("/contenPacAle", async (req, res) => {
 
+    try {
+        await Models.ContenPacAle.sync()
+        const result = await Models.ContenPacAle.create({
+
+        })
+        res.status(200).json({
+            status: 200,
+            result: result,
+            message: "Succesfully contenPacAle Created"
+        })
+    } catch (e) {
+        return res.status(400).json({ status: 400, message: e.message });
+    }
+})
 routesContenPacAle.put("/contenPacAle/:id", async(req, res) =>{
     try{
         const id = req.params.id;

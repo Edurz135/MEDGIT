@@ -22,9 +22,30 @@ routesAppointment.get("/appointment/:id", async (req, res) => {
                 id,
             }
         });
+        const idPatient = result.PatientId;
+        const patient = await Models.Patient.findOne({
+            where: {
+                id:idPatient,
+            }
+        });
+        const idDoctor = result.DoctorId;
+        const doctor = await Models.Doctor.findOne({
+            where: {
+                id:idDoctor,
+            }
+        });
+        const resultado = {}
+        resultado["date"]=result.date
+        resultado["time"]=result.time
+        resultado["type"]=result.type
+        resultado["diagnostic"]=result.diagnostic
+        resultado["createdAt"]=result.createdAt
+        resultado["updatedAt"]=result.updatedAt
+        resultado["patient"]=patient
+        resultado["doctor"]=doctor
         res.status(200).json({
             status: 200,
-            result: result,
+            result: resultado,
             message: "Succesfully Appointment Returned"
         })
     } catch (e) {
