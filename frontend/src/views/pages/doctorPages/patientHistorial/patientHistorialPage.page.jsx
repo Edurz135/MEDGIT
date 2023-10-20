@@ -1,4 +1,4 @@
-import "./doctorCitasPage.styles.css";
+import "./patientHistorialPage.styles.css";
 import React, { Component } from "react";
 import axios from "axios";
 import { LocalStorageServices } from "../../../../services";
@@ -31,7 +31,8 @@ const columns = [
 
 
 
-export default class DoctorCitasPage extends Component {
+
+export default class PatientHistorialPage extends Component {
   state = {
     citasPasadas: [], // Variable para almacenar los datos de la solicitud
   };
@@ -42,7 +43,7 @@ export default class DoctorCitasPage extends Component {
     let config = {
       method: "get",
       maxBodyLength: Infinity,
-      url: "http://localhost:3100/api/doctor/pastGetAppointments",
+      url: "http://localhost:3100/api/patient/pastGetAppointments",
       headers: {
         Authorization: accessToken,
       },

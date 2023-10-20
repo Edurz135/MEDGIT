@@ -1,11 +1,11 @@
 const { Models } = require("../db.js");
 // Trae citas pasadas: fecha, tiempo, tipo, diagnostico y comentario
-const getPastAppointmentsService = async (PatientId) => {
+const getPastAppointmentsService = async (DoctorId) => {
   try {
     const appointments = await Models.Appointment.findAll({
       attributes: ['date', 'time', 'type', 'diagnostic'],
       where: {
-        PatientId: PatientId,
+        DoctorId: DoctorId,
       },
       include: [
         {
