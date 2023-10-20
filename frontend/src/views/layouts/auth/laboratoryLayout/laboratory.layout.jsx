@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import "./laboratory.layout.style.css";
 import { Typography } from "antd";
-import {HomeOutlined,FolderOpenOutlined,LogoutOutlined,MenuFoldOutlined,MenuUnfoldOutlined,UserOutlined } from "@ant-design/icons";
+import {HomeOutlined,FolderOpenOutlined,LogoutOutlined,
+  MenuFoldOutlined,MenuUnfoldOutlined,UserOutlined } from "@ant-design/icons";
 import { Layout, Menu, Button, theme } from "antd";
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
 
@@ -9,12 +10,10 @@ import {LaboratoryMainPage, LaboratoryExamenPage, LaboratoryPerfilPage, } from "
 import { MainPage } from "../../../pages";
 import { LocalStorageServices } from "../../../../services";
 
-export default function DoctorLayout() {
+export default function LaboratoryLayout() {
   const navigate = useNavigate();
 
-  const [currentPageUrl, setCurrentPageUrl] = useState(
-    "/auth/laboratory/inicio"
-  );
+  const [currentPageUrl, setCurrentPageUrl] = useState("/auth/laboratory/inicio");
 
   const handleLogOutInClick = () => {
     setCurrentPageUrl(window.location.pathname);
