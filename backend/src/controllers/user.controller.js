@@ -5,7 +5,6 @@ const {
   loginPatientService,
   loginDoctorService,
   loginLabAnalystService,
-
 } = require("../service/user.service");
 
 const registerPatient = async (req, res) => {
@@ -47,7 +46,7 @@ const registerLabAnalyst = async (req, res) => {
   }
 };
 
-const loginPatient = async (req, res) => {
+const loginPatient = async (req, res, next) => {
   try {
     const email = req.body.email;
     const password = req.body.password;
@@ -59,9 +58,11 @@ const loginPatient = async (req, res) => {
       message: "Succesfully User Logging",
     });
   } catch (e) {
-    return res
-      .status(400)
-      .json({ status: 400, message: "Invalid credentials", message: e.message });
+    return res.status(400).json({
+      status: 400,
+      message: "Invalid credentials",
+      message: e.message,
+    });
   }
 };
 
@@ -77,9 +78,11 @@ const loginDoctor = async (req, res) => {
       message: "Succesfully User Logging",
     });
   } catch (e) {
-    return res
-      .status(400)
-      .json({ status: 400, message: "Invalid credentials", message: e.message });
+    return res.status(400).json({
+      status: 400,
+      message: "Invalid credentials",
+      message: e.message,
+    });
   }
 };
 
@@ -95,9 +98,11 @@ const loginLabAnalyst = async (req, res) => {
       message: "Succesfully User Logging",
     });
   } catch (e) {
-    return res
-      .status(400)
-      .json({ status: 400, message: "Invalid credentials", message: e.message });
+    return res.status(400).json({
+      status: 400,
+      message: "Invalid credentials",
+      message: e.message,
+    });
   }
 };
 

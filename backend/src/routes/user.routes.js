@@ -7,25 +7,17 @@ const {
   loginDoctor,
   loginLabAnalyst,
 } = require("../controllers/user.controller");
-const {
-  patientRegisterValidator,
-  labAnalystRegisterValidator,
-  doctorRegisterValidator,
-  loginValidator,
-} = require("../validations/user.validation");
+
+const { loginValidator, patientRegistrationValidator, workerRegistrationValidator } = require("../validations");
 
 const userRouter = Router();
 
 userRouter.post("/api/loginPatient", loginValidator, loginPatient);
 userRouter.post("/api/loginDoctor", loginValidator, loginDoctor);
-userRouter.post("/api/loginLabAnalyst",loginValidator,loginLabAnalyst);
+userRouter.post("/api/loginLabAnalyst", loginValidator, loginLabAnalyst);
 
-userRouter.post(
-  "/api/registerPatient",
-  patientRegisterValidator,
-  registerPatient
-);
-userRouter.post("/api/registerDoctor", doctorRegisterValidator, registerDoctor);
-userRouter.post("/api/registerLabAnalyst",labAnalystRegisterValidator, registerLabAnalyst);
+userRouter.post("/api/registerPatient", patientRegistrationValidator, registerPatient);
+userRouter.post("/api/registerDoctor", workerRegistrationValidator, registerDoctor);
+userRouter.post("/api/registerLabAnalyst", workerRegistrationValidator, registerLabAnalyst);
 
 module.exports = userRouter;
