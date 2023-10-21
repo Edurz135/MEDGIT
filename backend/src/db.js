@@ -1,5 +1,4 @@
 const dbConfig = require("./config/db.config.js");
-console.log(" estoy aqui");
 const Sequelize = require("sequelize");
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
   host: dbConfig.HOST,
@@ -42,7 +41,7 @@ Medicine.hasMany(ContenMedCi);
 Appointment.hasMany(ContenMedCi);
 
 Allergy.hasMany(ContenPacAle);
-Patient.hasMany(ContenPacAle);
+Patient.hasMany(ContenPacAle);  
 
 Doctor.hasMany(ContenMedAle);
 Allergy.hasMany(ContenMedAle);
