@@ -1,8 +1,8 @@
-const { getPastAppointmentsService } = require("../service/doctor.service.js");
+const { getPastAppointmentsService, getFutureAppointmentsService
+ } = require("../service/doctor.service.js");
 const getPastAppointments = async (req, res) => {
   try {
-    console.log(req.user);
-    // Envía el id del paciente
+    // Envía el id del doctor
     const result = await getPastAppointmentsService(req.user.id) || [];
     return res.status(200).json({
       status: 200,
@@ -15,8 +15,7 @@ const getPastAppointments = async (req, res) => {
 };
 const getFutureAppointments = async (req, res) => {
   try {
-    console.log(req.user);
-    // Envía el id del paciente
+    // Envía el id del doctor
     const result = await getFutureAppointmentsService(req.user.id) || [];
     return res.status(200).json({
       status: 200,
