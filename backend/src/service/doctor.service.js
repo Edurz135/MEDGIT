@@ -1,11 +1,11 @@
 const { Models } = require("../db.js");
 // Trae citas pasadas: fecha, tiempo, tipo, diagnostico y comentario
-const getPastAppointmentsService = async (PatientId) => {
+const getPastAppointmentsService = async (DoctorId) => {
   try {
     const appointments = await Models.Appointment.findAll({
       attributes: ['date', 'time', 'type', 'diagnostic'],
       where: {
-        PatientId: PatientId,
+        DoctorId: DoctorId,
       },
       include: [
         {
@@ -18,11 +18,29 @@ const getPastAppointmentsService = async (PatientId) => {
       ],
     });
 
-    /* if (appointments == 0) {
-      return [];
-    } else {
-      return appointments;
-    } */
+    return appointments
+  } catch (e) {
+    throw new Error(e.message);
+  }
+};
+const getFutureAppointmentsService = async (PatientId) => {
+  try {
+    const appointments = await Models.Appointment.findAll({
+      attributes: ['date', 'time', 'type', 'diagnostic'],
+      where: {
+        PatientId: PatientId,
+      },
+      include: [
+        {
+          model: Models.ExaMed,
+          attributes: ['comment'],
+          where: {
+            state: 1,
+          },
+        },
+      ],
+    });
+
     return appointments
   } catch (e) {
     throw new Error(e.message);
@@ -31,4 +49,5 @@ const getPastAppointmentsService = async (PatientId) => {
 
 module.exports = {
   getPastAppointmentsService,
+  getFutureAppointmentsService,
 };
