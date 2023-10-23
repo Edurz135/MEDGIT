@@ -1,13 +1,28 @@
 import React, { useState } from "react";
 import "./patient.layout.style.css";
 import { Typography } from "antd";
-import {HomeOutlined,FolderOpenOutlined,ReadOutlined,LogoutOutlined,MenuFoldOutlined,MenuUnfoldOutlined,UserOutlined,} from "@ant-design/icons";
+import {
+  HomeOutlined,
+  FolderOpenOutlined,
+  ReadOutlined,
+  LogoutOutlined,
+  MenuFoldOutlined,
+  MenuUnfoldOutlined,
+  UserOutlined,
+  SearchOutlined,
+} from "@ant-design/icons";
 import { Layout, Menu, Button, theme } from "antd";
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
 
-import {PatientMainPage,PatientCitasPage,PatientHistorialPage,PatientPerfilPage,} from "../../../pages";
+import {
+  PatientMainPage,
+  PatientCitasPage,
+  PatientHistorialPage,
+  PatientPerfilPage,
+} from "../../../pages";
 import { MainPage } from "../../../pages";
 import { LocalStorageServices } from "../../../../services";
+import SolicitarCitaPage from "../../../pages/patientPages/solicitarCita/solicitarCita.page";
 
 export default function PatientLayout() {
   const navigate = useNavigate();
@@ -49,6 +64,13 @@ export default function PatientLayout() {
       component: <PatientHistorialPage />,
       label: "Historial clinico",
       url: "historialClinico",
+    },
+    {
+      index: 3,
+      icon: <SearchOutlined />,
+      component: <SolicitarCitaPage />,
+      label: "Solicitar cita",
+      url: "solicitarCita",
     },
   ];
 

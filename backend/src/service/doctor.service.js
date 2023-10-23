@@ -3,14 +3,14 @@ const { Models } = require("../db.js");
 const getPastAppointmentsService = async (DoctorId) => {
   try {
     const appointments = await Models.Appointment.findAll({
-      attributes: ['date', 'time', 'type', 'diagnostic'],
+      attributes: ["date", "time", "type", "diagnostic"],
       where: {
         DoctorId: DoctorId,
       },
       include: [
         {
           model: Models.ExaMed,
-          attributes: ['comment'],
+          attributes: ["comment"],
           where: {
             state: 0,
           },
@@ -18,7 +18,7 @@ const getPastAppointmentsService = async (DoctorId) => {
       ],
     });
 
-    return appointments
+    return appointments;
   } catch (e) {
     throw new Error(e.message);
   }
@@ -26,14 +26,14 @@ const getPastAppointmentsService = async (DoctorId) => {
 const getFutureAppointmentsService = async (PatientId) => {
   try {
     const appointments = await Models.Appointment.findAll({
-      attributes: ['date', 'time', 'type', 'diagnostic'],
+      attributes: ["date", "time", "type", "diagnostic"],
       where: {
         PatientId: PatientId,
       },
       include: [
         {
           model: Models.ExaMed,
-          attributes: ['comment'],
+          attributes: ["comment"],
           where: {
             state: 1,
           },
@@ -41,7 +41,54 @@ const getFutureAppointmentsService = async (PatientId) => {
       ],
     });
 
-    return appointments
+    return appointments;
+  } catch (e) {
+    throw new Error(e.message);
+  }
+};
+
+const getDisponibilityService = async (id) => {
+  try {
+    const result = await Models.Doctor.findOne({
+      attributes: [
+        "mondayDisponibility",
+        "tuesdayDisponibility",
+        "wednesdayDisponibility",
+        "thursdayDisponibility",
+        "fridayDisponibility",
+        "saturdayDisponibility",
+        "sundayDisponibility",
+      ],
+      where: {
+        id: id,
+      },
+    });
+
+    return result;
+  } catch (e) {
+    throw new Error(e.message);
+  }
+};
+
+const updateDisponibilityService = async (id, body) => {
+  try {
+    const result = await Models.Doctor.findOne({
+      where: {
+        id: id,
+      },
+    });
+
+    await result.update({
+      mondayDisponibility: body.mondayDisponibility,
+      tuesdayDisponibility: body.tuesdayDisponibility,
+      wednesdayDisponibility: body.wednesdayDisponibility,
+      thursdayDisponibility: body.thursdayDisponibility,
+      fridayDisponibility: body.fridayDisponibility,
+      saturdayDisponibility: body.saturdayDisponibility,
+      sundayDisponibility: body.sundayDisponibility,
+    });
+
+    return result;
   } catch (e) {
     throw new Error(e.message);
   }
@@ -50,4 +97,6 @@ const getFutureAppointmentsService = async (PatientId) => {
 module.exports = {
   getPastAppointmentsService,
   getFutureAppointmentsService,
+  getDisponibilityService,
+  updateDisponibilityService,
 };

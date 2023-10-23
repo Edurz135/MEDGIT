@@ -28,6 +28,7 @@ const registerDoctorService = async (body) => {
     const hashedPassword = await bcrypt.hash(body.password, 10);
     const identityDoc = parseInt(body.identityDoc);
     const nroColegiatura = parseInt(body.nroColegiatura);
+    const SpecialtyId = parseInt(body.specialtyId) || 0;
 
     const doctor = await Models.Doctor.create({
       name: body.name,
@@ -37,7 +38,15 @@ const registerDoctorService = async (body) => {
       identityDoc: identityDoc,
       nroColegitura: nroColegiatura,
       gender: body.gender,
-      phone: 0,
+      phone: 999999999,
+      SpecialtyId: SpecialtyId,
+      mondayDisponibility: "1111111111111111000000000000",
+      tuesdayDisponibility: "1111111111111111000000000000",
+      wednesdayDisponibility: "1111111111111111000000000000",
+      thursdayDisponibility: "1111111111111111000000000000",
+      fridayDisponibility: "1111111111111111000000000000",
+      saturdayDisponibility: "0000000000000000000000000000",
+      sundayDisponibility: "0000000000000000000000000000",
     });
     return doctor;
   } catch (e) {
@@ -101,8 +110,11 @@ const loginDoctorService = async (email, password) => {
 
 const loginLabAnalystService = async (email, password) => {
   try {
-    const  labAnalyst = await getLabAnalystService(email);
-    const match = await bcrypt.compare(password, labAnalyst.dataValues.password);
+    const labAnalyst = await getLabAnalystService(email);
+    const match = await bcrypt.compare(
+      password,
+      labAnalyst.dataValues.password
+    );
     if (!match) throw new Error("Invalid credentials");
 
     const accessToken = await jwt.sign(
