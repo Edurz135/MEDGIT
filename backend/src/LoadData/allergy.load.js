@@ -26,7 +26,7 @@ routesAllergy.get("/allergy/:id", async (req, res) => {
         res.status(200).json({
             status: 200,
             result: getAllergy,
-            message: "Succesfully Allergy Returned"
+            message: "Succesfully Allergy Retroceso"
         })
     } catch (e) {
         return res.status(400).json({ status: 400, message: e.message });
