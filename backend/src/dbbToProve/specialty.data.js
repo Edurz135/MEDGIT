@@ -1,0 +1,27 @@
+const specialties = [
+    "Medicina Familiar",
+    "Medicina Interna",
+    "Endocrinología",
+    "Pediatría",
+    "Gineco obstetricia",
+    "Cirugía",
+    "Psiquiatría",
+    "Cardiología",
+    "Dermatología",
+    "Gastroenterología",
+    "Infectología",
+    "Nefrología",
+    "Oftalmología",
+    "Otorrinolaringología",
+    "Neumología",
+    "Neurología",
+    "Radiología",
+    "Anestesiología",
+    "Oncología",
+    "Patología",
+    "Urología",
+    "Medicina física y rehabilitación",
+    "Medicina Intensiva",
+  ];
+
+  module.exports = specialties;

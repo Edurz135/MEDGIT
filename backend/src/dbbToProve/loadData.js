@@ -2,94 +2,25 @@ const { Models } = require("../db");
 const { registerDoctorService } = require("../service/user.service");
 async function seedSpecialties() {
   try {
-    const specialties = [
-      "Medicina Familiar",
-      "Medicina Interna",
-      "Endocrinología",
-      "Pediatría",
-      "Gineco obstetricia",
-      "Cirugía",
-      "Psiquiatría",
-      "Cardiología",
-      "Dermatología",
-      "Gastroenterología",
-      "Infectología",
-      "Nefrología",
-      "Oftalmología",
-      "Otorrinolaringología",
-      "Neumología",
-      "Neurología",
-      "Radiología",
-      "Anestesiología",
-      "Oncología",
-      "Patología",
-      "Urología",
-      "Medicina física y rehabilitación",
-      "Medicina Intensiva",
-    ];
+    const specialties = require("./specialty.data");
     specialties.map((name, id) => {
-      Models.Specialty.create({ id: id, name: name });
+      Models.Specialty.create({ id: id, name: name })
+        .then((result) => {
+          console.log("Data inserted:", result);
+        })
+        .catch((error) => {
+          console.error(
+            `Error inserting SPECIALTY name="${name}", id="${id}":`
+          );
+        });
     });
     console.log("Especialidades agregadas con éxito.");
-  } catch (error) {
-    console.log("Error al agregar las especialidades:", error);
-  }
+  } catch (error) {}
 }
 
 async function seedDoctors() {
   try {
-    const doctors = [
-      {
-        name: "John",
-        lastName: "Doe",
-        gender: "Male",
-      },
-      {
-        name: "Jane",
-        lastName: "Doe",
-        gender: "Female",
-      },
-      {
-        name: "Alice",
-        lastName: "Smith",
-        gender: "Female",
-      },
-      {
-        name: "Bob",
-        lastName: "Johnson",
-        gender: "Male",
-      },
-      {
-        name: "Charlie",
-        lastName: "Brown",
-        gender: "Male",
-      },
-      {
-        name: "Daisy",
-        lastName: "Miller",
-        gender: "Female",
-      },
-      {
-        name: "Edward",
-        lastName: "White",
-        gender: "Male",
-      },
-      {
-        name: "Fiona",
-        lastName: "Green",
-        gender: "Female",
-      },
-      {
-        name: "George",
-        lastName: "Black",
-        gender: "Male",
-      },
-      {
-        name: "Hannah",
-        lastName: "Blue",
-        gender: "Female",
-      },
-    ];
+    const doctors = require("./doctors.data");
 
     doctors.map((doctor, id) => {
       const body = {
@@ -103,12 +34,18 @@ async function seedDoctors() {
         password: "123456",
         email: doctor.name + "@gmail.com",
       };
-      registerDoctorService(body);
+      registerDoctorService(body)
+        .then((result) => {
+          console.log("Data inserted:", result);
+        })
+        .catch((error) => {
+          console.error(
+            `Error inserting DOCTOR name="${body.name}", id="${body.id}":`
+          );
+        });
     });
     console.log("Especialidades agregadas con éxito.");
-  } catch (error) {
-    console.log("Error al agregar las especialidades:", error);
-  }
+  } catch (error) {}
 }
 
 const loadData = async () => {

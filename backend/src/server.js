@@ -50,7 +50,7 @@ const server = () => {
     )
     // .query("CALL sp_update_future_to_past_appointments();") //Cambia las citas futuras a pasadas
     .then(() => {
-      // loadData();
+      loadData();
       console.log("DB Synced and Updated.");
     })
     .catch((err) => {
