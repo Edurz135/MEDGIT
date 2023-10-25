@@ -8,6 +8,7 @@ const getPastAppointments = async (req, res) => {
     console.log(req.user);
     // Envía el id del paciente
     const result = (await getPastAppointmentsService(req.user.id)) || [];
+
     return res.status(200).json({
       status: 200,
       result: result,
@@ -19,9 +20,8 @@ const getPastAppointments = async (req, res) => {
 };
 const getFutureAppointments = async (req, res) => {
   try {
-    console.log(req.user);
-    // Envía el id del paciente
-    const result = (await getFutureAppointmentsService(req.user.id)) || [];
+    const result = await getFutureAppointmentsService(req.user.id) || [];
+
     return res.status(200).json({
       status: 200,
       result: result,

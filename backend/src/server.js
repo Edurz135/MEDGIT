@@ -48,9 +48,10 @@ const server = () => {
     .sync(
       {alter: true}
     )
+    .query("CALL sp_update_future_to_past_appointments();") //Cambia las citas futuras a pasadas
     .then(() => {
       // loadData();
-      console.log("DB Synced.");
+      console.log("DB Synced and Updated.");
     })
     .catch((err) => {
       console.log("Failed to sync db: " + err.message);

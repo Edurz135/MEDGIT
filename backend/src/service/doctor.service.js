@@ -23,12 +23,12 @@ const getPastAppointmentsService = async (DoctorId) => {
     throw new Error(e.message);
   }
 };
-const getFutureAppointmentsService = async (PatientId) => {
+const getFutureAppointmentsService = async (DoctorId) => {
   try {
     const appointments = await Models.Appointment.findAll({
       attributes: ["date", "time", "type", "diagnostic"],
       where: {
-        PatientId: PatientId,
+        DoctorId: DoctorId,
       },
       include: [
         {

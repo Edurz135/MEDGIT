@@ -1,19 +1,20 @@
 const Router = require("express");
 const { authenticateToken } = require("../middlewares/auth.middleware");
+
 const {
   getPastAppointments,
   getListDoctors,
   getAvailability,
   getListSpecialties,
+  getFutureAppointments,
 } = require("../controllers/patient.controller");
 
 const patientRouter = Router();
 
-patientRouter.get(
-  "/api/patient/pastGetAppointments",
-  authenticateToken,
-  getPastAppointments
-);
+// Rutas del paciente
+patientRouter.get("/api/patient/pastGetAppointments",  authenticateToken, getPastAppointments);
+patientRouter.get("/api/patient/FutureGetAppointments",  authenticateToken, getFutureAppointments);
+
 
 patientRouter.get(
   "/api/patient/listDoctors",
