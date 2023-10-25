@@ -32,7 +32,7 @@ async function seedSpecialties() {
     });
     console.log("Especialidades agregadas con éxito.");
   } catch (error) {
-    console.error("Error al agregar las especialidades:", error);
+    console.log("Error al agregar las especialidades:", error);
   }
 }
 
@@ -107,7 +107,7 @@ async function seedDoctors() {
     });
     console.log("Especialidades agregadas con éxito.");
   } catch (error) {
-    console.error("Error al agregar las especialidades:", error);
+    console.log("Error al agregar las especialidades:", error);
   }
 }
 

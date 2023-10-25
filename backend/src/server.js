@@ -49,7 +49,7 @@ const server = () => {
       {alter: true}
     )
     .then(() => {
-      loadData();
+      // loadData();
       console.log("DB Synced.");
     })
     .catch((err) => {

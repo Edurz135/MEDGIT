@@ -1,10 +1,10 @@
 // import "./patientPerfilPage.styles.css";
-import { Row, Typography, Select } from "antd";
+import { Row, Typography, Select, Divider } from "antd";
 import AppointmentCard from "../../../../components/appointmentCard/AppointmentCard";
 import { useEffect, useState } from "react";
 import { LocalStorageServices } from "../../../../services";
 import axios from "axios";
-const { Title } = Typography;
+const { Title, Text } = Typography;
 
 // ENDPOINTS
 // NOOOOOO getDoctores
@@ -52,7 +52,7 @@ async function getListOfSpecialties() {
     .catch((error) => {
       console.log(error);
     });
-  return resp; 
+  return resp;
 }
 
 async function getAvailabilityList(doctorId, specialtyId) {
@@ -148,9 +148,11 @@ export default function SolicitarCitaPage() {
   return (
     <div>
       <Title>Generar nueva cita</Title>
+      <Text strong>Especialidades: </Text>
       <Select
         showSearch
         style={{
+          marginLeft: "1rem",
           width: 200,
         }}
         defaultValue="Todos"
@@ -160,9 +162,12 @@ export default function SolicitarCitaPage() {
         options={listSpecialties}
         onChange={handleSpecialtySelect}
       />
+      <br/>
+      <Text strong>Doctores: </Text>
       <Select
         showSearch
         style={{
+          marginLeft: "1rem",
           width: 200,
         }}
         defaultValue="Todos"
@@ -172,11 +177,17 @@ export default function SolicitarCitaPage() {
         options={listDoctors}
         onChange={HandleDoctorSelect}
       />
-      <Row gutter={16}>
+      <Divider />
+      <Row gutter={[24, 24]}>
         {availabilityList.length > 0 ? (
           availabilityList.map((temp, idx) => {
             return (
               <AppointmentCard
+                xs={24}
+                sm={12}
+                md={12}
+                lg={8}
+                xl={8}
                 id={idx}
                 name={temp.name + " " + temp.lastName}
                 specialty={temp.Specialty.name}
