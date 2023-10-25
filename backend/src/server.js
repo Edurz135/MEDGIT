@@ -46,9 +46,9 @@ const server = () => {
   const { db } = require("./db");
   db.sequelize
     .sync(
-      {alter: true}
+      // {alter: true}
     )
-    .query("CALL sp_update_future_to_past_appointments();") //Cambia las citas futuras a pasadas
+    // .query("CALL sp_update_future_to_past_appointments();") //Cambia las citas futuras a pasadas
     .then(() => {
       // loadData();
       console.log("DB Synced and Updated.");
