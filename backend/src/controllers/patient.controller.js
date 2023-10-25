@@ -47,21 +47,28 @@ const getListSpecialties = async (req, res) => {
 
 const getAvailability = async (req, res) => {
   try {
-    const result = await getAvailabilityService(req.body.doctorId, req.body.specialtyId);
+    const result = await getAvailabilityService(
+      req.body.doctorId,
+      req.body.specialtyId
+    );
     return res.status(200).json({
       status: 200,
       result: result,
       message: "Succesfully availability list Returned",
+    });
+  } catch (e) {
+    return res.status(400).json({ status: 400, message: e.message });
+  }
+};
 
 const getFutureAppointments = async (req, res) => {
   try {
     // Envía el id del paciente
-    const result = await getFutureAppointmentsService(req.user.id) || [];
+    const result = (await getFutureAppointmentsService(req.user.id)) || [];
     return res.status(200).json({
       status: 200,
       result: result,
       message: "Succesfully Appointments Returned",
-
     });
   } catch (e) {
     return res.status(400).json({ status: 400, message: e.message });
@@ -72,5 +79,5 @@ module.exports = {
   getListDoctors,
   getAvailability,
   getListSpecialties,
-  getFutureAppointments
+  getFutureAppointments,
 };
