@@ -16,6 +16,7 @@ const  {routesLabAnalyst}  =require("./LoadData/labAnalyst.load");
 const  {routesMedicine}  =require("./LoadData/medicine.load");
 const  {routesPatient}  =require("./LoadData/patient.load");
 const  {routesTipExMed}  =require("./LoadData/tipoexamed.load");
+const loadData = require("./dbbToProve/loadData");
 
 const server = () => {
   const app = express();
@@ -44,9 +45,12 @@ const server = () => {
 
   const { db } = require("./db");
   db.sequelize
-    .sync()  // sincroniza la base de datos
+    .sync(
+      {alter: true}
+    )
     .query("CALL sp_update_future_to_past_appointments();") //Cambia las citas futuras a pasadas
     .then(() => {
+      // loadData();
       console.log("DB Synced and Updated.");
     })
     .catch((err) => {
