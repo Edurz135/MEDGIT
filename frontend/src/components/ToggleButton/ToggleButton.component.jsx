@@ -19,11 +19,11 @@ export default function ToggleButton({
   return (
     <>
       {isToggled ? (
-        <Button type="primary" block onClick={handleToggle}>
+        <Button type="primary" block onClick={handleToggle} style={{ margin: "4px 0px" }}>
           DISPONIBLE
         </Button>
       ) : (
-        <Button block onClick={handleToggle}>
+        <Button block onClick={handleToggle} style={{ margin: "4px 0px" }}>
           OCUPADO
         </Button>
       )}

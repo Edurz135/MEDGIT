@@ -70,7 +70,7 @@ const getAvailabilityService = async (id) => {
   }
 };
 
-const updateDisponibilityService = async (id, body) => {
+const updateAvailabilityService = async (id, body) => {
   try {
     const result = await Models.Doctor.findOne({
       where: {
@@ -98,5 +98,5 @@ module.exports = {
   getPastAppointmentsService,
   getFutureAppointmentsService,
   getAvailabilityService,
-  updateDisponibilityService,
+  updateAvailabilityService,
 };

@@ -1,7 +1,7 @@
 const {
   getPastAppointmentsService,
   getAvailabilityService,
-  updateDisponibilityService,
+  updateAvailabilityService,
 } = require("../service/doctor.service.js");
 const getPastAppointments = async (req, res) => {
   try {
@@ -47,9 +47,9 @@ const getAvailability = async (req, res) => {
   }
 };
 
-const updateDisponibility = async (req, res) => {
+const updateAvailability = async (req, res) => {
   try {
-    const result = await updateDisponibilityService(req.user.id, req.body);
+    const result = await updateAvailabilityService(req.user.id, req.body);
     return res.status(200).json({
       status: 200,
       result: result,
@@ -64,5 +64,5 @@ module.exports = {
   getPastAppointments,
   getFutureAppointments,
   getAvailability,
-  updateDisponibility,
+  updateAvailability,
 };

@@ -1,12 +1,20 @@
 // import "./doctorCitasPage.styles.css";
 
 import { useEffect, useState } from "react";
-import { Row, Col, Typography, Button, Divider } from "antd";
+import { Row, Col, Typography, Button, Divider, Modal } from "antd";
 import { LocalStorageServices } from "../../../../services";
 import axios from "axios";
 import { Intervals } from "../../../../utils/constant";
 import ToggleButton from "../../../../components/ToggleButton/ToggleButton.component";
 const { Title, Text } = Typography;
+
+String.prototype.replaceAt = function (index, replacement) {
+  return (
+    this.substring(0, index) +
+    replacement +
+    this.substring(index + replacement.length)
+  );
+};
 
 async function getAvailability() {
   const accessToken = LocalStorageServices.GetData("accessToken");
@@ -31,6 +39,30 @@ async function getAvailability() {
   return resp;
 }
 
+async function updateAvailability(data) {
+  const accessToken = LocalStorageServices.GetData("accessToken");
+
+  let config = {
+    method: "post",
+    maxBodyLength: Infinity,
+    url: "http://localhost:3100/api/doctor/updateAvailability",
+    headers: {
+      Authorization: accessToken,
+    },
+    data: data,
+  };
+
+  const resp = await axios
+    .request(config)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  return resp;
+}
+
 const Headers = [
   "HORARIO",
   "LUNES",
@@ -44,10 +76,29 @@ const Headers = [
 
 export default function DoctorAvailabilityPage() {
   const [availability, setAvailability] = useState({});
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalText, setModalText] = useState("Content of the modal");
 
   const HandleToggle = (key, idx, state) => {
-    console.log(key, idx, state)
-  }
+    const modifiedDay = availability[key].replaceAt(idx, state ? "1" : "0");
+    const newAvailability = { ...availability, [key]: modifiedDay };
+    setAvailability(newAvailability);
+  };
+
+  const HandleSave = async () => {
+    updateAvailability(availability).then((resp) => {
+      setModalText(resp.message);
+      showModal();
+    });
+  };
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
 
   useEffect(() => {
     const fetchAvailability = async () => {
@@ -60,8 +111,26 @@ export default function DoctorAvailabilityPage() {
   }, []);
   return (
     <div>
-      <Title>Disponibilidad de atención</Title>
-      <Row gutter={16}>
+      <Modal
+        title="Disponibilidad de atención"
+        open={isModalOpen}
+        onCancel={handleOk}
+        footer={
+          <Button type="primary" onClick={handleOk}>
+            Ok
+          </Button>
+        }
+      >
+        {modalText}
+      </Modal>
+      <Title>Disponibilidad de atención semanal</Title>
+      <Row>
+        <Button type="primary" onClick={HandleSave}>
+          Guardar Cambios
+        </Button>
+      </Row>
+      <br />
+      <Row gutter={10}>
         {Headers.map((val, idx) => {
           return (
             <Col span={3}>
@@ -73,11 +142,11 @@ export default function DoctorAvailabilityPage() {
         })}
       </Row>
       <Divider style={{ marginTop: "5px", marginBottom: "15px" }} />
-      <Row gutter={16}>
+      <Row gutter={10}>
         <Col span={3}>
           {Intervals.map((val, idx) => {
             return (
-              <Button type="text" block>
+              <Button type="text" block style={{ margin: "4px 0px" }}>
                 {val}
               </Button>
             );

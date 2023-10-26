@@ -1,7 +1,7 @@
 const {
   getPastAppointments,
   getAvailability,
-  updateDisponibility,
+  updateAvailability,
   getFutureAppointments,
 } = require("../controllers/doctor.controller");
 
@@ -21,9 +21,9 @@ doctorRouter.get(
   getAvailability
 );
 doctorRouter.post(
-  "/api/doctor/updateDisponibility",
+  "/api/doctor/updateAvailability",
   authenticateToken,
-  updateDisponibility
+  updateAvailability
 );
 
 // Rutas del doctor
