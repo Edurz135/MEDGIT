@@ -47,7 +47,7 @@ const getFutureAppointmentsService = async (DoctorId) => {
   }
 };
 
-const getDisponibilityService = async (id) => {
+const getAvailabilityService = async (id) => {
   try {
     const result = await Models.Doctor.findOne({
       attributes: [
@@ -97,6 +97,6 @@ const updateDisponibilityService = async (id, body) => {
 module.exports = {
   getPastAppointmentsService,
   getFutureAppointmentsService,
-  getDisponibilityService,
+  getAvailabilityService,
   updateDisponibilityService,
 };

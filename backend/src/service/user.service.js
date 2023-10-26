@@ -40,13 +40,13 @@ const registerDoctorService = async (body) => {
       gender: body.gender,
       phone: 999999999,
       SpecialtyId: SpecialtyId,
-      mondayDisponibility: "1111111111111111000000000000",
-      tuesdayDisponibility: "1111111111111111000000000000",
-      wednesdayDisponibility: "1111111111111111000000000000",
-      thursdayDisponibility: "1111111111111111000000000000",
-      fridayDisponibility: "1111111111111111000000000000",
-      saturdayDisponibility: "0000000000000000000000000000",
-      sundayDisponibility: "0000000000000000000000000000",
+      mondayDisponibility: "111111110000",
+      tuesdayDisponibility: "111111110000",
+      wednesdayDisponibility: "111111110000",
+      thursdayDisponibility: "111111110000",
+      fridayDisponibility: "111111110000",
+      saturdayDisponibility: "000000000000",
+      sundayDisponibility: "000000000000",
     });
     return doctor;
   } catch (e) {
