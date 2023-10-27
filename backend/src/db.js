@@ -38,10 +38,6 @@ const ContenPacAle = require("./models/contenPacAle.model.js")(
   Sequelize
 );
 const Specialty = require("./models/specialty.model.js")(sequelize, Sequelize);
-const Availability = require("./models/availability.model.js")(
-  sequelize,
-  Sequelize
-);
 
 // Associations
 
@@ -53,7 +49,6 @@ TipExMed.hasMany(ExaMed);
 Allergy.hasMany(Patient);
 ExaMed.hasMany(LabAnalyst);
 Doctor.belongsTo(Specialty);
-Availability.belongsTo(Doctor);
 
 //Muchos a muchos --> N a N
 Medicine.hasMany(ContenMedCi);
@@ -78,6 +73,5 @@ Models.ContenMedAle = ContenMedAle;
 Models.ContenMedCi = ContenMedCi;
 Models.ContenPacAle = ContenPacAle;
 Models.Specialty = Specialty;
-Models.Availability = Availability;
 
 module.exports = { db, Models };

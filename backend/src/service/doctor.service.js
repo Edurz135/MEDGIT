@@ -115,7 +115,7 @@ const updateAvailabilityService = async (id, body) => {
       "sundayDisponibility",
     ];
 
-    await Models.Availability.destroy({
+    await Models.Appointment.destroy({
       where: {
         DoctorId: id,
       },
@@ -126,15 +126,21 @@ const updateAvailabilityService = async (id, body) => {
       const chars = curAvailability.split("");
       const curDate = dayjs().day(idx + 1);
       chars.map(async (char, idx) => {
+        const interval = Intervals[idx].split(" - ");
+        const startTime = inteval[0].split(":");
+        const endTime = inteval[1].split(":");
+        const startDate = curDate.set('hour', parseInt(startTime[0], 10))
+          .set('minute', parseInt(startTime[1], 10));
+        const endDate = curDate.set('hour', parseInt(endTime[0], 10))
+          .set('minute', parseInt(endTime[1], 10));
         if (char == "1") {
-          const interval = Intervals[idx].split(" - ");
-          await Models.Availability.create({
-            date: curDate,
-            startTime: interval[0],
-            endTime: interval[1],
+          await Models.Appointment.create({
+            startDate: startDate,
+            endDate: endDate,
             state: 0,
             intervalDigit: idx,
             DoctorId: id,
+            PatientId: -1,
           });
         }
       });
