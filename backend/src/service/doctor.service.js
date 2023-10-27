@@ -140,7 +140,7 @@ const updateAvailabilityService = async (id, body) => {
             state: 0,
             intervalDigit: idx,
             DoctorId: id,
-            PatientId: -1,
+            PatientId: null,
           });
         }
       });
