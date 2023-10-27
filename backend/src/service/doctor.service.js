@@ -1,4 +1,6 @@
 const { Models } = require("../db.js");
+const dayjs = require("dayjs");
+
 // Trae citas pasadas: fecha, tiempo, tipo, diagnostico y comentario
 const getPastAppointmentsService = async (DoctorId) => {
   try {
@@ -70,6 +72,21 @@ const getAvailabilityService = async (id) => {
   }
 };
 
+const Intervals = [
+  "08:00 - 09:00",
+  "09:00 - 10:00",
+  "10:00 - 11:00",
+  "11:00 - 12:00",
+  "12:00 - 13:00",
+  "13:00 - 14:00",
+  "14:00 - 15:00",
+  "15:00 - 16:00",
+  "16:00 - 17:00",
+  "17:00 - 18:00",
+  "18:00 - 19:00",
+  "19:00 - 20:00",
+];
+
 const updateAvailabilityService = async (id, body) => {
   try {
     const result = await Models.Doctor.findOne({
@@ -86,6 +103,41 @@ const updateAvailabilityService = async (id, body) => {
       fridayDisponibility: body.fridayDisponibility,
       saturdayDisponibility: body.saturdayDisponibility,
       sundayDisponibility: body.sundayDisponibility,
+    });
+
+    const availabilities = [
+      "mondayDisponibility",
+      "tuesdayDisponibility",
+      "wednesdayDisponibility",
+      "thursdayDisponibility",
+      "fridayDisponibility",
+      "saturdayDisponibility",
+      "sundayDisponibility",
+    ];
+
+    await Models.Availability.destroy({
+      where: {
+        DoctorId: id,
+      },
+    });
+
+    availabilities.map((key, idx) => {
+      const curAvailability = body[key];
+      const chars = curAvailability.split("");
+      const curDate = dayjs().day(idx + 1);
+      chars.map(async (char, idx) => {
+        if (char == "1") {
+          const interval = Intervals[idx].split(" - ");
+          await Models.Availability.create({
+            date: curDate,
+            startTime: interval[0],
+            endTime: interval[1],
+            state: 0,
+            intervalDigit: idx,
+            DoctorId: id,
+          });
+        }
+      });
     });
 
     return result;

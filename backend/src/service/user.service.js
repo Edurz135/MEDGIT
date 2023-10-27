@@ -1,6 +1,7 @@
 const { Models } = require("../db.js");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const dayjs = require("dayjs");
 require("dotenv").config();
 
 const registerPatientService = async (body) => {
@@ -23,6 +24,21 @@ const registerPatientService = async (body) => {
   }
 };
 
+const Intervals = [
+  "08:00 - 09:00",
+  "09:00 - 10:00",
+  "10:00 - 11:00",
+  "11:00 - 12:00",
+  "12:00 - 13:00",
+  "13:00 - 14:00",
+  "14:00 - 15:00",
+  "15:00 - 16:00",
+  "16:00 - 17:00",
+  "17:00 - 18:00",
+  "18:00 - 19:00",
+  "19:00 - 20:00",
+];
+
 const registerDoctorService = async (body) => {
   try {
     const hashedPassword = await bcrypt.hash(body.password, 10);
@@ -40,14 +56,43 @@ const registerDoctorService = async (body) => {
       gender: body.gender,
       phone: 999999999,
       SpecialtyId: SpecialtyId,
-      mondayDisponibility: "111111110000",
-      tuesdayDisponibility: "111111110000",
-      wednesdayDisponibility: "111111110000",
-      thursdayDisponibility: "111111110000",
-      fridayDisponibility: "111111110000",
+      mondayDisponibility: "001110110000",
+      tuesdayDisponibility: "001110110000",
+      wednesdayDisponibility: "001110110000",
+      thursdayDisponibility: "001110110000",
+      fridayDisponibility: "001110110000",
       saturdayDisponibility: "000000000000",
       sundayDisponibility: "000000000000",
     });
+
+    const availabilities = [
+      "mondayDisponibility",
+      "tuesdayDisponibility",
+      "wednesdayDisponibility",
+      "thursdayDisponibility",
+      "fridayDisponibility",
+      "saturdayDisponibility",
+      "sundayDisponibility",
+    ];
+
+    console.log(dayjs().day(1)); //.format('DD/MM/YYYY'));
+
+    // availabilities.map((key, idx) => {
+    //   const curAvailability = doctor[key];
+    //   const chars = curAvailability.split("");
+    //   chars.map(async (char, idx) => {
+    //     if (char == "1") {
+    //       const interval = Intervals[idx].split(" - ");
+    //       await Models.Availability.create({
+    //         date: -,
+    //         startTime: interval[0],
+    //         endTime: interval[1],
+    //         state: 0,
+    //         intervalDigit: idx,
+    //       });
+    //     }
+    //   });
+    // });
     return doctor;
   } catch (e) {
     throw Error("Error while creating User: " + e);

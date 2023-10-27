@@ -17,6 +17,10 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.TIME,
       allowNull: false,
     },
+    intervalDigit: {
+      type: Sequelize.INTEGER,
+      allowNull: false,
+    },
     state: {
       type: Sequelize.INTEGER,
       allowNull: false,
