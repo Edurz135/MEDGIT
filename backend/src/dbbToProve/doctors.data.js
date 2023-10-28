@@ -1,54 +1,28 @@
 const doctors = [
   {
-    name: "John",
-    lastName: "Doe",
-    gender: "Male",
+    name: "Carlos",
+    lastName: "Quispe",
+    gender: "Masculino",
   },
   {
-    name: "Jane",
-    lastName: "Doe",
-    gender: "Female",
+    name: "Rosa",
+    lastName: "Huamán",
+    gender: "Femenino",
   },
   {
-    name: "Alice",
-    lastName: "Smith",
-    gender: "Female",
+    name: "Ana",
+    lastName: "Mamani",
+    gender: "Femenino",
   },
   {
-    name: "Bob",
-    lastName: "Johnson",
-    gender: "Male",
+    name: "Luis",
+    lastName: "Paredes",
+    gender: "Masculino",
   },
   {
-    name: "Charlie",
-    lastName: "Brown",
-    gender: "Male",
-  },
-  {
-    name: "Daisy",
-    lastName: "Miller",
-    gender: "Female",
-  },
-  {
-    name: "Edward",
-    lastName: "White",
-    gender: "Male",
-  },
-  {
-    name: "Fiona",
-    lastName: "Green",
-    gender: "Female",
-  },
-  {
-    name: "George",
-    lastName: "Black",
-    gender: "Male",
-  },
-  {
-    name: "Hannah",
-    lastName: "Blue",
-    gender: "Female",
+    name: "Miguel",
+    lastName: "Condori",
+    gender: "Masculino",
   },
 ];
-
 module.exports = doctors;

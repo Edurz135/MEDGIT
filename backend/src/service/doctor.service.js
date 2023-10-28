@@ -1,4 +1,5 @@
 const { Models } = require("../db.js");
+
 // Trae citas pasadas: fecha, tiempo, tipo, diagnostico y comentario
 const getPastAppointmentsService = async (DoctorId) => {
   try {
@@ -47,7 +48,7 @@ const getFutureAppointmentsService = async (DoctorId) => {
   }
 };
 
-const getDisponibilityService = async (id) => {
+const getAvailabilityService = async (id) => {
   try {
     const result = await Models.Doctor.findOne({
       attributes: [
@@ -70,7 +71,22 @@ const getDisponibilityService = async (id) => {
   }
 };
 
-const updateDisponibilityService = async (id, body) => {
+const Intervals = [
+  "08:00 - 09:00",
+  "09:00 - 10:00",
+  "10:00 - 11:00",
+  "11:00 - 12:00",
+  "12:00 - 13:00",
+  "13:00 - 14:00",
+  "14:00 - 15:00",
+  "15:00 - 16:00",
+  "16:00 - 17:00",
+  "17:00 - 18:00",
+  "18:00 - 19:00",
+  "19:00 - 20:00",
+];
+
+const updateAvailabilityService = async (id, body) => {
   try {
     const result = await Models.Doctor.findOne({
       where: {
@@ -88,6 +104,16 @@ const updateDisponibilityService = async (id, body) => {
       sundayDisponibility: body.sundayDisponibility,
     });
 
+    const availabilities = [
+      "mondayDisponibility",
+      "tuesdayDisponibility",
+      "wednesdayDisponibility",
+      "thursdayDisponibility",
+      "fridayDisponibility",
+      "saturdayDisponibility",
+      "sundayDisponibility",
+    ];
+
     return result;
   } catch (e) {
     throw new Error(e.message);
@@ -97,6 +123,6 @@ const updateDisponibilityService = async (id, body) => {
 module.exports = {
   getPastAppointmentsService,
   getFutureAppointmentsService,
-  getDisponibilityService,
-  updateDisponibilityService,
+  getAvailabilityService,
+  updateAvailabilityService,
 };

@@ -1,11 +1,23 @@
 import React, { useState } from "react";
 import "./doctor.layout.style.css";
 import { Typography } from "antd";
-import {HomeOutlined,FolderOpenOutlined,LogoutOutlined,MenuFoldOutlined,MenuUnfoldOutlined,UserOutlined,} from "@ant-design/icons";
+import {
+  HomeOutlined,
+  FolderOpenOutlined,
+  LogoutOutlined,
+  MenuFoldOutlined,
+  MenuUnfoldOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 import { Layout, Menu, Button, theme } from "antd";
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
 
-import { DoctorMainPage, DoctorCitasPage, DoctorPerfilPage } from "../../../pages";
+import {
+  DoctorMainPage,
+  DoctorCitasPage,
+  DoctorPerfilPage,
+  DoctorAvalabilityPage,
+} from "../../../pages";
 import { MainPage } from "../../../pages";
 import { LocalStorageServices } from "../../../../services";
 
@@ -61,11 +73,11 @@ export default function DoctorLayout() {
 
   return (
     <Layout className="barra-container">
-      <Sider 
-        collapsed={!collapsed}  
-        className="barra-lateral"  
-        style={{ background: "white" 
-      }}>
+      <Sider
+        collapsed={!collapsed}
+        className="barra-lateral"
+        style={{ background: "white" }}
+      >
         <div className="menu">
           <Typography.Title
             level={1}
@@ -127,6 +139,7 @@ export default function DoctorLayout() {
               />
             ))}
             <Route path="/perfil" element={<DoctorPerfilPage />} />
+            <Route path="/availability" element={<DoctorAvalabilityPage />} />
           </Routes>
         </Content>
       </Layout>

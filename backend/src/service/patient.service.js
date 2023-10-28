@@ -1,5 +1,5 @@
 const { Models } = require("../db.js");
-const { Op } = require("sequelize");
+// const { Op } = require("sequelize");
 
 // Trae citas pasadas: fecha, tiempo, tipo, diagnostico y comentario
 const getPastAppointmentsService = async (PatientId) => {
