@@ -5,6 +5,7 @@ const {
   loginPatientService,
   loginDoctorService,
   loginLabAnalystService,
+  createAppointmentsService,
 } = require("../service/user.service");
 
 const registerPatient = async (req, res) => {
@@ -106,6 +107,23 @@ const loginLabAnalyst = async (req, res) => {
   }
 };
 
+const createAppointments = async (req, res) => {
+  try {
+    const result = await createAppointmentsService(req.body.doctorId);
+    return res.status(200).json({
+      status: 200,
+      result: result,
+      message: "Succesfully User Logging",
+    });
+  } catch (e) {
+    return res.status(400).json({
+      status: 400,
+      message: "Invalid credentials",
+      message: e.message,
+    });
+  }
+};
+
 module.exports = {
   registerDoctor,
   registerPatient,
@@ -113,4 +131,5 @@ module.exports = {
   loginPatient,
   loginDoctor,
   loginLabAnalyst,
+  createAppointments,
 };
