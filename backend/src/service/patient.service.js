@@ -1,5 +1,6 @@
 const { Models } = require("../db.js");
-// const { Op } = require("sequelize");
+const dayjs = require('dayjs');
+const { Op } = require("sequelize");
 
 // Trae citas pasadas: fecha, tiempo, tipo, diagnostico y comentario
 const getPastAppointmentsService = async (PatientId) => {
@@ -91,6 +92,7 @@ const getAvailabilityService = async (doctorId, specialtyId) => {
     //   });
     // }
 
+    const currentDate = dayjs(); // Get the current date and time
     const result = await Models.Doctor.findAll({
       // attributes: ["date", "time", "type", "diagnostic"],
       where: conditionals,
@@ -101,6 +103,11 @@ const getAvailabilityService = async (doctorId, specialtyId) => {
         },
         {
           model: Models.Appointment,
+          where: {
+            startDate: {
+              [Op.gte]: currentDate.toDate(), // Compare with the current date
+            },
+          },
         },
       ],
     });
@@ -110,6 +117,25 @@ const getAvailabilityService = async (doctorId, specialtyId) => {
     throw new Error(e.message);
   }
 };
+
+const bookAppointmentService = async (PatientId, AppointmentId) => {
+  try {
+    const appointment = await Models.Appointment.findOne({
+      where: {
+        id: AppointmentId,
+      },
+    });
+
+    await appointment.update({
+      state: 2,
+      PatientId: PatientId,
+    });
+
+    return appointment;
+  } catch (e) {
+    throw new Error(e.message);
+  }
+}
 
 const getFutureAppointmentsService = async (PatientId) => {
   try {

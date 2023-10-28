@@ -110,4 +110,4 @@ async function executeWeeklyTransactionIfNeeded() {
   }
 }
 
-module.exports = { executeWeeklyTransactionIfNeeded };
+module.exports = { executeWeeklyTransactionIfNeeded, createAppointmentsService };
