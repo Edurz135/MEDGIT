@@ -99,9 +99,12 @@ const getAvailabilityService = async (doctorId, specialtyId) => {
           model: Models.Specialty,
           attributes: ["name"],
         },
+        {
+          model: Models.Appointment,
+        },
       ],
     });
-    console.log(result)
+    console.log(result);
     return result;
   } catch (error) {
     throw new Error(e.message);
@@ -111,14 +114,14 @@ const getAvailabilityService = async (doctorId, specialtyId) => {
 const getFutureAppointmentsService = async (PatientId) => {
   try {
     const appointments = await Models.Appointment.findAll({
-      attributes: ['date', 'time', 'type', 'diagnostic'],
+      attributes: ["date", "time", "type", "diagnostic"],
       where: {
         PatientId: PatientId,
       },
       include: [
         {
           model: Models.ExaMed,
-          attributes: ['comment'],
+          attributes: ["comment"],
           where: {
             state: 1,
           },
@@ -126,7 +129,7 @@ const getFutureAppointmentsService = async (PatientId) => {
       ],
     });
 
-    return appointments
+    return appointments;
   } catch (e) {
     throw new Error(e.message);
   }
@@ -137,5 +140,4 @@ module.exports = {
   getListDoctorsService,
   getAvailabilityService,
   getListSpecialtiesService,
-
 };

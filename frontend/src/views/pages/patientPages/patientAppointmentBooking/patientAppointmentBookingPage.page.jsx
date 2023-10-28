@@ -1,9 +1,10 @@
 // import "./patientPerfilPage.styles.css";
-import { Row, Typography, Select, Divider } from "antd";
+import { Row, Typography, Select, Divider, Drawer, Button } from "antd";
 import AppointmentCard from "../../../../components/appointmentCard/AppointmentCard";
 import { useEffect, useState } from "react";
 import { LocalStorageServices } from "../../../../services";
 import axios from "axios";
+import AppointmentDrawer from "../../../../components/appointmentDrawer/AppointmentDrawer";
 const { Title, Text } = Typography;
 
 // ENDPOINTS
@@ -84,12 +85,15 @@ async function getAvailabilityList(doctorId, specialtyId) {
 const filterOption = (input, option) =>
   (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
 
-export default function SolicitarCitaPage() {
+export default function PatientAppointmentBookingPage() {
   const [listSpecialties, setListSpecialties] = useState([]);
   const [specialtyId, setSpecialtyId] = useState(-1);
   const [listDoctors, setListDoctors] = useState([]);
   const [doctorId, setDoctorId] = useState(-1);
   const [availabilityList, setAvailabilityList] = useState([]);
+
+  const [curAppointmentData, setCurAppointmentData] = useState(null);
+  const [openDrawer, setOpenDrawer] = useState(false);
 
   const UpdateDoctorSelect = (result) => {
     const data = result.map((doctor) => {
@@ -130,6 +134,15 @@ export default function SolicitarCitaPage() {
     setAvailabilityList(data);
   };
 
+  const showDrawer = () => {
+    setOpenDrawer(true);
+  };
+
+  const onClose = () => {
+    setOpenDrawer(false);
+    setCurAppointmentData(null);
+  };
+
   const handleSpecialtySelect = (value) => {
     setSpecialtyId(value);
     UpdateAvailabilityList(doctorId, value);
@@ -137,6 +150,11 @@ export default function SolicitarCitaPage() {
   const HandleDoctorSelect = (value) => {
     setDoctorId(value);
     UpdateAvailabilityList(value, specialtyId);
+  };
+  const HandleAppointmentCardSelected = (value, id) => {
+    console.log(value);
+    setCurAppointmentData(value);
+    showDrawer();
   };
 
   useEffect(() => {
@@ -147,6 +165,11 @@ export default function SolicitarCitaPage() {
 
   return (
     <div>
+      <AppointmentDrawer
+        data={curAppointmentData}
+        open={openDrawer}
+        onClose={onClose}
+      />
       <Title>Generar nueva cita</Title>
       <Text strong>Especialidades: </Text>
       <Select
@@ -162,7 +185,7 @@ export default function SolicitarCitaPage() {
         options={listSpecialties}
         onChange={handleSpecialtySelect}
       />
-      <br/>
+      <br />
       <Text strong>Doctores: </Text>
       <Select
         showSearch
@@ -183,14 +206,17 @@ export default function SolicitarCitaPage() {
           availabilityList.map((temp, idx) => {
             return (
               <AppointmentCard
+                key={idx}
                 xs={24}
                 sm={12}
                 md={12}
                 lg={8}
                 xl={8}
-                id={idx}
+                id={temp.id}
+                data={temp}
                 name={temp.name + " " + temp.lastName}
                 specialty={temp.Specialty.name}
+                onClick={HandleAppointmentCardSelected}
               />
             );
           })
