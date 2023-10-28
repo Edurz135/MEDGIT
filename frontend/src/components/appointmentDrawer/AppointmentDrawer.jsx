@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import { Button, Card, Col, Divider, Row, Typography, Drawer } from "antd";
 const { Text, Title } = Typography;
+import dayjs from 'dayjs';
+import { Calendar } from 'antd';
 
 // {
 //     "id": 464,
@@ -52,11 +54,71 @@ const { Text, Title } = Typography;
 //         },
 //     ]
 // }
+
+const getListData = (value) => {
+  let listData;
+  switch (value.date()) {
+    case 8:
+      listData = [
+        {
+          type: 'warning',
+          content: 'This is warning event.',
+        },
+        {
+          type: 'success',
+          content: 'This is usual event.',
+        },
+      ];
+      break;
+    case 10:
+      listData = [
+        {
+          type: 'warning',
+          content: 'This is warning event.',
+        },
+        {
+          type: 'success',
+          content: 'This is usual event.',
+        }
+      ];
+      break;
+    default:
+  }
+  return listData || [];
+};
+
 export default function AppointmentDrawer(props) {
+  const [value, setValue] = useState(() => dayjs('2017-01-25'));
+  const [selectedValue, setSelectedValue] = useState(() => dayjs('2017-01-25'));
+  const onSelect = (newValue) => {
+    setValue(newValue);
+    setSelectedValue(newValue);
+  };
+
+  const onPanelChange = (newValue) => {
+    setValue(newValue);
+  };
+
   function getFullName() {
     if (props.data == null) return "";
     return props.data.name + " " + props.data.lastName;
   }
+
+
+
+  const dateCellRender = (value) => {
+    const listData = getListData(value);
+    return (
+      <ul className="events">
+        {listData.map((item) => (
+          <li key={item.content}>
+            <Badge status={item.type} text={item.content} />
+          </li>
+        ))}
+      </ul>
+    );
+  };
+
   return (
     <Drawer
       title={"Generar cita con: " + getFullName()}
@@ -65,7 +127,12 @@ export default function AppointmentDrawer(props) {
       open={props.open}
       size="large"
     >
-      {props.data == undefined ? <>Null</> : <>{props.data.Specialty.name}</>}
+      {props.data == undefined ? <>Null</> :
+        <>
+          {props.data.Specialty.name}
+          <Calendar value={value} onSelect={onSelect} onPanelChange={onPanelChange} cellRender={dateCellRender} />
+        </>
+      }
     </Drawer>
   );
 }
