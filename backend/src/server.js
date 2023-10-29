@@ -51,7 +51,7 @@ const server = () => {
     .sync({ alter: false })
     // .query("CALL sp_update_future_to_past_appointments();") //Cambia las citas futuras a pasadas
     .then(() => {
-      // loadData();
+      loadData();
       executeWeeklyTransactionIfNeeded();
       console.log("DB Synced and Updated.");
     })

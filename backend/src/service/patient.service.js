@@ -32,7 +32,7 @@ const getListDoctorsService = async () => {
       attributes: ["id", "name", "lastName"],
     });
     return result;
-  } catch (error) {
+  } catch (e) {
     throw new Error(e.message);
   }
 };
@@ -43,7 +43,7 @@ const getListSpecialtiesService = async () => {
       attributes: ["id", "name"],
     });
     return result;
-  } catch (error) {
+  } catch (e) {
     throw new Error(e.message);
   }
 };
@@ -113,7 +113,7 @@ const getAvailabilityService = async (doctorId, specialtyId) => {
     });
     console.log(result);
     return result;
-  } catch (error) {
+  } catch (e) {
     throw new Error(e.message);
   }
 };

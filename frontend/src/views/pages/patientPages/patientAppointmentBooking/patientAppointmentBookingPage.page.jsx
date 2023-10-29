@@ -152,8 +152,8 @@ export default function PatientAppointmentBookingPage() {
     UpdateAvailabilityList(value, specialtyId);
   };
   const HandleAppointmentCardSelected = (value, id) => {
-    console.log(value);
     setCurAppointmentData(value);
+    console.log(value)
     showDrawer();
   };
 
