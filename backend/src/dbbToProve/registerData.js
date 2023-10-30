@@ -126,8 +126,8 @@ async function registerMoreData() {
         time: "11:00 AM",
         type: "Todo Nice",
         diagnostic: "None",
-        doctorId: 7,
-        patientId: 3,
+        doctorId: 5,
+        patientId: null,
     });
 
     const appointment2 = await Appointment.create({
@@ -135,24 +135,24 @@ async function registerMoreData() {
         time: "12:00 AM",
         type: "Todo Nice",
         diagnostic: "None",
-        doctorId: 7,
-        patientId: 3,
+        doctorId: 5,
+        patientId: null,
     });
     const appointment3 = await Appointment.create({
         date: new Date(),
         time: "9:00 AM",
         type: "Todo Nice",
         diagnostic: "None",
-        doctorId: 7,
-        patientId: 3,
+        doctorId: 5,
+        patientId: null,
     });
     const appointment4 = await Appointment.create({
         date: new Date(),
         time: "11:00 AM",
         type: "Todo Nice",
         diagnostic: "None",
-        doctorId: 7,
-        patientId: 3,
+        doctorId: 5,
+        patientId: null,
     });
     
     // Insert a new ExaMed record.

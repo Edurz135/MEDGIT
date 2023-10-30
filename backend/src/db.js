@@ -61,4 +61,6 @@ Models.ContenPacAle = ContenPacAle;
 Models.Specialty = Specialty;
 Models.WeeklyTransaction = WeeklyTransaction;
 
+// Procedimientos almacenados
+
 module.exports = { db, Models };
