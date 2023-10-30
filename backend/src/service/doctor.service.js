@@ -7,8 +7,9 @@ const getPastAppointmentsService = async (DoctorId) => {
       attributes: ["date", "time", "type", "diagnostic"],
       where: {
         DoctorId: DoctorId,
+        pending: false,
       },
-      include: [
+      /* include: [
         {
           model: Models.ExaMed,
           attributes: ["comment"],
@@ -16,7 +17,7 @@ const getPastAppointmentsService = async (DoctorId) => {
             state: 0,
           },
         },
-      ],
+      ], */
     });
 
     return appointments;
@@ -30,8 +31,9 @@ const getFutureAppointmentsService = async (DoctorId) => {
       attributes: ["date", "time", "type", "diagnostic"],
       where: {
         DoctorId: DoctorId,
+        pending: true,
       },
-      include: [
+      /* include: [
         {
           model: Models.ExaMed,
           attributes: ["comment"],
@@ -39,7 +41,7 @@ const getFutureAppointmentsService = async (DoctorId) => {
             state: 1,
           },
         },
-      ],
+      ], */
     });
 
     return appointments;
@@ -47,7 +49,43 @@ const getFutureAppointmentsService = async (DoctorId) => {
     throw new Error(e.message);
   }
 };
+// Trae los detalles de una cita
 
+const getAppointmentDetails = async (id) => {
+  try {
+    const appointment = await Models.Appointment.findOne({
+      attributes: ["date", "time", "type", "diagnostic"],
+      where: {
+        id: id,
+      },
+      include: [
+        {
+          model: Models.ExaMed,
+          attributes: ["comment"],
+          include:[{
+            model: Models.TipExMed,
+            attributes: ["name"],
+          }]
+        },
+      ],
+      include: [
+        {
+          model: Models.ContenMedCi,
+          include: [
+            {
+              model: Models.Medicine,
+              attributes: ["name", "description","dose"],
+            }
+          ]
+        }
+      ]
+    });
+
+    return appointment;
+  } catch (e) {
+    throw new Error(e.message);
+  }
+}
 const getAvailabilityService = async (id) => {
   try {
     const result = await Models.Doctor.findOne({
