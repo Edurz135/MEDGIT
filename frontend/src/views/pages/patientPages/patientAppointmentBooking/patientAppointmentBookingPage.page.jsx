@@ -75,6 +75,7 @@ async function getAvailabilityList(doctorId, specialtyId) {
   const resp = await axios
     .request(config)
     .then((response) => {
+      console.log(response)
       return response.data.result;
     })
     .catch((error) => {
@@ -150,7 +151,7 @@ export default function PatientAppointmentBookingPage() {
 
   const UpdateAvailabilityList = async (doctorId, specialtyId) => {
     const data = await getAvailabilityList(doctorId, specialtyId);
-    setAvailabilityList(data);
+    setAvailabilityList(data || []);
   };
 
   const showDrawer = () => {
