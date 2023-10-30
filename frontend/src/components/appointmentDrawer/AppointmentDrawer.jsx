@@ -4,8 +4,8 @@ import dayjs from "dayjs";
 import { Calendar } from "antd";
 import { LocalStorageServices } from "../../services";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 const { Text, Title } = Typography;
-
 async function bookAppointment(appointmentId) {
   const accessToken = await LocalStorageServices.GetData("accessToken");
   let config = {
@@ -32,6 +32,7 @@ async function bookAppointment(appointmentId) {
 }
 
 export default function AppointmentDrawer(props) {
+  const navigate = useNavigate();
   const [value, setValue] = useState(() => dayjs());
   const [dataSelected, setDataSelected] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -88,7 +89,7 @@ export default function AppointmentDrawer(props) {
   const HandleBooking = async () => {
     if (selectedAppointment == null) return;
     bookAppointment(selectedAppointment.id).then((resp) => {
-      console.log(resp)
+      console.log(resp);
       setModalText(resp.message || "Error");
       showModal();
     });
@@ -100,6 +101,7 @@ export default function AppointmentDrawer(props) {
 
   const handleOk = () => {
     setIsModalOpen(false);
+    navigate(0);
   };
 
   return (
@@ -143,16 +145,25 @@ export default function AppointmentDrawer(props) {
               const startTime = dayjs(appointment.startDate).format("HH:mm");
               const endTime = dayjs(appointment.endDate).format("HH:mm");
               const intervalTime = startTime + " - " + endTime;
-              return (
-                <Button
-                  style={{ margin: "5px 10px" }}
-                  onClick={() => {
-                    setSelectedAppointment(appointment);
-                  }}
-                >
-                  {intervalTime}
-                </Button>
-              );
+              console.log(appointment);
+              if (appointment.state == 0) {
+                return (
+                  <Button
+                    style={{ margin: "5px 10px" }}
+                    onClick={() => {
+                      setSelectedAppointment(appointment);
+                    }}
+                  >
+                    {intervalTime}
+                  </Button>
+                );
+              } else {
+                return (
+                  <Button style={{ margin: "5px 10px" }} disabled>
+                    {intervalTime}
+                  </Button>
+                );
+              }
             })
           )}
         </>
