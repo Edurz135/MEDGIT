@@ -45,6 +45,10 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.INTEGER,
       allowNull: false,
     },
+    pending:{
+      type: Sequelize.BOOLEAN,
+      defaultValue: true,
+    },
     diagnostic: {
       type: Sequelize.STRING,
     },
