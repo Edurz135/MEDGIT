@@ -4,6 +4,7 @@ import AppointmentCard from "../../../../components/appointmentCard/AppointmentC
 import { useEffect, useState } from "react";
 import { LocalStorageServices } from "../../../../services";
 import axios from "axios";
+import dayjs from "dayjs";
 import AppointmentDrawer from "../../../../components/appointmentDrawer/AppointmentDrawer";
 const { Title, Text } = Typography;
 
@@ -82,6 +83,22 @@ async function getAvailabilityList(doctorId, specialtyId) {
   return resp;
 }
 
+function groupByDay(data) {
+  const grouped = data.reduce((acc, item) => {
+    // Format the date to just YYYY-MM-DD
+    const day = dayjs(item.startDate).format("DD/MM/YYYY");
+    // If the day doesn't exist as a key in the accumulator, create it
+    if (!acc[day]) {
+      acc[day] = [];
+    }
+    // Push the item to the correct day
+    acc[day].push(item);
+    return acc;
+  }, {});
+
+  return grouped;
+}
+
 const filterOption = (input, option) =>
   (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
 
@@ -92,10 +109,12 @@ export default function PatientAppointmentBookingPage() {
   const [doctorId, setDoctorId] = useState(-1);
   const [availabilityList, setAvailabilityList] = useState([]);
 
+  const [curData, setCurData] = useState(null);
   const [curAppointmentData, setCurAppointmentData] = useState(null);
   const [openDrawer, setOpenDrawer] = useState(false);
 
   const UpdateDoctorSelect = (result) => {
+    if (result == null) return;
     const data = result.map((doctor) => {
       return {
         value: String(doctor.id),
@@ -140,6 +159,7 @@ export default function PatientAppointmentBookingPage() {
 
   const onClose = () => {
     setOpenDrawer(false);
+    setCurData(null);
     setCurAppointmentData(null);
   };
 
@@ -152,8 +172,8 @@ export default function PatientAppointmentBookingPage() {
     UpdateAvailabilityList(value, specialtyId);
   };
   const HandleAppointmentCardSelected = (value, id) => {
-    setCurAppointmentData(value);
-    console.log(value)
+    setCurData(value);
+    setCurAppointmentData(groupByDay(value.Appointments));
     showDrawer();
   };
 
@@ -166,9 +186,10 @@ export default function PatientAppointmentBookingPage() {
   return (
     <div>
       <AppointmentDrawer
-        data={curAppointmentData}
+        data={curData}
         open={openDrawer}
         onClose={onClose}
+        appointmentData={curAppointmentData}
       />
       <Title>Generar nueva cita</Title>
       <Text strong>Especialidades: </Text>

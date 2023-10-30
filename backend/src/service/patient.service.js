@@ -1,5 +1,5 @@
 const { Models } = require("../db.js");
-const dayjs = require('dayjs');
+const dayjs = require("dayjs");
 const { Op } = require("sequelize");
 
 // Trae citas pasadas: fecha, tiempo, tipo, diagnostico y comentario
@@ -120,6 +120,7 @@ const getAvailabilityService = async (doctorId, specialtyId) => {
 
 const bookAppointmentService = async (PatientId, AppointmentId) => {
   try {
+    // console.log(PatientId, AppointmentId)
     const appointment = await Models.Appointment.findOne({
       where: {
         id: AppointmentId,
@@ -135,7 +136,7 @@ const bookAppointmentService = async (PatientId, AppointmentId) => {
   } catch (e) {
     throw new Error(e.message);
   }
-}
+};
 
 const getFutureAppointmentsService = async (PatientId) => {
   try {
@@ -166,4 +167,5 @@ module.exports = {
   getListDoctorsService,
   getAvailabilityService,
   getListSpecialtiesService,
+  bookAppointmentService,
 };

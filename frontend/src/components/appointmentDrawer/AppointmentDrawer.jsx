@@ -1,93 +1,51 @@
 import React, { useEffect, useState } from "react";
-import { Button, Card, Col, Divider, Row, Typography, Drawer } from "antd";
+import { Button, Card, Col, Modal, Row, Typography, Drawer } from "antd";
 import dayjs from "dayjs";
 import { Calendar } from "antd";
+import { LocalStorageServices } from "../../services";
+import axios from "axios";
 const { Text, Title } = Typography;
 
-// {
-//     "id": 464,
-//     "name": "Miguel",
-//     "lastName": "Condori",
-//     "email": "Miguel@gmail.com",
-//     "password": "$2b$10$jnxPwaPM067JAQycXg0vlOAdQ7B5uzgX2DGoPq7y9t10aX0f8ZAwO",
-//     "identityDoc": 12345678,
-//     "nroColegiatura": null,
-//     "gender": "Masculino",
-//     "phone": 999999999,
-//     "mondayDisponibility": "001110110000",
-//     "tuesdayDisponibility": "001110110000",
-//     "wednesdayDisponibility": "001110110000",
-//     "thursdayDisponibility": "001110110000",
-//     "fridayDisponibility": "001110110000",
-//     "saturdayDisponibility": "000000000000",
-//     "sundayDisponibility": "000000000000",
-//     "createdAt": "2023-10-28T13:31:35.992Z",
-//     "updatedAt": "2023-10-28T13:31:35.992Z",
-//     "SpecialtyId": 4,
-//     "Specialty": {
-//         "name": "Gineco obstetricia"
-//     },
-//     "Appointments": [
-//         {
-//             "id": 2007,
-//             "startDate": "2023-10-23T15:00:49.344Z",
-//             "endDate": "2023-10-23T16:00:49.344Z",
-//             "intervalDigit": 2,
-//             "state": 0,
-//             "diagnostic": null,
-//             "createdAt": "2023-10-28T13:31:49.345Z",
-//             "updatedAt": "2023-10-28T13:31:49.345Z",
-//             "PatientId": null,
-//             "DoctorId": 464
-//         },
-//         {
-//             "id": 2009,
-//             "startDate": "2023-10-23T17:00:49.344Z",
-//             "endDate": "2023-10-23T18:00:49.344Z",
-//             "intervalDigit": 4,
-//             "state": 0,
-//             "diagnostic": null,
-//             "createdAt": "2023-10-28T13:31:49.345Z",
-//             "updatedAt": "2023-10-28T13:31:49.345Z",
-//             "PatientId": null,
-//             "DoctorId": 464
-//         },
-//     ]
-// }
+async function bookAppointment(appointmentId) {
+  const accessToken = await LocalStorageServices.GetData("accessToken");
+  let config = {
+    method: "post",
+    maxBodyLength: Infinity,
+    url: "http://localhost:3100/api/patient/bookAppointment",
+    headers: {
+      Authorization: accessToken,
+    },
+    data: {
+      appointmentId: appointmentId,
+    },
+  };
+
+  const resp = await axios
+    .request(config)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  return resp;
+}
 
 export default function AppointmentDrawer(props) {
   const [value, setValue] = useState(() => dayjs());
-  const [selectedValue, setSelectedValue] = useState(() => dayjs());
-
-  const getListData = (value) => {
-    if (props.data == null) return "";
-    // console.log(props)
-    let listData;
-    switch (value.format('DD/MM/YYYY')) {
-      case "28/10/2023":
-        listData = [
-          {
-            type: "warning",
-            content: "This is warning event.",
-          },
-        ];
-        break;
-      case 10:
-        listData = [
-          {
-            type: "warning",
-            content: "This is warning event.",
-          },
-        ];
-        break;
-      default:
-    }
-    return listData || [];
-  };
+  const [dataSelected, setDataSelected] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalText, setModalText] = useState("Content of the modal");
+  const [selectedAppointment, setSelectedAppointment] = useState(null);
 
   const onSelect = (newValue) => {
     setValue(newValue);
-    setSelectedValue(newValue);
+    const calendarDay = newValue.format("DD/MM/YYYY");
+    if (props.appointmentData == null) {
+      setDataSelected([]);
+    } else {
+      setDataSelected(props.appointmentData[calendarDay] || []);
+    }
   };
 
   const onPanelChange = (newValue) => {
@@ -100,14 +58,49 @@ export default function AppointmentDrawer(props) {
   }
 
   const dateCellRender = (value) => {
-    const listData = getListData(value);
-    return listData.map((item) => <Typography>{item.content}</Typography>);
+    if (props.appointmentData == null) return <></>;
+    const appointmentsGroupByDay = props.appointmentData;
+    const calendarDay = value.format("DD/MM/YYYY");
+
+    const appointmentsOfDay = appointmentsGroupByDay[calendarDay];
+    if (appointmentsOfDay != null) {
+      return (
+        <Text
+          style={{
+            backgroundColor: "#1777fe",
+            color: "white",
+            padding: "2px 10px",
+            borderRadius: "5px",
+          }}
+        >
+          {appointmentsOfDay.length || 0} citas
+        </Text>
+      );
+    }
+    return <></>;
   };
 
   function disabledDate(current) {
     // Can not select days before today and today
     return current.valueOf() < Date.now();
   }
+
+  const HandleBooking = async () => {
+    if (selectedAppointment == null) return;
+    bookAppointment(selectedAppointment.id).then((resp) => {
+      console.log(resp)
+      setModalText(resp.message || "Error");
+      showModal();
+    });
+  };
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
 
   return (
     <Drawer
@@ -117,6 +110,18 @@ export default function AppointmentDrawer(props) {
       open={props.open}
       size="large"
     >
+      <Modal
+        title="Reserva de cita"
+        open={isModalOpen}
+        onCancel={handleOk}
+        footer={
+          <Button type="primary" onClick={handleOk}>
+            Ok
+          </Button>
+        }
+      >
+        {modalText}
+      </Modal>
       {props.data == undefined ? (
         <>Null</>
       ) : (
@@ -130,7 +135,46 @@ export default function AppointmentDrawer(props) {
             mode="month"
             disabledDate={disabledDate}
           />
+          <Title level={4}>Citas del día: </Title>
+          {dataSelected.length == 0 ? (
+            <div>Seleccione una fecha</div>
+          ) : (
+            dataSelected.map((appointment, idx) => {
+              const startTime = dayjs(appointment.startDate).format("HH:mm");
+              const endTime = dayjs(appointment.endDate).format("HH:mm");
+              const intervalTime = startTime + " - " + endTime;
+              return (
+                <Button
+                  style={{ margin: "5px 10px" }}
+                  onClick={() => {
+                    setSelectedAppointment(appointment);
+                  }}
+                >
+                  {intervalTime}
+                </Button>
+              );
+            })
+          )}
         </>
+      )}
+      {selectedAppointment == null ? (
+        <></>
+      ) : (
+        <Col>
+          <Title level={4}> Cita: </Title>
+          <Typography>
+            Día: {dayjs(selectedAppointment.startDate).format("DD/MM/YYYY")}
+          </Typography>
+          <Typography>
+            Hora inicio: {dayjs(selectedAppointment.startDate).format("HH:mm")}
+          </Typography>
+          <Typography>
+            Hora fin: {dayjs(selectedAppointment.endDate).format("HH:mm")}
+          </Typography>
+          <Button onClick={HandleBooking} type="primary">
+            Reservar
+          </Button>
+        </Col>
       )}
     </Drawer>
   );
