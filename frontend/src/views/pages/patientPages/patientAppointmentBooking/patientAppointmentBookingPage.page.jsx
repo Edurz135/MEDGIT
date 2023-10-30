@@ -1,9 +1,11 @@
 // import "./patientPerfilPage.styles.css";
-import { Row, Typography, Select, Divider } from "antd";
+import { Row, Typography, Select, Divider, Drawer, Button } from "antd";
 import AppointmentCard from "../../../../components/appointmentCard/AppointmentCard";
 import { useEffect, useState } from "react";
 import { LocalStorageServices } from "../../../../services";
 import axios from "axios";
+import dayjs from "dayjs";
+import AppointmentDrawer from "../../../../components/appointmentDrawer/AppointmentDrawer";
 const { Title, Text } = Typography;
 
 // ENDPOINTS
@@ -81,17 +83,38 @@ async function getAvailabilityList(doctorId, specialtyId) {
   return resp;
 }
 
+function groupByDay(data) {
+  const grouped = data.reduce((acc, item) => {
+    // Format the date to just YYYY-MM-DD
+    const day = dayjs(item.startDate).format("DD/MM/YYYY");
+    // If the day doesn't exist as a key in the accumulator, create it
+    if (!acc[day]) {
+      acc[day] = [];
+    }
+    // Push the item to the correct day
+    acc[day].push(item);
+    return acc;
+  }, {});
+
+  return grouped;
+}
+
 const filterOption = (input, option) =>
   (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
 
-export default function SolicitarCitaPage() {
+export default function PatientAppointmentBookingPage() {
   const [listSpecialties, setListSpecialties] = useState([]);
   const [specialtyId, setSpecialtyId] = useState(-1);
   const [listDoctors, setListDoctors] = useState([]);
   const [doctorId, setDoctorId] = useState(-1);
   const [availabilityList, setAvailabilityList] = useState([]);
 
+  const [curData, setCurData] = useState(null);
+  const [curAppointmentData, setCurAppointmentData] = useState(null);
+  const [openDrawer, setOpenDrawer] = useState(false);
+
   const UpdateDoctorSelect = (result) => {
+    if (result == null) return;
     const data = result.map((doctor) => {
       return {
         value: String(doctor.id),
@@ -130,6 +153,16 @@ export default function SolicitarCitaPage() {
     setAvailabilityList(data);
   };
 
+  const showDrawer = () => {
+    setOpenDrawer(true);
+  };
+
+  const onClose = () => {
+    setOpenDrawer(false);
+    setCurData(null);
+    setCurAppointmentData(null);
+  };
+
   const handleSpecialtySelect = (value) => {
     setSpecialtyId(value);
     UpdateAvailabilityList(doctorId, value);
@@ -137,6 +170,11 @@ export default function SolicitarCitaPage() {
   const HandleDoctorSelect = (value) => {
     setDoctorId(value);
     UpdateAvailabilityList(value, specialtyId);
+  };
+  const HandleAppointmentCardSelected = (value, id) => {
+    setCurData(value);
+    setCurAppointmentData(groupByDay(value.Appointments));
+    showDrawer();
   };
 
   useEffect(() => {
@@ -147,6 +185,12 @@ export default function SolicitarCitaPage() {
 
   return (
     <div>
+      <AppointmentDrawer
+        data={curData}
+        open={openDrawer}
+        onClose={onClose}
+        appointmentData={curAppointmentData}
+      />
       <Title>Generar nueva cita</Title>
       <Text strong>Especialidades: </Text>
       <Select
@@ -162,7 +206,7 @@ export default function SolicitarCitaPage() {
         options={listSpecialties}
         onChange={handleSpecialtySelect}
       />
-      <br/>
+      <br />
       <Text strong>Doctores: </Text>
       <Select
         showSearch
@@ -183,14 +227,17 @@ export default function SolicitarCitaPage() {
           availabilityList.map((temp, idx) => {
             return (
               <AppointmentCard
+                key={idx}
                 xs={24}
                 sm={12}
                 md={12}
                 lg={8}
                 xl={8}
-                id={idx}
+                id={temp.id}
+                data={temp}
                 name={temp.name + " " + temp.lastName}
                 specialty={temp.Specialty.name}
+                onClick={HandleAppointmentCardSelected}
               />
             );
           })

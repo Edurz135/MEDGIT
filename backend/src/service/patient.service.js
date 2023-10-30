@@ -1,5 +1,6 @@
 const { Models } = require("../db.js");
-// const { Op } = require("sequelize");
+const dayjs = require("dayjs");
+const { Op } = require("sequelize");
 
 // Trae citas pasadas: fecha, tiempo, tipo, diagnostico y comentario
 const getPastAppointmentsService = async (PatientId) => {
@@ -32,7 +33,7 @@ const getListDoctorsService = async () => {
       attributes: ["id", "name", "lastName"],
     });
     return result;
-  } catch (error) {
+  } catch (e) {
     throw new Error(e.message);
   }
 };
@@ -43,7 +44,7 @@ const getListSpecialtiesService = async () => {
       attributes: ["id", "name"],
     });
     return result;
-  } catch (error) {
+  } catch (e) {
     throw new Error(e.message);
   }
 };
@@ -92,6 +93,7 @@ const getAvailabilityService = async (doctorId, specialtyId) => {
     //   });
     // }
 
+    const currentDate = dayjs(); // Get the current date and time
     const result = await Models.Doctor.findAll({
       // attributes: ["date", "time", "type", "diagnostic"],
       where: conditionals,
@@ -100,11 +102,39 @@ const getAvailabilityService = async (doctorId, specialtyId) => {
           model: Models.Specialty,
           attributes: ["name"],
         },
+        {
+          model: Models.Appointment,
+          where: {
+            startDate: {
+              [Op.gte]: currentDate.toDate(), // Compare with the current date
+            },
+          },
+        },
       ],
     });
-    console.log(result)
+    console.log(result);
     return result;
-  } catch (error) {
+  } catch (e) {
+    throw new Error(e.message);
+  }
+};
+
+const bookAppointmentService = async (PatientId, AppointmentId) => {
+  try {
+    // console.log(PatientId, AppointmentId)
+    const appointment = await Models.Appointment.findOne({
+      where: {
+        id: AppointmentId,
+      },
+    });
+
+    await appointment.update({
+      state: 2,
+      PatientId: PatientId,
+    });
+
+    return appointment;
+  } catch (e) {
     throw new Error(e.message);
   }
 };
@@ -112,7 +142,7 @@ const getAvailabilityService = async (doctorId, specialtyId) => {
 const getFutureAppointmentsService = async (PatientId) => {
   try {
     const appointments = await Models.Appointment.findAll({
-      attributes: ['date', 'time', 'type', 'diagnostic'],
+      attributes: ["date", "time", "type", "diagnostic"],
       where: {
         PatientId: PatientId,
         pending: true,
@@ -120,7 +150,7 @@ const getFutureAppointmentsService = async (PatientId) => {
       /* include: [
         {
           model: Models.ExaMed,
-          attributes: ['comment'],
+          attributes: ["comment"],
           where: {
             state: 1,
           },
@@ -128,7 +158,7 @@ const getFutureAppointmentsService = async (PatientId) => {
       ], */
     });
 
-    return appointments
+    return appointments;
   } catch (e) {
     throw new Error(e.message);
   }
@@ -139,5 +169,5 @@ module.exports = {
   getListDoctorsService,
   getAvailabilityService,
   getListSpecialtiesService,
-
+  bookAppointmentService,
 };

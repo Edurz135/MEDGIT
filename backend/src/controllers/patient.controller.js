@@ -3,6 +3,7 @@ const {
   getListDoctorsService,
   getAvailabilityService,
   getListSpecialtiesService,
+  bookAppointmentService,
 } = require("../service/patient.service.js");
 const getPastAppointments = async (req, res) => {
   try {
@@ -74,10 +75,28 @@ const getFutureAppointments = async (req, res) => {
     return res.status(400).json({ status: 400, message: e.message });
   }
 };
+
+const bookAppointment = async (req, res) => {
+  try {
+    // Envía el id del paciente
+    const result = await bookAppointmentService(
+      req.user.id,
+      req.body.appointmentId
+    );
+    return res.status(200).json({
+      status: 200,
+      result: result,
+      message: "Succesfully Appointments Returned",
+    });
+  } catch (e) {
+    return res.status(400).json({ status: 400, message: e.message });
+  }
+};
 module.exports = {
   getPastAppointments,
   getListDoctors,
   getAvailability,
   getListSpecialties,
   getFutureAppointments,
+  bookAppointment,
 };

@@ -19,10 +19,10 @@ import {
   PatientCitasPage,
   PatientHistorialPage,
   PatientPerfilPage,
+  PatientAppointmentBookingPage,
 } from "../../../pages";
 import { MainPage } from "../../../pages";
 import { LocalStorageServices } from "../../../../services";
-import SolicitarCitaPage from "../../../pages/patientPages/solicitarCita/solicitarCita.page";
 
 export default function PatientLayout() {
   const navigate = useNavigate();
@@ -68,9 +68,9 @@ export default function PatientLayout() {
     {
       index: 3,
       icon: <SearchOutlined />,
-      component: <SolicitarCitaPage />,
-      label: "Solicitar cita",
-      url: "solicitarCita",
+      component: <PatientAppointmentBookingPage />,
+      label: "Resrevar cita",
+      url: "appointmentBooking",
     },
   ];
 

@@ -7,14 +7,22 @@ const {
   getAvailability,
   getListSpecialties,
   getFutureAppointments,
+  bookAppointment,
 } = require("../controllers/patient.controller");
 
 const patientRouter = Router();
 
 // Rutas del paciente
-patientRouter.get("/api/patient/pastGetAppointments",  authenticateToken, getPastAppointments);
-patientRouter.get("/api/patient/FutureGetAppointments",  authenticateToken, getFutureAppointments);
-
+patientRouter.get(
+  "/api/patient/pastGetAppointments",
+  authenticateToken,
+  getPastAppointments
+);
+patientRouter.get(
+  "/api/patient/FutureGetAppointments",
+  authenticateToken,
+  getFutureAppointments
+);
 
 patientRouter.get(
   "/api/patient/listDoctors",
@@ -32,6 +40,12 @@ patientRouter.post(
   "/api/patient/availabilityList",
   authenticateToken,
   getAvailability
+);
+
+patientRouter.post(
+  "/api/patient/bookAppointment",
+  authenticateToken,
+  bookAppointment
 );
 
 module.exports = patientRouter;

@@ -22,8 +22,7 @@ export default function AppointmentCard(props) {
     <Col xs={props.xs} sm={props.sm} md={props.md} lg={props.lg} xl={props.xl}>
       <Card
         style={{
-          boxShadow:
-            "0px 10px 8px 0px rgba(0, 0, 0, 0.2)",
+          boxShadow: "0px 10px 8px 0px rgba(0, 0, 0, 0.2)",
         }}
       >
         <Title
@@ -40,16 +39,22 @@ export default function AppointmentCard(props) {
         <Row>
           <Label content={props.specialty} color="rgba(112,142,238, 0.3)" />
         </Row>
-        <Row style={{ marginTop: "0.5rem" }}>
+        {/* <Row style={{ marginTop: "0.5rem" }}>
           <Text>Días de atención: </Text>
-        </Row>
-        <Row style={{ marginTop: "0.5rem" }}>
+        </Row> */}
+        {/* <Row style={{ marginTop: "0.5rem" }}>
           <Label content="lunes" color="#f5f5f5" />
-        </Row>
+        </Row> */}
         <Divider style={{ margin: "10px 0px" }} />
         <Row justify="center">
           <Col>
-            <Button type="primary" style={{ minWidth: "160px" }}>
+            <Button
+              type="primary"
+              style={{ minWidth: "160px" }}
+              onClick={() => {
+                props.onClick(props.data, props.id);
+              }}
+            >
               Seleccionar
             </Button>
           </Col>

@@ -1,4 +1,5 @@
 const { Models } = require("../db.js");
+const { createAppointmentsService } = require("../stored_procedures/weeklyTransactions.js")
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
@@ -45,9 +46,12 @@ const registerDoctorService = async (body) => {
       wednesdayDisponibility: "001110110000",
       thursdayDisponibility: "001110110000",
       fridayDisponibility: "001110110000",
-      saturdayDisponibility: "000000000000",
-      sundayDisponibility: "000000000000",
+      saturdayDisponibility: "001110000000",
+      sundayDisponibility: "001110000000",
     });
+
+    // asdf
+    await createAppointmentsService(doctor.id);
 
     return doctor;
   } catch (e) {

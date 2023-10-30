@@ -14,6 +14,7 @@ export { default as PatientMainPage } from "./patientPages/patientMain/patientMa
 export { default as PatientCitasPage } from "./patientPages/patientCitas/patientCitasPage.page";
 export { default as PatientHistorialPage } from "./patientPages/patientHistorial/patientHistorialPage.page";
 export { default as PatientPerfilPage } from "./patientPages/patientPerfil/patientPerfilPage.page";
+export { default as PatientAppointmentBookingPage } from "./patientPages/patientAppointmentBooking/patientAppointmentBookingPage.page";
 
 // LABOLATORY
 export { default as LaboratoryMainPage } from "./laboratoryPages/laboratoryMain/laboratoryMainPage.page";
