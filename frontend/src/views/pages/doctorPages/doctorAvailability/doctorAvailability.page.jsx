@@ -1,5 +1,4 @@
-// import "./doctorCitasPage.styles.css";
-
+import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Row, Col, Typography, Button, Divider, Modal } from "antd";
 import { LocalStorageServices } from "../../../../services";
@@ -79,6 +78,12 @@ export default function DoctorAvailabilityPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalText, setModalText] = useState("Content of the modal");
 
+  const navigate = useNavigate();
+
+  const HandleReturn = () => {
+    navigate("/auth/doctor/perfil");
+  };
+
   const HandleToggle = (key, idx, state) => {
     const modifiedDay = availability[key].replaceAt(idx, state ? "1" : "0");
     const newAvailability = { ...availability, [key]: modifiedDay };
@@ -124,10 +129,21 @@ export default function DoctorAvailabilityPage() {
         {modalText}
       </Modal>
       <Title>Disponibilidad de atención semanal</Title>
-      <Row>
-        <Button type="primary" onClick={HandleSave}>
-          Guardar Cambios
-        </Button>
+      <Text>
+        Tenga en cuenta que la disponibilidad de citas se actualiza todos los
+        domingos conforme a la programación que se muestra aquí.
+      </Text>
+      <br />
+      <br />
+      <Row gutter={16}>
+        <Col>
+          <Button type="primary" onClick={HandleSave}>
+            Guardar Cambios
+          </Button>
+        </Col>
+        <Col>
+          <Button onClick={HandleReturn}>Regresar</Button>
+        </Col>
       </Row>
       <br />
       <Row gutter={10}>

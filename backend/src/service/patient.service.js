@@ -105,6 +105,9 @@ const getAvailabilityService = async (doctorId, specialtyId) => {
         {
           model: Models.Appointment,
           where: {
+            state: {
+              [Op.ne]: 2,
+            },
             startDate: {
               [Op.gte]: currentDate.toDate(), // Compare with the current date
             },
