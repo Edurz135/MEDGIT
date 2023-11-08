@@ -1,3 +1,6 @@
+const{
+  getUpdatelabAnalystService,
+} = require("../service/labAnalyst.service.js")
 const getPastAppointments = async (req, res) => {
     try {
         const result = await getPastAppointmentsService(req.body);
@@ -10,3 +13,23 @@ const getPastAppointments = async (req, res) => {
         return res.status(400).json({ status: 400, message: e.message });
       } 
 }
+const getupdatelabAnalyst = async (req, res) => {
+  try {
+    const result = await getUpdatelabAnalystService(
+      req.user.id,
+      req.body.email,
+      req.body.password,
+      req.body.phone
+    );
+    return res.status(200).json({
+      status: 200,
+      result: result,
+      message: "Succesfully Appointments Returned",
+    });
+  } catch (e) {
+    return res.status(400).json({ status: 400, message: e.message });
+  }
+};
+module.exports={
+  getupdatelabAnalyst,
+};
