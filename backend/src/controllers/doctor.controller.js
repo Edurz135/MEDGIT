@@ -73,7 +73,7 @@ const getupdateDoctor = async (req, res) => {
     return res.status(200).json({
       status: 200,
       result: result,
-      message: "Succesfully Appointments Returned",
+      message: "Succesfully Doctor update",
     });
   } catch (e) {
     return res.status(400).json({ status: 400, message: e.message });
