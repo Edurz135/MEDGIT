@@ -161,11 +161,28 @@ const updateAvailabilityService = async (id, body) => {
     throw new Error(e.message);
   }
 };
-
+const getUpdateDoctorService = async (DoctorId, email, password, phone) =>{
+  try{
+    const doctor = await Models.Doctor.findOne({
+      where: {
+        id: DoctorId,
+      },
+    });
+    await doctor.update({
+      email:email,
+      password:password,
+      phone:phone,
+      });
+    return doctor;
+    }catch (error) {
+    throw new Error(error.message);
+  }
+};
 module.exports = {
   getPastAppointmentsService,
   getFutureAppointmentsService,
   getAppointmentDetailsService,
   getAvailabilityService,
+  getUpdateDoctorService,
   updateAvailabilityService,
 };

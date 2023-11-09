@@ -4,6 +4,7 @@ const {
   getAvailability,
   updateAvailability,
   getFutureAppointments,
+  getupdateDoctor,
 } = require("../controllers/doctor.controller");
 
 const Router = require("express");
@@ -26,7 +27,11 @@ doctorRouter.post(
   authenticateToken,
   updateAvailability
 );
-
+doctorRouter.put(
+  "/api/doctor/updateGetDoctor",
+  getupdateDoctor,
+  updateAvailability
+)
 // Rutas del doctor
 
 doctorRouter.get(

@@ -141,7 +141,6 @@ const bookAppointmentService = async (PatientId, AppointmentId) => {
     throw new Error(e.message);
   }
 };
-
 const getFutureAppointmentsService = async (PatientId) => {
   try {
     const appointments = await Models.Appointment.findAll({
@@ -165,6 +164,23 @@ const getFutureAppointmentsService = async (PatientId) => {
   } catch (e) {
     throw new Error(e.message);
   }
+}; 
+const getUpdatePacientService = async (PatientId, email, password, phone) =>{
+  try{
+    const patient = await Models.Patient.findOne({
+      where: {
+        id: PatientId,
+      },
+    });
+    await patient.update({
+      email:email,
+      password:password,
+      phone:phone,
+      });
+    return patient;
+    }catch (error) {
+    throw new Error(error.message);
+  }
 };
 module.exports = {
   getPastAppointmentsService,
@@ -172,5 +188,6 @@ module.exports = {
   getListDoctorsService,
   getAvailabilityService,
   getListSpecialtiesService,
+  getUpdatePacientService,
   bookAppointmentService,
 };
