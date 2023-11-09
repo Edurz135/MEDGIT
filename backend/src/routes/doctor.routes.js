@@ -1,5 +1,6 @@
 const {
   getPastAppointments,
+  getAppointmentsDetails,
   getAvailability,
   updateAvailability,
   getFutureAppointments,
@@ -12,7 +13,7 @@ const { authenticateToken } = require("../middlewares/auth.middleware");
 const doctorRouter = Router();
 
 doctorRouter.get(
-  "/api/doctor/pastGetAppointments",
+  "/api/doctor/getPastAppointments",
   authenticateToken,
   getPastAppointments
 );
@@ -33,7 +34,9 @@ doctorRouter.put(
 )
 // Rutas del doctor
 
-doctorRouter.get("/api/doctor/pastFutureAppointments", authenticateToken, getFutureAppointments);
+doctorRouter.get(
+  "/api/doctor/getFutureAppointments", authenticateToken, 
+  getFutureAppointments);
 
 
 module.exports = doctorRouter;

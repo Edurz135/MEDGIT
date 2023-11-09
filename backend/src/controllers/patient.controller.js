@@ -1,11 +1,13 @@
 const {
   getPastAppointmentsService,
+  getFutureAppointmentsService,
   getListDoctorsService,
   getAvailabilityService,
   getListSpecialtiesService,
   getUpdatePacientService,
   bookAppointmentService,
 } = require("../service/patient.service.js");
+const { getAppointmentDetailsService } = require("../service/doctor.service.js");
 const getPastAppointments = async (req, res) => {
   try {
     // Envía el id del paciente
@@ -20,7 +22,20 @@ const getPastAppointments = async (req, res) => {
     return res.status(400).json({ status: 400, message: e.message });
   }
 };
-
+const getAppointmentDetails = async (req, res) => {
+  try {
+    // Envía el id de la cita
+    
+    const result = (await getAppointmentDetailsService(req.body.appointmentId)) || [];
+    return res.status(200).json({
+      status: 200,
+      result: result,
+      message: "Succesfully Appointments Details Returned",
+    });
+  } catch (e) {
+    return res.status(400).json({ status: 400, message: e.message });
+  }
+};
 const getListDoctors = async (req, res) => {
   try {
     const result = await getListDoctorsService();
@@ -112,6 +127,7 @@ const getupdatePacient = async (req, res) => {
 };
 module.exports = {
   getPastAppointments,
+  getAppointmentDetails,
   getListDoctors,
   getAvailability,
   getListSpecialties,

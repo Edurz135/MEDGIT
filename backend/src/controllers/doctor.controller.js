@@ -1,5 +1,7 @@
 const {
   getPastAppointmentsService,
+  getFutureAppointmentsService,
+  getAppointmentDetailsService,
   getAvailabilityService,
   getUpdateDoctorService,
   updateAvailabilityService,
@@ -32,7 +34,20 @@ const getFutureAppointments = async (req, res) => {
     return res.status(400).json({ status: 400, message: e.message });
   }
 };
-
+const getAppointmentDetails = async (req, res) => {
+  try {
+    // Envía el id de la cita
+    
+    const result = (await getAppointmentDetailsService(req.body.appointmentId)) || [];
+    return res.status(200).json({
+      status: 200,
+      result: result,
+      message: "Succesfully Appointments Details Returned",
+    });
+  } catch (e) {
+    return res.status(400).json({ status: 400, message: e.message });
+  }
+};
 const getAvailability = async (req, res) => {
   try {
     console.log(req.user);
@@ -82,6 +97,7 @@ const getupdateDoctor = async (req, res) => {
 module.exports = {
   getPastAppointments,
   getFutureAppointments,
+  getAppointmentDetails,
   getAvailability,
   getupdateDoctor,
   updateAvailability,

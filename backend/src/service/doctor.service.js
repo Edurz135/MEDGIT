@@ -4,7 +4,7 @@ const { Models } = require("../db.js");
 const getPastAppointmentsService = async (DoctorId) => {
   try {
     const appointments = await Models.Appointment.findAll({
-      attributes: ["date", "time", "type", "diagnostic"],
+      attributes: ["startDate", "endDate","intervalDigit", "state", "diagnostic"],
       where: {
         DoctorId: DoctorId,
         pending: false,
@@ -28,7 +28,7 @@ const getPastAppointmentsService = async (DoctorId) => {
 const getFutureAppointmentsService = async (DoctorId) => {
   try {
     const appointments = await Models.Appointment.findAll({
-      attributes: ["date", "time", "type", "diagnostic"],
+      attributes: ["startDate", "endDate","intervalDigit", "state", "diagnostic"],
       where: {
         DoctorId: DoctorId,
         pending: true,
@@ -51,14 +51,14 @@ const getFutureAppointmentsService = async (DoctorId) => {
 };
 // Trae los detalles de una cita
 
-const getAppointmentDetails = async (id) => {
+const getAppointmentDetailsService = async (id) => {
   try {
     const appointment = await Models.Appointment.findOne({
-      attributes: ["date", "time", "type", "diagnostic"],
+      attributes: ["startDate", "endDate","intervalDigit", "state", "diagnostic"],
       where: {
         id: id,
       },
-      include: [
+      include: [//Examen medico y tipo de examen
         {
           model: Models.ExaMed,
           attributes: ["comment"],
@@ -70,6 +70,10 @@ const getAppointmentDetails = async (id) => {
       ],
       include: [
         {
+          model: Models.Medicine,
+          attributes: ["name", "description","dose"],
+        }
+        /* {
           model: Models.ContenMedCi,
           include: [
             {
@@ -77,7 +81,7 @@ const getAppointmentDetails = async (id) => {
               attributes: ["name", "description","dose"],
             }
           ]
-        }
+        } */
       ]
     });
 
@@ -177,6 +181,7 @@ const getUpdateDoctorService = async (DoctorId, email, password, phone) =>{
 module.exports = {
   getPastAppointmentsService,
   getFutureAppointmentsService,
+  getAppointmentDetailsService,
   getAvailabilityService,
   getUpdateDoctorService,
   updateAvailabilityService,
