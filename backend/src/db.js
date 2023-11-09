@@ -37,8 +37,8 @@ ExaMed.hasMany(LabAnalyst);
 Doctor.belongsTo(Specialty);
 
 //Muchos a muchos --> N a N
-Medicine.hasMany(ContenMedCi);
-Appointment.hasMany(ContenMedCi);
+Medicine.belongsToMany(Appointment,{through: 'ContenMedCi'});
+Appointment.belongsToMany(Medicine,{through: 'ContenMedCi'});
 
 Allergy.hasMany(ContenPacAle);
 Patient.hasMany(ContenPacAle);  

@@ -6,7 +6,7 @@ const { Op } = require("sequelize");
 const getPastAppointmentsService = async (PatientId) => {
   try {
     const appointments = await Models.Appointment.findAll({
-      attributes: ["date", "time", "type", "diagnostic"],
+      attributes: ["startDate", "endDate","intervalDigit", "state", "diagnostic"],
       where: {
         PatientId: PatientId,
         pending: false,
@@ -22,7 +22,7 @@ const getPastAppointmentsService = async (PatientId) => {
       ], */
     });
     return appointments;
-  } catch (error) {
+  } catch (e) {
     throw new Error(e.message);
   }
 };
@@ -145,7 +145,7 @@ const bookAppointmentService = async (PatientId, AppointmentId) => {
 const getFutureAppointmentsService = async (PatientId) => {
   try {
     const appointments = await Models.Appointment.findAll({
-      attributes: ["date", "time", "type", "diagnostic"],
+      attributes: ["startDate", "endDate","intervalDigit", "state", "diagnostic"],
       where: {
         PatientId: PatientId,
         pending: true,

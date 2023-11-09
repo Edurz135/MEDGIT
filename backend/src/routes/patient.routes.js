@@ -7,6 +7,7 @@ const {
   getAvailability,
   getListSpecialties,
   getFutureAppointments,
+  getAppointmentDetails,
   bookAppointment,
 } = require("../controllers/patient.controller");
 
@@ -14,16 +15,20 @@ const patientRouter = Router();
 
 // Rutas del paciente
 patientRouter.get(
-  "/api/patient/pastGetAppointments",
+  "/api/patient/getPastAppointments",
   authenticateToken,
   getPastAppointments
 );
 patientRouter.get(
-  "/api/patient/FutureGetAppointments",
+  "/api/patient/getFutureAppointments",
   authenticateToken,
   getFutureAppointments
 );
-
+patientRouter.get(
+  "/api/patient/getAppointmentDetails",
+  authenticateToken,
+  getAppointmentDetails
+);
 patientRouter.get(
   "/api/patient/listDoctors",
   authenticateToken,
