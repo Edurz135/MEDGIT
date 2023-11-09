@@ -171,7 +171,7 @@ const getUpdateDoctorService = async (DoctorId, email, password, phone) =>{
       });
     return doctor;
     }catch (error) {
-    throw new Error(e.message);
+    throw new Error(error.message);
   }
 };
 module.exports = {

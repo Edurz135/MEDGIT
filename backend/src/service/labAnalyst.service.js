@@ -8,12 +8,12 @@ const getUpdatelabAnalystService = async (LabAnalystId, email, password, phone) 
       });
       await labAnalyst.update({
         email:email,
-      password:password,
-      phone:phone,
+        password:password,
+        phone:phone,
         });
       return labAnalyst;
       }catch (error) {
-      throw new Error(e.message);
+      throw new Error(error.message);
     }
   };
 module.exports={

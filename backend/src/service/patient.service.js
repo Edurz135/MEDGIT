@@ -179,7 +179,7 @@ const getUpdatePacientService = async (PatientId, email, password, phone) =>{
       });
     return patient;
     }catch (error) {
-    throw new Error(e.message);
+    throw new Error(error.message);
   }
 };
 module.exports = {

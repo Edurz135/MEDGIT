@@ -93,11 +93,6 @@ const bookAppointment = async (req, res) => {
     return res.status(400).json({ status: 400, message: e.message });
   }
 };
-{
-  "email: asdf@hormail.com",
-  "password"
-  "phone"
-}
 const getupdatePacient = async (req, res) => {
   try {
     const result = await getUpdatePacientService(
@@ -109,7 +104,7 @@ const getupdatePacient = async (req, res) => {
     return res.status(200).json({
       status: 200,
       result: result,
-      message: "Succesfully Pacient update",
+      message: "Succesfully Pacient Update",
     });
   } catch (e) {
     return res.status(400).json({ status: 400, message: e.message });
