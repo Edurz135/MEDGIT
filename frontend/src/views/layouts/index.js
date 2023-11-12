@@ -1,5 +1,5 @@
-export { default as PatientLayout } from "./auth/patientLayout/patient.layout";
+export { default as PatientLayout } from "./auth/patient.layout";
 
-export {default as DoctorLayout} from "./auth/doctorLayout/doctor.layout";
+export {default as DoctorLayout} from "./auth/doctor.layout";
 
-export {default as LaboratoryLayout} from "./auth/laboratoryLayout/laboratory.layout";
+export {default as LaboratoryLayout} from "./auth/laboratory.layout";
