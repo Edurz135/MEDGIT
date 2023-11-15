@@ -69,6 +69,7 @@ const RegisterPage = () => {
       password: values.password,
       gender: values.genero,
       identityDoc: values.dni,
+      nroColegiatura: values.colegiatura || "",
     };
 
     axios
