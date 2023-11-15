@@ -6,7 +6,7 @@ const { Op } = require("sequelize");
 const getPastAppointmentsService = async (PatientId) => {
   try {
     const appointments = await Models.Appointment.findAll({
-      attributes: ["date", "time", "type", "diagnostic"],
+      attributes: ["startDate", "endDate","intervalDigit", "state", "diagnostic"],
       where: {
         PatientId: PatientId,
         pending: false,
@@ -22,7 +22,7 @@ const getPastAppointmentsService = async (PatientId) => {
       ], */
     });
     return appointments;
-  } catch (error) {
+  } catch (e) {
     throw new Error(e.message);
   }
 };
@@ -105,6 +105,9 @@ const getAvailabilityService = async (doctorId, specialtyId) => {
         {
           model: Models.Appointment,
           where: {
+            state: {
+              [Op.ne]: 2,
+            },
             startDate: {
               [Op.gte]: currentDate.toDate(), // Compare with the current date
             },
@@ -138,11 +141,10 @@ const bookAppointmentService = async (PatientId, AppointmentId) => {
     throw new Error(e.message);
   }
 };
-
 const getFutureAppointmentsService = async (PatientId) => {
   try {
     const appointments = await Models.Appointment.findAll({
-      attributes: ["date", "time", "type", "diagnostic"],
+      attributes: ["startDate", "endDate","intervalDigit", "state", "diagnostic"],
       where: {
         PatientId: PatientId,
         pending: true,
@@ -162,6 +164,23 @@ const getFutureAppointmentsService = async (PatientId) => {
   } catch (e) {
     throw new Error(e.message);
   }
+}; 
+const getUpdatePacientService = async (PatientId, email, password, phone) =>{
+  try{
+    const patient = await Models.Patient.findOne({
+      where: {
+        id: PatientId,
+      },
+    });
+    await patient.update({
+      email:email,
+      password:password,
+      phone:phone,
+      });
+    return patient;
+    }catch (error) {
+    throw new Error(error.message);
+  }
 };
 module.exports = {
   getPastAppointmentsService,
@@ -169,5 +188,6 @@ module.exports = {
   getListDoctorsService,
   getAvailabilityService,
   getListSpecialtiesService,
+  getUpdatePacientService,
   bookAppointmentService,
 };

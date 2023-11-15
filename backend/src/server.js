@@ -61,8 +61,8 @@ const server = () => {
         .catch((err) => {
           console.log("Error al ejecutar el procedimiento almacenado: " + err.message);
         });
-      loadData();
-      executeWeeklyTransactionIfNeeded();
+      //loadData();
+      //executeWeeklyTransactionIfNeeded();
       console.log("DB Synced and Updated.");
     })
     .catch((err) => {

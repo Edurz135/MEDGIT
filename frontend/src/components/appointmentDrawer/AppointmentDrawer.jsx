@@ -1,11 +1,36 @@
 import React, { useEffect, useState } from "react";
-import { Button, Card, Col, Modal, Row, Typography, Drawer } from "antd";
+import {
+  Button,
+  Card,
+  Col,
+  Modal,
+  Row,
+  Typography,
+  Drawer,
+  Divider,
+} from "antd";
 import dayjs from "dayjs";
 import { Calendar } from "antd";
 import { LocalStorageServices } from "../../services";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import "./AppointmentDrawer.css";
 const { Text, Title } = Typography;
+
+const Label = (props) => {
+  return (
+    <Text
+      style={{
+        backgroundColor: props.color,
+        borderRadius: "1rem",
+        padding: "3px 10px",
+      }}
+    >
+      {props.content}
+    </Text>
+  );
+};
+
 async function bookAppointment(appointmentId) {
   const accessToken = await LocalStorageServices.GetData("accessToken");
   let config = {
@@ -58,6 +83,11 @@ export default function AppointmentDrawer(props) {
     return props.data.name + " " + props.data.lastName;
   }
 
+  function getSpecialty() {
+    if (props.data == null) return "";
+    return props.data.Specialty.name;
+  }
+
   const dateCellRender = (value) => {
     if (props.appointmentData == null) return <></>;
     const appointmentsGroupByDay = props.appointmentData;
@@ -66,24 +96,29 @@ export default function AppointmentDrawer(props) {
     const appointmentsOfDay = appointmentsGroupByDay[calendarDay];
     if (appointmentsOfDay != null) {
       return (
-        <Text
-          style={{
-            backgroundColor: "#1777fe",
-            color: "white",
-            padding: "2px 10px",
-            borderRadius: "5px",
-          }}
+        <div
+          style={{ width: "100%", display: "flex", justifyContent: "center" }}
         >
-          {appointmentsOfDay.length || 0} citas
-        </Text>
+          <Text
+            style={{
+              backgroundColor: "#1777fe",
+              color: "white",
+              padding: "0px 10px",
+              borderRadius: "5px",
+            }}
+          >
+            {appointmentsOfDay.length || 0} citas
+          </Text>
+        </div>
       );
     }
     return <></>;
   };
 
+  // Retornar los días no permitidos (desde ayer hacia el pasado)
   function disabledDate(current) {
-    // Can not select days before today and today
-    return current.valueOf() < Date.now();
+    const yesterday = dayjs().subtract(1, "day").endOf("day").valueOf();
+    return current.valueOf() < yesterday;
   }
 
   const HandleBooking = async () => {
@@ -106,7 +141,7 @@ export default function AppointmentDrawer(props) {
 
   return (
     <Drawer
-      title={"Generar cita con: " + getFullName()}
+      title={"Generar cita con: " + getFullName() + " - " + getSpecialty()}
       placement="right"
       onClose={props.onClose}
       open={props.open}
@@ -128,8 +163,8 @@ export default function AppointmentDrawer(props) {
         <>Null</>
       ) : (
         <>
-          {props.data.Specialty.name}
           <Calendar
+            fullscreen={true}
             value={value}
             onSelect={onSelect}
             onPanelChange={onPanelChange}
@@ -137,6 +172,7 @@ export default function AppointmentDrawer(props) {
             mode="month"
             disabledDate={disabledDate}
           />
+          <Divider />
           <Title level={4}>Citas del día: </Title>
           {dataSelected.length == 0 ? (
             <div>Seleccione una fecha</div>
@@ -172,7 +208,9 @@ export default function AppointmentDrawer(props) {
         <></>
       ) : (
         <Col>
-          <Title level={4}> Cita: </Title>
+          <Divider />
+
+          <Title level={4}> Reservar cita: </Title>
           <Typography>
             Día: {dayjs(selectedAppointment.startDate).format("DD/MM/YYYY")}
           </Typography>
@@ -182,6 +220,7 @@ export default function AppointmentDrawer(props) {
           <Typography>
             Hora fin: {dayjs(selectedAppointment.endDate).format("HH:mm")}
           </Typography>
+          <br/>
           <Button onClick={HandleBooking} type="primary">
             Reservar
           </Button>

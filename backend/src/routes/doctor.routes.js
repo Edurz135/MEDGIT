@@ -1,8 +1,10 @@
 const {
   getPastAppointments,
+  getAppointmentsDetails,
   getAvailability,
   updateAvailability,
   getFutureAppointments,
+  getupdateDoctor,
 } = require("../controllers/doctor.controller");
 
 const Router = require("express");
@@ -11,7 +13,7 @@ const { authenticateToken } = require("../middlewares/auth.middleware");
 const doctorRouter = Router();
 
 doctorRouter.get(
-  "/api/doctor/pastGetAppointments",
+  "/api/doctor/getPastAppointments",
   authenticateToken,
   getPastAppointments
 );
@@ -25,10 +27,16 @@ doctorRouter.post(
   authenticateToken,
   updateAvailability
 );
-
+doctorRouter.put(
+  "/api/doctor/updateGetDoctor",
+  getupdateDoctor,
+  updateAvailability
+)
 // Rutas del doctor
 
-doctorRouter.get("/api/doctor/pastFutureAppointments", authenticateToken, getFutureAppointments);
+doctorRouter.get(
+  "/api/doctor/getFutureAppointments", authenticateToken, 
+  getFutureAppointments);
 
 
 module.exports = doctorRouter;

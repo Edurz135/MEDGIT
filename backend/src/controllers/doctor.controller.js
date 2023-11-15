@@ -1,6 +1,9 @@
 const {
   getPastAppointmentsService,
+  getFutureAppointmentsService,
+  getAppointmentDetailsService,
   getAvailabilityService,
+  getUpdateDoctorService,
   updateAvailabilityService,
 } = require("../service/doctor.service.js");
 const getPastAppointments = async (req, res) => {
@@ -31,7 +34,20 @@ const getFutureAppointments = async (req, res) => {
     return res.status(400).json({ status: 400, message: e.message });
   }
 };
-
+const getAppointmentDetails = async (req, res) => {
+  try {
+    // Envía el id de la cita
+    
+    const result = (await getAppointmentDetailsService(req.body.appointmentId)) || [];
+    return res.status(200).json({
+      status: 200,
+      result: result,
+      message: "Succesfully Appointments Details Returned",
+    });
+  } catch (e) {
+    return res.status(400).json({ status: 400, message: e.message });
+  }
+};
 const getAvailability = async (req, res) => {
   try {
     console.log(req.user);
@@ -59,10 +75,30 @@ const updateAvailability = async (req, res) => {
     return res.status(400).json({ status: 400, message: e.message });
   }
 };
+const getupdateDoctor = async (req, res) => {
 
+  console.log(req.body);
+  try {
+    const result = await getUpdateDoctorService(
+      req.user.id,
+      req.body.email,
+      req.body.password,
+      req.body.phone
+    );
+    return res.status(200).json({
+      status: 200,
+      result: result,
+      message: "Succesfully Doctor Update",
+    });
+  } catch (e) {
+    return res.status(400).json({ status: 400, message: e.message });
+  }
+};
 module.exports = {
   getPastAppointments,
   getFutureAppointments,
+  getAppointmentDetails,
   getAvailability,
+  getupdateDoctor,
   updateAvailability,
 };
