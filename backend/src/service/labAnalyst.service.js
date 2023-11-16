@@ -16,6 +16,20 @@ const getUpdatelabAnalystService = async (LabAnalystId, email, password, phone) 
       throw new Error(error.message);
     }
   };
+const getVisualiseLabAnalystService = async (LabAnalystId) => {
+  try {
+    const labAnalyst = await Models.LabAnalyst.findOne({
+      attributes: ["name", "lastName","email","password", "identityDoc","nroColegiatura","gender","phone"],
+      where: {
+        id: LabAnalystId,
+      },
+    });
+    return labAnalyst;
+  } catch (e) {
+    throw new Error(e.message);
+  }
+  };
 module.exports={
     getUpdatelabAnalystService,
+    getVisualiseLabAnalystService,
 };
