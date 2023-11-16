@@ -1,12 +1,5 @@
 import React, { useState } from "react";
-import {
-  Button,
-  Col,
-  Modal,
-  Typography,
-  Drawer,
-  Divider,
-} from "antd";
+import { Button, Col, Modal, Typography, Drawer, Divider } from "antd";
 import dayjs from "dayjs";
 import { Calendar } from "antd";
 import { LocalStorageServices } from "../../services";
@@ -127,7 +120,11 @@ export default function AppointmentDrawer(props) {
     <Drawer
       title={"Generar cita con: " + getFullName() + " - " + getSpecialty()}
       placement="right"
-      onClose={props.onClose}
+      onClose={() => {
+        setDataSelected([]);
+        setSelectedAppointment(null);
+        props.onClose();
+      }}
       open={props.open}
       size="large"
     >
@@ -204,7 +201,7 @@ export default function AppointmentDrawer(props) {
           <Typography>
             Hora fin: {dayjs(selectedAppointment.endDate).format("HH:mm")}
           </Typography>
-          <br/>
+          <br />
           <Button onClick={HandleBooking} type="primary">
             Reservar
           </Button>
