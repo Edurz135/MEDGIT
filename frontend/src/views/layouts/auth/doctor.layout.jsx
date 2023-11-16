@@ -9,8 +9,7 @@ import {
   HomeOutlined,
   FolderOpenOutlined,
 } from "@ant-design/icons";
-import { Layout, Menu, Button } from "antd";
-import { Routes, Route, Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import LayoutBase from "./layoutBase";
 import Sidebar from "./sidebar"; // Importa el componente Sidebar
 import { LocalStorageServices } from "../../../services";
@@ -34,14 +33,22 @@ export default function PatientLayout() {
       component: <DoctorMainPage />,
       label: "Inicio",
       url: "inicio",
+      hidden: false,
     },
-
+    
     {
       index: 1,
       icon: <FolderOpenOutlined />,
       component: <DoctorCitasPage />,
       label: "Citas",
       url: "citas",
+      hidden: false,
+    },
+    {
+      index: 2,
+      component: <DoctorAvalabilityPage />,
+      url: "availability",
+      hidden: true,
     },
     
   ];

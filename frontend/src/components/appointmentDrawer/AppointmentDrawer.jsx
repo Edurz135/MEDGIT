@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Button,
-  Card,
   Col,
   Modal,
-  Row,
   Typography,
   Drawer,
   Divider,
@@ -16,20 +14,6 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./AppointmentDrawer.css";
 const { Text, Title } = Typography;
-
-const Label = (props) => {
-  return (
-    <Text
-      style={{
-        backgroundColor: props.color,
-        borderRadius: "1rem",
-        padding: "3px 10px",
-      }}
-    >
-      {props.content}
-    </Text>
-  );
-};
 
 async function bookAppointment(appointmentId) {
   const accessToken = await LocalStorageServices.GetData("accessToken");

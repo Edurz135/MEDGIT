@@ -1,8 +1,7 @@
 import React from "react";
 import { PatientMainPage, PatientCitasPage, PatientHistorialPage, PatientPerfilPage, PatientAppointmentBookingPage } from "../../pages";
 import { HomeOutlined, FolderOpenOutlined, ReadOutlined, SearchOutlined } from "@ant-design/icons";
-import { Layout, Menu, Button } from "antd";
-import { Routes, Route, Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import LayoutBase from "./layoutBase";
 import Sidebar from "./sidebar"; // Importa el componente Sidebar
 import { LocalStorageServices } from "../../../services";
@@ -25,6 +24,7 @@ export default function PatientLayout() {
       component: <PatientMainPage />,
       label: "Inicio",
       url: "inicio",
+      hidden: false,
     },
     {
       index: 1,
@@ -32,6 +32,7 @@ export default function PatientLayout() {
       component: <PatientCitasPage />,
       label: "Citas",
       url: "citas",
+      hidden: false,
     },
     {
       index: 2,
@@ -39,6 +40,7 @@ export default function PatientLayout() {
       component: <PatientHistorialPage />,
       label: "Historial clinico",
       url: "historialClinico",
+      hidden: false,
     },
     {
       index: 3,
@@ -46,6 +48,7 @@ export default function PatientLayout() {
       component: <PatientAppointmentBookingPage />,
       label: "Reservar cita",
       url: "appointmentBooking",
+      hidden: false,
     },
     
   ];

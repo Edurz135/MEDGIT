@@ -177,7 +177,7 @@ export default function DoctorAvailabilityPage() {
             return (
               <Col span={3}>
                 {chars.map((char, idx) => {
-                  const curState = char == "1" ? true : false;
+                  const curState = char === "1" ? true : false;
                   return (
                     <ToggleButton
                       defaultState={curState}
