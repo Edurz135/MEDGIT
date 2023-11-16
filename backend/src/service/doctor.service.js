@@ -174,10 +174,24 @@ const getUpdateDoctorService = async (DoctorId, email, password, phone) =>{
     throw new Error(error.message);
   }
 };
+const getVisualiseDoctorService = async (DoctorId) => {
+  try {
+    const doctor = await Models.Doctor.findOne({
+      attributes: ["name", "lastName","email","password", "identityDoc","nroColegiatura","gender","phone"],
+      where: {
+        id: DoctorId,
+      },
+    });
+    return doctor;
+  } catch (e) {
+    throw new Error(e.message);
+  }
+  };
 module.exports = {
   getPastAppointmentsService,
   getFutureAppointmentsService,
   getAvailabilityService,
   getUpdateDoctorService,
+  getVisualiseDoctorService,
   updateAvailabilityService,
 };

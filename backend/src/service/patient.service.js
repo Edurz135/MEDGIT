@@ -182,6 +182,19 @@ const getUpdatePacientService = async (PatientId, email, password, phone) =>{
     throw new Error(error.message);
   }
 };
+const getVisualisePacientService = async (PatientId) => {
+  try {
+    const patient = await Models.Patient.findOne({
+      attributes: ["name", "lastName","email","password", "identityDoc","gender","phone"],
+      where: {
+        id: PatientId,
+      },
+    });
+    return patient;
+  } catch (e) {
+    throw new Error(e.message);
+  }
+};
 module.exports = {
   getPastAppointmentsService,
   getFutureAppointmentsService,
@@ -189,5 +202,6 @@ module.exports = {
   getAvailabilityService,
   getListSpecialtiesService,
   getUpdatePacientService,
+  getVisualisePacientService,
   bookAppointmentService,
 };

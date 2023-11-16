@@ -8,6 +8,7 @@ const {
   getListSpecialties,
   getFutureAppointments,
   getupdatePacient,
+  getVisualisePacient,
   bookAppointment,
 } = require("../controllers/patient.controller");
 
@@ -52,6 +53,11 @@ patientRouter.put(
   "/api/patient/updateGetPatient",
   authenticateToken,
   getupdatePacient
-)
+);
+patientRouter.get(
+  "/api/patient/getVisualisePacient",
+  authenticateToken,
+  getVisualisePacient
+);
 
 module.exports = patientRouter;

@@ -3,6 +3,7 @@ const { authenticateToken } = require("../middlewares/auth.middleware");
 
 const {
     getupdatelabAnalyst,
+    getVisualiseLabAnalyst,
 } = require("../controllers/labAnalyst.controller");
 const labAnalystRouter = Router();
 
@@ -12,5 +13,10 @@ labAnalystRouter.put(
     "/api/labAnalyst/updateGetlabAnalyst",
     authenticateToken,
     getupdatelabAnalyst
-  )
+  );
+  labAnalystRouter.get(
+    "/api/labAnalyst/getVisualiseLabAnalyst",
+    authenticateToken,
+    getVisualiseLabAnalyst
+  );
 module.exports = labAnalystRouter;
