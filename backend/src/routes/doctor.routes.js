@@ -19,6 +19,11 @@ doctorRouter.get(
   getPastAppointments
 );
 doctorRouter.get(
+  "/api/doctor/getAppointmentsDetails",
+  authenticateToken,
+  getAppointmentsDetails
+);
+doctorRouter.get(
   "/api/doctor/getAvailability",
   authenticateToken,
   getAvailability
