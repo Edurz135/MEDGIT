@@ -111,12 +111,7 @@ const bookAppointment = async (req, res) => {
 };
 const getupdatePacient = async (req, res) => {
   try {
-    const result = await getUpdatePacientService(
-      req.user.id,
-      req.body.email,
-      req.body.password,
-      req.body.phone
-    );
+    const result = await getUpdatePacientService(req.body);
     return res.status(200).json({
       status: 200,
       result: result,

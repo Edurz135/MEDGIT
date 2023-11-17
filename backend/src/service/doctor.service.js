@@ -1,4 +1,5 @@
 const { Models } = require("../db.js");
+const bcrypt = require("bcrypt");
 
 // Trae citas pasadas: fecha, tiempo, tipo, diagnostico y comentario
 const getPastAppointmentsService = async (DoctorId) => {
@@ -161,17 +162,18 @@ const updateAvailabilityService = async (id, body) => {
     throw new Error(e.message);
   }
 };
-const getUpdateDoctorService = async (DoctorId, email, password, phone) =>{
+const getUpdateDoctorService = async (body) =>{
   try{
+    const hashedPassword = await bcrypt.hash(body.password, 10);
     const doctor = await Models.Doctor.findOne({
       where: {
         id: DoctorId,
       },
     });
     await doctor.update({
-      email:email,
-      password:password,
-      phone:phone,
+      email:body.email,
+      password:hashedPassword,
+      phone:body.phone,
       });
     return doctor;
     }catch (error) {

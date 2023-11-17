@@ -79,12 +79,7 @@ const getupdateDoctor = async (req, res) => {
 
   console.log(req.body);
   try {
-    const result = await getUpdateDoctorService(
-      req.user.id,
-      req.body.email,
-      req.body.password,
-      req.body.phone
-    );
+    const result = await getUpdateDoctorService(req.body);
     return res.status(200).json({
       status: 200,
       result: result,
