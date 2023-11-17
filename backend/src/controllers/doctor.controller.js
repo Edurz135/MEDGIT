@@ -34,10 +34,9 @@ const getFutureAppointments = async (req, res) => {
     return res.status(400).json({ status: 400, message: e.message });
   }
 };
-const getAppointmentDetails = async (req, res) => {
+const getAppointmentsDetails = async (req, res) => {
   try {
     // Envía el id de la cita
-    
     const result = (await getAppointmentDetailsService(req.body.appointmentId)) || [];
     return res.status(200).json({
       status: 200,
@@ -97,7 +96,7 @@ const getupdateDoctor = async (req, res) => {
 module.exports = {
   getPastAppointments,
   getFutureAppointments,
-  getAppointmentDetails,
+  getAppointmentsDetails,
   getAvailability,
   getupdateDoctor,
   updateAvailability,
