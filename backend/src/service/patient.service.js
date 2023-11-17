@@ -1,6 +1,7 @@
 const { Models } = require("../db.js");
 const dayjs = require("dayjs");
 const { Op } = require("sequelize");
+const bcrypt = require("bcrypt");
 
 // Trae citas pasadas: fecha, tiempo, tipo, diagnostico y comentario
 const getPastAppointmentsService = async (PatientId) => {
@@ -165,17 +166,18 @@ const getFutureAppointmentsService = async (PatientId) => {
     throw new Error(e.message);
   }
 }; 
-const getUpdatePacientService = async (PatientId, email, password, phone) =>{
+const getUpdatePacientService = async (body) =>{
   try{
+    const hashedPassword = await bcrypt.hash(body.password, 10);
     const patient = await Models.Patient.findOne({
       where: {
         id: PatientId,
       },
     });
     await patient.update({
-      email:email,
-      password:password,
-      phone:phone,
+      email:body.email,
+      password:hashedPassword,
+      phone:body.phone,
       });
     return patient;
     }catch (error) {
