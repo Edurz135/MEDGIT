@@ -23,7 +23,7 @@ describe('GET /api/doctor/getPastAppointments', () => {
       .get('/api/doctor/getPastAppointments')
       .set('Authorization', `Bearer ${token}`)	
       .send();
-
+    console.log(res.result);
     expect(res.statusCode).toEqual(200);
   });
 

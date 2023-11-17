@@ -1,8 +1,7 @@
 import React from "react";
 import {LaboratoryMainPage, LaboratoryExamenPage, LaboratoryPerfilPage, } from "../../pages";
 import {HomeOutlined,FolderOpenOutlined } from "@ant-design/icons";
-import { Layout, Menu, Button } from "antd";
-import { Routes, Route, Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import LayoutBase from "./layoutBase";
 import Sidebar from "./sidebar"; // Importa el componente Sidebar
 import { LocalStorageServices } from "../../../services";
@@ -25,6 +24,7 @@ export default function PatientLayout() {
       component: <LaboratoryMainPage />,
       label: "Inicio",
       url: "inicio",
+      hidden: false,
     },
     {
       index: 1,
@@ -32,6 +32,7 @@ export default function PatientLayout() {
       component: <LaboratoryExamenPage />,
       label: "Examenes",
       url: "examenes",
+      hidden: false,
     },
     
   ];

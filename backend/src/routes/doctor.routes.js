@@ -4,6 +4,7 @@ const {
   getAvailability,
   updateAvailability,
   getFutureAppointments,
+  getVisualiseDoctor,
   getupdateDoctor,
 } = require("../controllers/doctor.controller");
 
@@ -36,7 +37,12 @@ doctorRouter.put(
   "/api/doctor/updateGetDoctor",
   getupdateDoctor,
   updateAvailability
-)
+);
+doctorRouter.get(
+  "/api/doctor/getVisualiseDoctor",
+  authenticateToken,
+  getVisualiseDoctor
+);
 // Rutas del doctor
 
 doctorRouter.get(
