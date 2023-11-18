@@ -11,15 +11,12 @@ const getPastAppointmentsService = async (PatientId) => {
         PatientId: PatientId,
         pending: false,
       },
-      /* include: [
+      include:[
         {
-          model: Models.ExaMed,
-          attributes: ["comment"],
-          where: {
-            state: 0,
-          },
-        },
-      ], */
+          model: Models.Doctor,
+          attributes: ["name", "lastName"],
+        }
+      ]
     });
     return appointments;
   } catch (e) {
@@ -184,15 +181,12 @@ const getFutureAppointmentsService = async (PatientId) => {
         PatientId: PatientId,
         pending: true,
       },
-      /* include: [
+      include:[
         {
-          model: Models.ExaMed,
-          attributes: ["comment"],
-          where: {
-            state: 1,
-          },
-        },
-      ], */
+          model: Models.Doctor,
+          attributes: ["name", "lastName"],
+        }
+      ]
     });
 
     return appointments;
