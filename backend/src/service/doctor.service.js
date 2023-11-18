@@ -68,20 +68,17 @@ const getAppointmentDetailsService = async (id) => {
           }]
         },
       ],
-      include: [
+      include: [ // Medicamentos
         {
           model: Models.Medicine,
           attributes: ["name", "description","dose"],
         }
-        /* {
-          model: Models.ContenMedCi,
-          include: [
-            {
-              model: Models.Medicine,
-              attributes: ["name", "description","dose"],
-            }
-          ]
-        } */
+      ],
+      include:[ // Paciente
+        {
+          model: Models.Patient,
+          attributes: ["name", "lastName","email","phone"],
+        }
       ]
     });
 
