@@ -48,7 +48,7 @@ const RegisterPage = () => {
     axios
       .post("http://localhost:3100/api/registerDoctor", formData)
       .then((response) => {
-        if (response.data.status == 200) {
+        if (response.data.status === 200) {
           setPopUpInformation(
             "El usuario ha sido registrado satisfactoriamente."
           );
@@ -69,12 +69,13 @@ const RegisterPage = () => {
       password: values.password,
       gender: values.genero,
       identityDoc: values.dni,
+      nroColegiatura: values.colegiatura || "",
     };
 
     axios
       .post("http://localhost:3100/api/registerLabAnalyst", formData)
       .then((response) => {
-        if (response.data.status == 200) {
+        if (response.data.status === 200) {
           setPopUpInformation(
             "El usuario ha sido registrado satisfactoriamente."
           );
@@ -100,7 +101,7 @@ const RegisterPage = () => {
     axios
       .post("http://localhost:3100/api/registerPatient", formData)
       .then((response) => {
-        if (response.data.status == 200) {
+        if (response.data.status === 200) {
           setPopUpInformation(
             "El usuario ha sido registrado satisfactoriamente."
           );
