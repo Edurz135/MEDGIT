@@ -1,6 +1,7 @@
 const {
   getPastAppointmentsService,
   getFutureAppointmentsService,
+  getAppointmentDetailsService,
   getListDoctorsService,
   getAvailabilityService,
   getListSpecialtiesService,
@@ -8,7 +9,7 @@ const {
   getVisualisePacientService,
   bookAppointmentService,
 } = require("../service/patient.service.js");
-const { getAppointmentDetailsService } = require("../service/doctor.service.js");
+
 const getPastAppointments = async (req, res) => {
   try {
     // Envía el id del paciente

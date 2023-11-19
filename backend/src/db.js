@@ -40,6 +40,9 @@ Doctor.belongsTo(Specialty);
 Medicine.belongsToMany(Appointment,{through: 'ContenMedCi'});
 Appointment.belongsToMany(Medicine,{through: 'ContenMedCi'});
 
+Appointment.belongsTo(Doctor);
+Appointment.belongsTo(Patient);
+
 Allergy.hasMany(ContenPacAle);
 Patient.hasMany(ContenPacAle);  
 
@@ -60,7 +63,5 @@ Models.ContenMedCi = ContenMedCi;
 Models.ContenPacAle = ContenPacAle;
 Models.Specialty = Specialty;
 Models.WeeklyTransaction = WeeklyTransaction;
-
-// Procedimientos almacenados
 
 module.exports = { db, Models };

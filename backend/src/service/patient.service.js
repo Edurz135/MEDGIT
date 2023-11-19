@@ -12,22 +12,54 @@ const getPastAppointmentsService = async (PatientId) => {
         PatientId: PatientId,
         pending: false,
       },
-      /* include: [
+      include:[
         {
-          model: Models.ExaMed,
-          attributes: ["comment"],
-          where: {
-            state: 0,
-          },
-        },
-      ], */
+          model: Models.Doctor,
+          attributes: ["name", "lastName"],
+        }
+      ]
     });
     return appointments;
   } catch (e) {
     throw new Error(e.message);
   }
 };
+const getAppointmentDetailsService = async (id) => {
+  try {
+    const appointment = await Models.Appointment.findOne({
+      attributes: ["startDate", "endDate","intervalDigit", "state", "diagnostic"],
+      where: {
+        id: id,
+      },
+      include: [//Examen medico y tipo de examen
+        {
+          model: Models.ExaMed,
+          attributes: ["comment"],
+          include:[{
+            model: Models.TipExMed,
+            attributes: ["name"],
+          }]
+        },
+      ],
+      include: [ // Medicamentos
+        {
+          model: Models.Medicine,
+          attributes: ["name", "description","dose"],
+        }
+      ],
+      include:[ // Medico
+        {
+          model: Models.Doctor,
+          attributes: ["name", "lastName"],
+        }
+      ]
+    });
 
+    return appointment;
+  } catch (e) {
+    throw new Error(e.message);
+  }
+}
 const getListDoctorsService = async () => {
   try {
     const result = await Models.Doctor.findAll({
@@ -150,15 +182,12 @@ const getFutureAppointmentsService = async (PatientId) => {
         PatientId: PatientId,
         pending: true,
       },
-      /* include: [
+      include:[
         {
-          model: Models.ExaMed,
-          attributes: ["comment"],
-          where: {
-            state: 1,
-          },
-        },
-      ], */
+          model: Models.Doctor,
+          attributes: ["name", "lastName"],
+        }
+      ]
     });
 
     return appointments;
@@ -200,6 +229,7 @@ const getVisualisePacientService = async (PatientId) => {
 module.exports = {
   getPastAppointmentsService,
   getFutureAppointmentsService,
+  getAppointmentDetailsService,
   getListDoctorsService,
   getAvailabilityService,
   getListSpecialtiesService,
