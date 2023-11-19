@@ -1,7 +1,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import UnauthorizedLayout from "./views/layouts/unauthorized/unauthorized.layout";
-import { PatientLayout } from "./views/layouts";
+import { AdministratorLayout, PatientLayout } from "./views/layouts";
 import { DoctorLayout } from "./views/layouts";
 import { LaboratoryLayout } from "./views/layouts";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
@@ -31,6 +31,14 @@ export default function App() {
         element={
           <ProtectedRoute>
             <LaboratoryLayout />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/auth/administrator/*"
+        element={
+          <ProtectedRoute>
+            <AdministratorLayout />
           </ProtectedRoute>
         }
       />

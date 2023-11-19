@@ -25,6 +25,8 @@ const LoginPage = () => {
       loginRoute = "http://localhost:3100/api/loginDoctor";
     } else if (selectedPuesto === "laboratorio") {
       loginRoute = "http://localhost:3100/api/loginLabAnalyst";
+    } else if (selectedPuesto === "administrador") {
+      loginRoute = "http://localhost:3100/api/loginAdministrator";
     }
 
     await axios
@@ -45,6 +47,8 @@ const LoginPage = () => {
             loggedRoute = "/auth/doctor/inicio";
           } else if (selectedPuesto === "laboratorio") {
             loggedRoute = "/auth/laboratory/inicio";
+          } else if (selectedPuesto === "administrador") {
+            loggedRoute = "/auth/administrator/inicio";
           }
 
           navigate(loggedRoute);
@@ -92,6 +96,7 @@ const LoginPage = () => {
               <Radio value="paciente">Paciente</Radio>
               <Radio value="medico">Médico</Radio>
               <Radio value="laboratorio">Laboratorio</Radio>
+              <Radio value="administrador">Administrador</Radio>
             </Radio.Group>
           </Form.Item>
           <Form.Item

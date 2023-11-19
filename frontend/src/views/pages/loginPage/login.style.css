@@ -1,17 +1,17 @@
 .center-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
-  
-  .register-card {
-    width: 300px;
-    padding: 20px;
-    background-color: #fff;
-    text-align: center;
-  }
-  
-  .register-title {
-    margin: 0 auto 20px;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.register-card {
+  width: 400px !important;
+  padding: 20px;
+  background-color: #fff;
+  text-align: center;
+}
+
+.register-title {
+  margin: 0 auto 20px;
+}
