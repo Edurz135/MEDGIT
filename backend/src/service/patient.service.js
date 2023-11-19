@@ -12,7 +12,7 @@ const getPastAppointmentsService = async (PatientId) => {
         PatientId: PatientId,
         pending: false,
       },
-      include:[
+      include:[ //Nombre doctor
         {
           model: Models.Doctor,
           attributes: ["name", "lastName"],
