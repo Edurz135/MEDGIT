@@ -1,5 +1,7 @@
 const { Models } = require("../db.js");
-const { createAppointmentsService } = require("../stored_procedures/weeklyTransactions.js")
+const {
+  createAppointmentsService,
+} = require("../stored_procedures/weeklyTransactions.js");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
@@ -132,6 +134,25 @@ const loginLabAnalystService = async (email, password) => {
   }
 };
 
+const loginAdministratorService = async (email, password) => {
+  try {
+    const admin = await getAdministratorService(email);
+    const match = await bcrypt.compare(
+      password,
+      admin.dataValues.password
+    );
+    if (!match) throw new Error("Invalid credentials");
+
+    const accessToken = await jwt.sign(
+      JSON.stringify(admin),
+      process.env.TOKEN_SECRET
+    );
+    return "Bearer " + accessToken;
+  } catch (e) {
+    throw Error("Error while finding an administrator. Error: " + e);
+  }
+};
+
 const getPatientService = async (email) => {
   try {
     const patient = await Models.Patient.findOne({
@@ -165,6 +186,17 @@ const getLabAnalystService = async (email) => {
   }
 };
 
+const getAdministratorService = async (email) => {
+  try {
+    const admin = await Models.Administrator.findOne({
+      where: { email: email },
+    });
+    return admin;
+  } catch (e) {
+    throw Error("Error while finding an admin. Error: " + e);
+  }
+};
+
 module.exports = {
   registerPatientService,
   registerDoctorService,
@@ -175,4 +207,5 @@ module.exports = {
   loginPatientService,
   loginDoctorService,
   loginLabAnalystService,
+  loginAdministratorService,
 };
