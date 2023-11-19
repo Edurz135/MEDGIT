@@ -6,6 +6,7 @@ export { default as registerPage } from "./registerPage/registerPage";
 // DOCTOR
 export { default as DoctorMainPage } from "./doctorPages/doctorMain/doctorMainPage.page";
 export { default as DoctorCitasPage } from "./doctorPages/doctorCitas/doctorCitasPage.page";
+export { default as DoctorHistorialPage } from "./doctorPages/doctorHistorial/doctorHistorialPage.page";
 export { default as DoctorPerfilPage } from "./doctorPages/doctorPerfil/doctorPerfilPage.page";
 export { default as DoctorAvalabilityPage } from "./doctorPages/doctorAvailability/doctorAvailability.page";
 
