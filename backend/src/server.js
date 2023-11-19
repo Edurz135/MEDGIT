@@ -48,9 +48,9 @@ const server = () => {
 
   const { db } = require("./db");
   const create_update_appointsments_pending_status = require("./stored_procedures/sp_update_appointments_pending_status.js");
-  
+
   db.sequelize
-    .sync({ force : true })
+    .sync({ force: false })
     .then(() => {
       //create_update_appointsments_pending_status(); // Crea el procedimiento almacenado
       db.sequelize
@@ -59,16 +59,18 @@ const server = () => {
           console.log("Procedimiento almacenado ejecutado correctamente");
         })
         .catch((err) => {
-          console.log("Error al ejecutar el procedimiento almacenado: " + err.message);
+          console.log(
+            "Error al ejecutar el procedimiento almacenado: " + err.message
+          );
         });
-      loadData();
-      executeWeeklyTransactionIfNeeded();
+      loadData().then(() => {
+        executeWeeklyTransactionIfNeeded();
+      });
       console.log("DB Synced and Updated.");
     })
     .catch((err) => {
       console.log("Failed to sync db: " + err.message);
     });
-
 
   return {
     app,

@@ -1,9 +1,8 @@
 const { BaseValidator } = require("./base.validation.js");
 
 class PatientRegistrationValidator extends BaseValidator {
-  constructor(minPasswordLength) {
+  constructor() {
     super();
-    this.minPasswordLength = minPasswordLength;
   }
 
   async validate(req, res, next) {
@@ -17,7 +16,7 @@ class PatientRegistrationValidator extends BaseValidator {
       ])
     ) {
       super.sendErrorResponse(res);
-    } else if (!super.validatePasswordLength(req, this.minPasswordLength)) {
+    } else if (!super.validatePasswordLength(req, 6)) {
       super.sendErrorResponse(res);
     } else if (!super.validateNames(req, ["name", "lastName"])) {
       super.sendErrorResponse(res);

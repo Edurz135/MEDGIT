@@ -2,25 +2,26 @@ import "./patientCitasPage.styles.css";
 import React, { Component } from "react";
 import axios from "axios";
 import { LocalStorageServices } from "../../../../services";
-import {Table} from 'antd';
+import { Table } from "antd";
+import dayjs from "dayjs";
 
 const columns = [
   {
-    title: 'Fecha',
-    dataIndex: 'fecha',
-    key: 'fecha',
+    title: "Fecha",
+    dataIndex: "fecha",
+    key: "fecha",
     width: 250,
   },
   {
-    title: 'Hora',
-    dataIndex: 'hora',
-    key: 'hora',
+    title: "Hora",
+    dataIndex: "hora",
+    key: "hora",
     width: 150,
   },
   {
-    title: 'Doctor',
-    dataIndex: 'doctor',
-    key: 'doctor',
+    title: "Doctor",
+    dataIndex: "doctor",
+    key: "doctor",
     width: 250,
   },
 ];
@@ -51,10 +52,6 @@ export default class PatientCitasPage extends Component {
       .catch((error) => {
         console.error("Error al obtener datos:", error);
       });
-
-      
-
-    
   }
 
   render() {
@@ -62,10 +59,10 @@ export default class PatientCitasPage extends Component {
 
     const data = citasProximas.map((cita, index) => ({
       fecha: cita.startDate.substring(0, 10),
-      hora: cita.startDate,
+      hora: dayjs(cita.startDate).format("HH:mm") + " - " + dayjs(cita.endDate).format("HH:mm"),
       doctor: cita.Doctor.name + " " + cita.Doctor.lastName,
     }));
-
+    console.log(citasProximas);
     return (
       <div>
         <div className="content-info">
@@ -75,10 +72,8 @@ export default class PatientCitasPage extends Component {
         <div>
           {citasProximas ? (
             <div>
-
-            <Table columns={columns} dataSource={data} />
-          
-          </div>
+              <Table columns={columns} dataSource={data} />
+            </div>
           ) : (
             <p>Cargando datos...</p>
           )}

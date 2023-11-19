@@ -87,7 +87,7 @@ const createAppointmentsService = async (doctorId) => {
 
 async function executeWeeklyTransactionIfNeeded() {
   const today = dayjs();
-  const lastMonday = today.day(1).startOf("day"); // Establece la fecha al lunes de la semana actual
+  const lastMonday = today.day(0).startOf("day"); // Establece la fecha al lunes de la semana actual
 
   // Verifica si la transacción ya se ha ejecutado esta semana
   const transactionRecord = await Models.WeeklyTransaction.findByPk(
@@ -97,17 +97,20 @@ async function executeWeeklyTransactionIfNeeded() {
   if (!transactionRecord) {
     // Si no se ha ejecutado, ejecuta la transacción
     await db.sequelize.transaction(async (t) => {
-      // Aquí va tu lógica de transacción...
-      await deleteAllAppointmentsService();
-      await createAllAppointmentsService();
-
       // Marca la transacción como ejecutada
       await Models.WeeklyTransaction.create(
         { weekOf: lastMonday.toISOString(), executed: true },
         { transaction: t }
       );
+      // Aquí va tu lógica de transacción...
+      await deleteAllAppointmentsService().then(async () => {
+        await createAllAppointmentsService();
+      });
     });
   }
 }
 
-module.exports = { executeWeeklyTransactionIfNeeded, createAppointmentsService };
+module.exports = {
+  executeWeeklyTransactionIfNeeded,
+  createAppointmentsService,
+};

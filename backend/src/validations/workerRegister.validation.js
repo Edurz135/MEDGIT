@@ -1,9 +1,8 @@
 const { BaseValidator } = require("./base.validation.js");
 
 class WorkerRegistrationValidator extends BaseValidator {
-  constructor(minPasswordLength) {
+  constructor() {
     super();
-    this.minPasswordLength = minPasswordLength;
   }
 
   validate(req, res, next) {
@@ -18,7 +17,7 @@ class WorkerRegistrationValidator extends BaseValidator {
       ])
     ) {
       super.sendErrorResponse(res);
-    } else if (!this.validatePasswordLength(req, this.minPasswordLength)) {
+    } else if (!this.validatePasswordLength(req, 6)) {
       super.sendErrorResponse(res);
     } else if (!this.validateEmailFormat(req)) {
       super.sendErrorResponse(res);
