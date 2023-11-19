@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import { LocalStorageServices } from "../../../../services";
 import {Table} from 'antd';
+import dayjs from "dayjs";
 
 const columns = [
   {
@@ -74,7 +75,7 @@ export default class PatientHistorialPage extends Component {
     const data = citasPasadas.map((cita, index) => ({
       key: index.toString(), // Puedes usar un valor único como índice para "key".
       fecha: cita.startDate.substring(0, 10),
-      hora: cita.startDate,
+      hora: dayjs(cita.startDate).format("HH:mm") + " - " + dayjs(cita.endDate).format("HH:mm"),
       doctor: cita.Doctor.name + " " + cita.Doctor.lastName,
       diagnostico: (
         <div className="contenedorDiagnostico">
