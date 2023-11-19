@@ -2,12 +2,14 @@ import React from "react";
 import {
   DoctorMainPage,
   DoctorCitasPage,
+  DoctorHistorialPage,
   DoctorPerfilPage,
   DoctorAvalabilityPage,
 } from "../../pages";
 import {
   HomeOutlined,
   FolderOpenOutlined,
+  ReadOutlined,
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import LayoutBase from "./layoutBase";
@@ -46,6 +48,14 @@ export default function PatientLayout() {
     },
     {
       index: 2,
+      icon: <ReadOutlined />,
+      component: <DoctorHistorialPage />,
+      label: "Historial clinico",
+      url: "historialClinico",
+      hidden: false,
+    },
+    {
+      index: 3,
       component: <DoctorAvalabilityPage />,
       url: "availability",
       hidden: true,
