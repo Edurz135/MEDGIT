@@ -1,6 +1,14 @@
 {
   "dependencies": {
     "antd": "^5.10.1",
-    "express": "^4.18.2"
+    "axios": "^1.6.2",
+    "express": "^4.18.2",
+    "supertest": "^6.3.3"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  },
+  "scripts": {
+    "test": "jest"
   }
 }

@@ -1,4 +1,5 @@
 const { Models } = require("../db.js");
+const bcrypt = require("bcrypt");
 
 // Trae citas pasadas: fecha, tiempo, tipo, diagnostico y comentario
 const getPastAppointmentsService = async (DoctorId) => {
@@ -9,16 +10,14 @@ const getPastAppointmentsService = async (DoctorId) => {
         DoctorId: DoctorId,
         pending: false,
       },
-      /* include: [
+      include:[
         {
-          model: Models.ExaMed,
-          attributes: ["comment"],
-          where: {
-            state: 0,
-          },
-        },
-      ], */
+          model: Models.Patient,
+          attributes: ["name", "lastName"],
+        }
+      ]
     });
+  
 
     return appointments;
   } catch (e) {
@@ -33,15 +32,12 @@ const getFutureAppointmentsService = async (DoctorId) => {
         DoctorId: DoctorId,
         pending: true,
       },
-      /* include: [
+      include:[
         {
-          model: Models.ExaMed,
-          attributes: ["comment"],
-          where: {
-            state: 1,
-          },
-        },
-      ], */
+          model: Models.Patient,
+          attributes: ["name", "lastName"],
+        }
+      ]
     });
 
     return appointments;
@@ -68,20 +64,17 @@ const getAppointmentDetailsService = async (id) => {
           }]
         },
       ],
-      include: [
+      include: [ // Medicamentos
         {
           model: Models.Medicine,
           attributes: ["name", "description","dose"],
         }
-        /* {
-          model: Models.ContenMedCi,
-          include: [
-            {
-              model: Models.Medicine,
-              attributes: ["name", "description","dose"],
-            }
-          ]
-        } */
+      ],
+      include:[ // Paciente
+        {
+          model: Models.Patient,
+          attributes: ["name", "lastName","email","phone"],
+        }
       ]
     });
 
@@ -161,28 +154,43 @@ const updateAvailabilityService = async (id, body) => {
     throw new Error(e.message);
   }
 };
-const getUpdateDoctorService = async (DoctorId, email, password, phone) =>{
+const getUpdateDoctorService = async (body) =>{
   try{
+    const hashedPassword = await bcrypt.hash(body.password, 10);
     const doctor = await Models.Doctor.findOne({
       where: {
         id: DoctorId,
       },
     });
     await doctor.update({
-      email:email,
-      password:password,
-      phone:phone,
+      email:body.email,
+      password:hashedPassword,
+      phone:body.phone,
       });
     return doctor;
     }catch (error) {
     throw new Error(error.message);
   }
 };
+const getVisualiseDoctorService = async (DoctorId) => {
+  try {
+    const doctor = await Models.Doctor.findOne({
+      attributes: ["name", "lastName","email","password", "identityDoc","nroColegiatura","gender","phone"],
+      where: {
+        id: DoctorId,
+      },
+    });
+    return doctor;
+  } catch (e) {
+    throw new Error(e.message);
+  }
+  };
 module.exports = {
   getPastAppointmentsService,
   getFutureAppointmentsService,
   getAppointmentDetailsService,
   getAvailabilityService,
   getUpdateDoctorService,
+  getVisualiseDoctorService,
   updateAvailabilityService,
 };
