@@ -23,4 +23,5 @@ export { default as LaboratoryExamenPage } from "./laboratoryPages/laboratoryExa
 export { default as LaboratoryPerfilPage } from "./laboratoryPages/laboratoryPerfil/laboratoryPerfilPage.page";
 
 // ADMINISTRATOR
-export { default as AdministratorMainPage } from "./administratorPages/administratorMain/administratorMain.page"
+export { default as AdministratorMainPage } from "./administratorPages/administratorMain/administratorMain.page";
+export { default as AdministratorDataIngestion } from "./administratorPages/administratorDataIngestion/administratorDataIngestion.page";
