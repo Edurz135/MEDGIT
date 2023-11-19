@@ -18,3 +18,17 @@ p {
 ul {
     text-align: justify;
 }
+
+.contenedorDiagnostico{
+    text-align: right;
+    border-radius: 2%;
+}
+
+.btnDetalles{
+    background-color: #0062ff;
+    color: white;
+    border: none;
+    padding: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
