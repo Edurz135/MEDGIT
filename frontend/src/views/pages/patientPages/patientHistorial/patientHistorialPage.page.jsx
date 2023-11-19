@@ -18,9 +18,10 @@ const columns = [
     width: 150,
   },
   {
-    title: 'Tipo de Cita',
-    dataIndex: 'tipo',
-    key: 'tipo',
+    title: 'Doctor',
+    dataIndex: 'doctor',
+    key: 'doctor',
+    width: 250,
   },
   {
     title: 'Diagnóstico',
@@ -29,7 +30,10 @@ const columns = [
   },
 ];
 
-
+const handleButtonClick = (cita) => {
+  // Lógica para manejar el clic en el botón aquí
+  console.log('Botón clickeado para la cita:', cita);
+};
 
 
 export default class PatientHistorialPage extends Component {
@@ -43,7 +47,7 @@ export default class PatientHistorialPage extends Component {
     let config = {
       method: "get",
       maxBodyLength: Infinity,
-      url: "http://localhost:3100/api/patient/pastGetAppointments",
+      url: "http://localhost:3100/api/patient/getPastAppointments",
       headers: {
         Authorization: accessToken,
       },
@@ -69,10 +73,15 @@ export default class PatientHistorialPage extends Component {
 
     const data = citasPasadas.map((cita, index) => ({
       key: index.toString(), // Puedes usar un valor único como índice para "key".
-      fecha: cita.date,
-      hora: cita.time,
-      tipo: cita.type,
-      diagnostico: cita.diagnostic,
+      fecha: cita.startDate.substring(0, 10),
+      hora: cita.startDate,
+      doctor: cita.Doctor.name + " " + cita.Doctor.lastName,
+      diagnostico: (
+        <div className="contenedorDiagnostico">
+          <p>{cita.diagnostic}</p>
+          <button className="btnDetalles" onClick={() => handleButtonClick(cita)}>Ver detalles</button>
+        </div>
+      ),
     }));
 
     return (
