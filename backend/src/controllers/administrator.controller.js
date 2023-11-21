@@ -1,11 +1,13 @@
-const fs = require('fs');
+const fs = require("fs");
+const { parse } = require("csv-parse");
 
 const UploadAppointmentData = async (req, res) => {
+  console.log("ENTRO");
   const filePath = req.file.path;
 
   const results = [];
   fs.createReadStream(filePath)
-    .pipe(csvParser())
+    .pipe(parse())
     .on("data", (data) => results.push(data))
     .on("error", (error) => {
       console.error(error);
@@ -21,6 +23,7 @@ const UploadAppointmentData = async (req, res) => {
         .status(200)
         .json({ message: "CSV file processed successfully", data: results });
     });
+  console.log(results);
 };
 
 module.exports = {

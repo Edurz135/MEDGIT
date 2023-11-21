@@ -1,11 +1,23 @@
 // import "./administratorMain.styles.css";
-import { Row, Typography, message, Upload, Col } from "antd";
+import { Row, Typography, message, Upload } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
+import { LocalStorageServices } from "../../../../services";
+import axios from "axios";
 const { Title, Text } = Typography;
 const { Dragger } = Upload;
 
 async function sendData(file) {
-  console.log(file)
+  const accessToken = await LocalStorageServices.GetData("accessToken");
+  await axios
+    .post("http://localhost:3100/api/uploadAppointmentData", file, {
+      headers: {
+        Authorization: accessToken,
+        "Content-Type": "multipart/form-data",
+      },
+    })
+    .then((response) => {
+      console.log(response.data);
+    });
 }
 
 const props = {

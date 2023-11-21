@@ -6,6 +6,6 @@ const { UploadAppointmentData } = require("../controllers/administrator.controll
 const administratorRouter = Router();
 const upload = multer({ dest: 'uploads/' });
 
-administratorRouter.post('api/uploadAppointmentData', authenticateToken, upload.single('file'), UploadAppointmentData );
+administratorRouter.post('/api/uploadAppointmentData', authenticateToken, upload.single('file'), UploadAppointmentData );
 
 module.exports = administratorRouter;
