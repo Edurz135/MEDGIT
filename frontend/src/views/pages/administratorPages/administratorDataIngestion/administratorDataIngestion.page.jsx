@@ -2,29 +2,18 @@
 import { Row, Typography, message, Upload } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
 import { LocalStorageServices } from "../../../../services";
-import axios from "axios";
 const { Title, Text } = Typography;
 const { Dragger } = Upload;
 
-async function sendData(file) {
-  const accessToken = await LocalStorageServices.GetData("accessToken");
-  await axios
-    .post("http://localhost:3100/api/uploadAppointmentData", file, {
-      headers: {
-        Authorization: accessToken,
-        "Content-Type": "multipart/form-data",
-      },
-    })
-    .then((response) => {
-      console.log(response.data);
-    });
-}
-
+const accessToken = await LocalStorageServices.GetData("accessToken");
 const props = {
   accept: ".csv",
   name: "file",
-  multiple: true,
-  customRequest: sendData,
+  multiple: false,
+  action: "http://localhost:3100/api/uploadAppointmentData",
+  headers: {
+    Authorization: accessToken,
+  },
   onChange(info) {
     const { status } = info.file;
     if (status !== "uploading") {

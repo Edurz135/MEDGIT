@@ -1,11 +1,27 @@
 const Router = require("express");
-const multer = require('multer');
+const multer = require("multer");
 const { authenticateToken } = require("../middlewares/auth.middleware");
-const { UploadAppointmentData } = require("../controllers/administrator.controller");
+const {
+  UploadAppointmentData,
+} = require("../controllers/administrator.controller");
 
 const administratorRouter = Router();
-const upload = multer({ dest: 'uploads/' });
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "src/uploads/");
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname);
+  },
+});
+const upload = multer({ storage: storage });
 
-administratorRouter.post('/api/uploadAppointmentData', authenticateToken, upload.single('file'), UploadAppointmentData );
+// const upload = multer({ dest: "src/uploads/" });
+administratorRouter.post(
+  "/api/uploadAppointmentData",
+  authenticateToken,
+  upload.single("file"),
+  UploadAppointmentData
+);
 
 module.exports = administratorRouter;
