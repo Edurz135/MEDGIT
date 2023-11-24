@@ -32,7 +32,7 @@ async function seedDoctors() {
         gender: doctor.gender,
         specialtyId: id % 28,
         nroColegitura: 123,
-        identityDoc: 12345678,
+        identityDoc: doctor.dni,
         password: "123456",
         email: doctor.name + "@gmail.com",
       };
