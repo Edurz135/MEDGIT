@@ -1,43 +1,27 @@
-const request = require('supertest');
-const express = require('express');
-const doctorRouter = require('../routes/doctor.routes');
-const { authenticateToken } = require("../middlewares/auth.middleware");
 require("dotenv").config();
-const app = express();
+//const app = express();
 const axios = require('axios');
-app.use(express.json());
-app.use('/api/doctor/', authenticateToken, doctorRouter);
-let token;
-let data = { email: 'Carlos@gmail.com', password: '123456' };
-// Inicia la sesión del doctor
-beforeAll(async () => {
-  const res = await request(app)
-    .post('/api/doctor/loginDoctor')
-    .send(data);
 
-  token = res.body.token;
-});
-console.log(token)
+let token = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6IkNhcmxvcyIsImxhc3ROYW1lIjoiUXVpc3BlIiwiZW1haWwiOiJDYXJsb3NAZ21haWwuY29tIiwicGFzc3dvcmQiOiIkMmIkMTAkUTZTdTdxM2wwMjVLbW9ZLktuUk5xZW40ckIvdVUyUUtlZmN1Q09jUVdvamdEODVwWHNORlMiLCJpZGVudGl0eURvYyI6MTIzNDU2NzgsIm5yb0NvbGVnaWF0dXJhIjpudWxsLCJnZW5kZXIiOiJNYXNjdWxpbm8iLCJwaG9uZSI6OTk5OTk5OTk5LCJtb25kYXlEaXNwb25pYmlsaXR5IjoiMDAxMTEwMTEwMDAwIiwidHVlc2RheURpc3BvbmliaWxpdHkiOiIwMDExMTAxMTAwMDAiLCJ3ZWRuZXNkYXlEaXNwb25pYmlsaXR5IjoiMDAxMTEwMTEwMDAwIiwidGh1cnNkYXlEaXNwb25pYmlsaXR5IjoiMDAxMTEwMTEwMDAwIiwiZnJpZGF5RGlzcG9uaWJpbGl0eSI6IjAwMTExMDExMDAwMCIsInNhdHVyZGF5RGlzcG9uaWJpbGl0eSI6IjAwMTExMDAwMDAwMCIsInN1bmRheURpc3BvbmliaWxpdHkiOiIwMDExMTAwMDAwMDAiLCJjcmVhdGVkQXQiOiIyMDIzLTExLTA5VDIyOjM4OjI0LjQ3MFoiLCJ1cGRhdGVkQXQiOiIyMDIzLTExLTA5VDIyOjM4OjI0LjQ3MFoiLCJTcGVjaWFsdHlJZCI6MH0.ptAzBaC_yPK5w4MoESxxRar55-3JtZCO78ikg1BolvQ";
+
+let config = {
+  method: "get",
+  maxBodyLength: Infinity,
+  url: "http://localhost:3100/api/doctor/getPastAppointments",
+  headers: {
+    Authorization: token,
+  },
+};
+//console.log(token);
 // Agrupa las pruebas unitarias de getPastAppointments
 describe('GET /api/doctor/getPastAppointments', () => {
   it('Debería retornar el status 200', async () => {
-    axios.get('http://localhost:3100/api/doctor/getPastAppointments', data,{
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    })
-    .then(function (response) {
-      //console.log(response.status);
-    })
-    /* const res = await request(app)
-      .get('/api/doctor/getPastAppointments')
-      .set('Authorization', `${token}`)	
-      .set('Accept', 'application/json')
-      .send();
-
-    
-    expect(res.statusCode).toEqual(200); */
+    try {
+      const resp = await axios.request(config);
+      console.log(resp.data);
+      expect(resp.status).toEqual(200);
+    } catch (error) {
+      console.log(error);
+    }
   });
-
-  // Aquí puedes agregar más pruebas, por ejemplo, verificar que la respuesta tenga el formato correcto
-});
+})
