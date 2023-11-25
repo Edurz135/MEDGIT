@@ -23,6 +23,21 @@ const GetPastAppointments = async (accessToken) => {
   return res.data;
 };
 
+const UpdateDoctorAvailability = async (accessToken, body) => {
+  let config = {
+    method: "post",
+    maxBodyLength: Infinity,
+    url: "http://localhost:3100/api/doctor/updateAvailability",
+    headers: {
+      Authorization: accessToken,
+    },
+    data: body,
+  };
+
+  const res = await axios.request(config);
+  return res.data;
+};
+
 const GetDoctorAvailability = async (accessToken) => {
   let config = {
     method: "get",
@@ -52,6 +67,31 @@ describe("########## DOCTOR TESTS", () => {
     it("Debería retornar el status 200 y el resultado debe ser un arreglo", async () => {
       GetPastAppointments(accessToken).then((res) => {
         expect(Array.isArray(res.result)).toBe(true);
+        expect(res.status).toEqual(200);
+      });
+    });
+  });
+
+  describe("POST /api/doctor/updateAvailability", () => {
+    const body = {
+      mondayDisponibility: "001110110000",
+      tuesdayDisponibility: "001110110000",
+      wednesdayDisponibility: "001110110000",
+      thursdayDisponibility: "001110110000",
+      fridayDisponibility: "001110110000",
+      saturdayDisponibility: "001110000000",
+      sundayDisponibility: "001110000000",
+    }
+
+    it("Debería retornar el status 200 y el contenido de resultado actualizado", async () => {
+      UpdateDoctorAvailability(accessToken, body).then((res) => {
+        expect(res.result.mondayDisponibility).toEqual("001110110000");
+        expect(res.result.tuesdayDisponibility).toEqual("001110110000");
+        expect(res.result.wednesdayDisponibility).toEqual("001110110000");
+        expect(res.result.thursdayDisponibility).toEqual("001110110000");
+        expect(res.result.fridayDisponibility).toEqual("001110110000");
+        expect(res.result.saturdayDisponibility).toEqual("001110000000");
+        expect(res.result.sundayDisponibility).toEqual("001110000000");
         expect(res.status).toEqual(200);
       });
     });
