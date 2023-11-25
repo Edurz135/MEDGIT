@@ -5,14 +5,13 @@ import { LocalStorageServices } from "../../../../services";
 const { Title, Text } = Typography;
 const { Dragger } = Upload;
 
-const accessToken = await LocalStorageServices.GetData("accessToken");
 const props = {
   accept: ".csv",
   name: "file",
   multiple: false,
   action: "http://localhost:3100/api/uploadAppointmentData",
   headers: {
-    Authorization: accessToken,
+    Authorization: await LocalStorageServices.GetData("accessToken"),
   },
   onChange(info) {
     const { status } = info.file;

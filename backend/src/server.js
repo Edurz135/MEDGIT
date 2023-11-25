@@ -54,7 +54,7 @@ const server = () => {
   db.sequelize
     .sync({ force: false })
     .then(() => {
-      //create_update_appointsments_pending_status(); // Crea el procedimiento almacenado
+      // create_update_appointsments_pending_status(); // Crea el procedimiento almacenado
       db.sequelize
         .query("CALL sp_update_appointments_pending_status();") //Cambia las citas futuras a pasadas
         .then(() => {

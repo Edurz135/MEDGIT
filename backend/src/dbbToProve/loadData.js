@@ -50,6 +50,31 @@ async function seedDoctors() {
   } catch (error) {}
 }
 
+async function seedPatients() {
+  try {
+    const hashedPassword = await bcrypt.hash("123456", 10);
+    const body = {
+      email: "patient@gmail.com",
+      password: hashedPassword,
+      name: "Patient",
+      lastName: "One",
+      identityDoc: "12345678",
+      gender: "masculino",
+      phone: 0,
+    };
+    await Models.Patient.create(body)
+      .then((result) => {
+        console.log("Data inserted:", result);
+      })
+      .catch((error) => {
+        console.error(
+          `Error inserting PATIENT name="${body.name}", id="${body.id}":`
+        );
+      });
+    console.log("Especialidades agregadas con éxito.");
+  } catch (error) {}
+}
+
 async function seedAdministrator() {
   try {
     const hashedPassword = await bcrypt.hash("123456", 10);
@@ -71,7 +96,7 @@ async function seedAdministrator() {
 }
 
 const loadData = async () => {
-  const seeders = [seedSpecialties, seedDoctors, seedAdministrator];
+  const seeders = [seedSpecialties, seedDoctors, seedPatients, seedAdministrator];
 
   for (let seed of seeders) {
     await seed();
