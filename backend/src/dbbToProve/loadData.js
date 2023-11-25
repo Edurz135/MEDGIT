@@ -1,5 +1,7 @@
 const { Models } = require("../db");
 const { registerDoctorService } = require("../service/user.service");
+const bcrypt = require("bcrypt");
+
 async function seedSpecialties() {
   try {
     const specialties = require("./specialty.data");
@@ -48,8 +50,28 @@ async function seedDoctors() {
   } catch (error) {}
 }
 
+async function seedAdministrator() {
+  try {
+    const hashedPassword = await bcrypt.hash("123456", 10);
+    const body = {
+      email: "admin@gmail.com",
+      password: hashedPassword,
+    };
+    await Models.Administrator.create(body)
+      .then((result) => {
+        console.log("Data inserted:", result);
+      })
+      .catch((error) => {
+        console.error(
+          `Error inserting ADMINISTRATOR name="${body.name}", id="${body.id}":`
+        );
+      });
+    console.log("Especialidades agregadas con éxito.");
+  } catch (error) {}
+}
+
 const loadData = async () => {
-  const seeders = [seedSpecialties, seedDoctors];
+  const seeders = [seedSpecialties, seedDoctors, seedAdministrator];
 
   for (let seed of seeders) {
     await seed();

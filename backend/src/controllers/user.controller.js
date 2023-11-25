@@ -5,6 +5,7 @@ const {
   loginPatientService,
   loginDoctorService,
   loginLabAnalystService,
+  loginAdministratorService,
 } = require("../service/user.service");
 
 const registerPatient = async (req, res) => {
@@ -106,6 +107,26 @@ const loginLabAnalyst = async (req, res) => {
   }
 };
 
+const loginAdministrator = async (req, res) => {
+  try {
+    const email = req.body.email;
+    const password = req.body.password;
+
+    const accessToken = await loginAdministratorService(email, password);
+    return res.status(200).json({
+      status: 200,
+      accessToken: accessToken,
+      message: "Succesfully User Logging",
+    });
+  } catch (e) {
+    return res.status(400).json({
+      status: 400,
+      message: "Invalid credentials",
+      message: e.message,
+    });
+  }
+};
+
 module.exports = {
   registerDoctor,
   registerPatient,
@@ -113,4 +134,5 @@ module.exports = {
   loginPatient,
   loginDoctor,
   loginLabAnalyst,
+  loginAdministrator,
 };

@@ -21,3 +21,6 @@ export { default as PatientAppointmentBookingPage } from "./patientPages/patient
 export { default as LaboratoryMainPage } from "./laboratoryPages/laboratoryMain/laboratoryMainPage.page";
 export { default as LaboratoryExamenPage } from "./laboratoryPages/laboratoryExamenes/laboratoryExamenPage.page";
 export { default as LaboratoryPerfilPage } from "./laboratoryPages/laboratoryPerfil/laboratoryPerfilPage.page";
+
+// ADMINISTRATOR
+export { default as AdministratorMainPage } from "./administratorPages/administratorMain/administratorMain.page"
