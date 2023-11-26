@@ -1,10 +1,8 @@
-
-import React, { useState } from 'react';
-import './doctorCitasDetails.styles.css';
-import { Card, Button, Input, Space } from 'antd';
+import React, { useEffect, useState } from "react";
+import "./doctorCitasDetails.styles.css";
+import { Card, Button, Input, Space } from "antd";
 import axios from "axios";
 import { LocalStorageServices } from "../../../../services";
-
 
 const { TextArea } = Input;
 
@@ -14,17 +12,17 @@ const RecetaMedicaCard = ({ receta, onDelete, fondoGris }) => (
     style={{
       marginBottom: 8,
       padding: 0,
-      border: 'none',
-      background: fondoGris ? 'lightgrey' : 'transparent',
-      height: '50px', 
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'center',
+      border: "none",
+      background: fondoGris ? "lightgrey" : "transparent",
+      height: "50px",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
     }}
   >
-    <Space style={{ width: '100%', justifyContent: 'space-between' }}>
+    <Space style={{ width: "100%", justifyContent: "space-between" }}>
       <p style={{ margin: 0 }}>{receta}</p>
-      <Button onClick={onDelete} type="link" style={{ fontWeight: 'bold' }}>
+      <Button onClick={onDelete} type="link" style={{ fontWeight: "bold" }}>
         X
       </Button>
     </Space>
@@ -32,20 +30,22 @@ const RecetaMedicaCard = ({ receta, onDelete, fondoGris }) => (
 );
 
 const ExamenLabCard = ({ examenLab, onDelete, fondoGris }) => (
-  <Card bordered={false}
+  <Card
+    bordered={false}
     style={{
       marginBottom: 8,
       padding: 0,
-      border: 'none',
-      background: fondoGris ? 'lightgrey' : 'transparent',
-      height: '50px', 
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'center',
-    }}>
-    <Space style={{ width: '100%', justifyContent: 'space-between' }}>
+      border: "none",
+      background: fondoGris ? "lightgrey" : "transparent",
+      height: "50px",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+    }}
+  >
+    <Space style={{ width: "100%", justifyContent: "space-between" }}>
       <p style={{ margin: 0 }}>{examenLab}</p>
-      <Button onClick={onDelete} type="link" style={{ fontWeight: 'bold' }}>
+      <Button onClick={onDelete} type="link" style={{ fontWeight: "bold" }}>
         X
       </Button>
     </Space>
@@ -53,20 +53,20 @@ const ExamenLabCard = ({ examenLab, onDelete, fondoGris }) => (
 );
 
 export default function DoctorCitasDetails() {
-  const [selectedOption, setSelectedOption] = useState('Historial Clínico');
+  const [selectedOption, setSelectedOption] = useState("Historial Clínico");
 
-  const [diagnostico, setDiagnostico] = useState('');
+  const [diagnostico, setDiagnostico] = useState("");
 
   const [mostrarRecetaMedica, setMostrarRecetaMedica] = useState(false);
-  const [recetaMedica, setRecetaMedica] = useState('');
+  const [recetaMedica, setRecetaMedica] = useState("");
   const [recetasGuardadas, setRecetasGuardadas] = useState([]);
 
   const [mostrarExamenLab, setMostrarExamenLab] = useState(false);
-  const [examenLab, setExamenLab] = useState('');
+  const [examenLab, setExamenLab] = useState("");
   const [examenLabGuardadas, setExamenLabGuardadas] = useState([]);
 
   const [datosConsulta, setDatosConsulta] = useState({
-    diagnostico: '',
+    diagnostico: "",
     recetas: recetasGuardadas,
     examenesLab: examenLabGuardadas,
   });
@@ -74,8 +74,7 @@ export default function DoctorCitasDetails() {
   const renderHistorialClinico = () => {
     return (
       <div>
-        <p>
-        </p>
+        <p></p>
         <Card
           title="Tipo de Cita"
           bordered={false}
@@ -86,28 +85,26 @@ export default function DoctorCitasDetails() {
         >
           <p>Cita en (especialidad)</p>
           <p>#informacion del examen medico</p>
-
-
         </Card>
-
       </div>
     );
   };
 
-
   const handleGuardarDiagnostico = () => {
-    console.log('Diagnóstico guardado:', diagnostico);
-    
+    console.log("Diagnóstico guardado:", diagnostico);
+    let id = 0;
     try {
       const accessToken = LocalStorageServices.GetData("accessToken");
       //const appointmentId = ;
-      axios.put(`http://localhost:3100/api/appointment/${id}`, 
-      { diagnostic: diagnostico },
-      { headers: { Authorization: accessToken } });
+      axios.put(
+        `http://localhost:3100/api/appointment/${id}`,
+        { diagnostic: diagnostico },
+        { headers: { Authorization: accessToken } }
+      );
 
-      console.log('Diagnóstico actualizado en la base de datos');
+      console.log("Diagnóstico actualizado en la base de datos");
     } catch (error) {
-      console.error('Error al actualizar el diagnóstico:', error);
+      console.error("Error al actualizar el diagnóstico:", error);
     }
 
     setDatosConsulta((prevDatosConsulta) => ({
@@ -120,15 +117,15 @@ export default function DoctorCitasDetails() {
     setMostrarRecetaMedica(true);
   };
 
-  const handleGuardarRecetaMedica = () => {    
-    console.log('Receta guardada:', recetaMedica);
+  const handleGuardarRecetaMedica = () => {
+    console.log("Receta guardada:", recetaMedica);
     setRecetasGuardadas((prevRecetas) => [...prevRecetas, recetaMedica]);
     setDatosConsulta((prevDatosConsulta) => ({
       ...prevDatosConsulta,
       recetas: [...prevDatosConsulta.recetas, recetaMedica],
     }));
     setMostrarRecetaMedica(false);
-    setRecetaMedica('');
+    setRecetaMedica("");
   };
 
   const handleBorrarReceta = (index) => {
@@ -142,14 +139,14 @@ export default function DoctorCitasDetails() {
   };
 
   const handleGuardarExamenLab = () => {
-    console.log('ExamenLab guardada:', examenLab);
+    console.log("ExamenLab guardada:", examenLab);
     setExamenLabGuardadas((prevExamenLab) => [...prevExamenLab, examenLab]);
     setDatosConsulta((prevDatosConsulta) => ({
       ...prevDatosConsulta,
       examenesLab: [...prevDatosConsulta.examenesLab, examenLab],
     }));
     setMostrarExamenLab(false);
-    setExamenLab('');
+    setExamenLab("");
   };
 
   const handleBorrarExamenLab = (index) => {
@@ -160,13 +157,22 @@ export default function DoctorCitasDetails() {
 
   const handleTerminarConsulta = () => {
     handleGuardarDiagnostico();
-    console.log('Datos de la consulta:', datosConsulta);
+    console.log("Datos de la consulta:", datosConsulta);
     // setDatosConsulta({ diagnostico: '', recetas: [], examenesLab: [] });
     // setRecetasGuardadas([]);
     // setExamenLabGuardadas([]);
   };
 
-  
+  // useEffect(() => {
+  //   const fetchAppointmentData = async () => {
+  //     return await getAvailability();
+  //   };
+
+  //   fetchAvailability().then((availability) => {
+  //     setAvailability(availability);
+  //   });
+  // }, []);
+
   const renderRealizarDiagnostico = () => {
     return (
       <div>
@@ -174,20 +180,20 @@ export default function DoctorCitasDetails() {
           title="DIAGNÓSTICO"
           bordered={false}
           headStyle={{
-            background: '#3E5BA5',
-            color: 'white',
-            borderBottom: '3px solid black',
+            background: "#3E5BA5",
+            color: "white",
+            borderBottom: "3px solid black",
           }}
           style={{
-            width: '100%',
-            marginBottom: '16px',
-            marginTop: '10px',
-            border: '3px solid black',
+            width: "100%",
+            marginBottom: "16px",
+            marginTop: "10px",
+            border: "3px solid black",
           }}
         >
           <TextArea
             rows={4}
-            style={{ height: '100%' }}
+            style={{ height: "100%" }}
             value={diagnostico}
             onChange={(e) => setDiagnostico(e.target.value)}
           />
@@ -198,21 +204,20 @@ export default function DoctorCitasDetails() {
 
   const renderRecetaMedicaSolicitarExamen = () => {
     return (
-
-      <div style={{ display: 'flex', flexDirection: 'row' }}>
+      <div style={{ display: "flex", flexDirection: "row" }}>
         <Card
           title="RECETA MÉDICA"
           bordered={false}
           headStyle={{
-            background: '#3E5BA5',
-            color: 'white',
-            borderBottom: '3px solid black',
+            background: "#3E5BA5",
+            color: "white",
+            borderBottom: "3px solid black",
           }}
           style={{
-            width: 'calc(50% - 8px)',
+            width: "calc(50% - 8px)",
             marginBottom: 16,
             marginRight: 8,
-            border: '3px solid black',
+            border: "3px solid black",
           }}
         >
           {mostrarRecetaMedica ? (
@@ -223,7 +228,10 @@ export default function DoctorCitasDetails() {
                 rows={2}
                 placeholder="Ingrese la receta médica"
               />
-              <Button style={{ marginTop: 8 }} onClick={handleGuardarRecetaMedica}>
+              <Button
+                style={{ marginTop: 8 }}
+                onClick={handleGuardarRecetaMedica}
+              >
                 Guardar Receta
               </Button>
             </>
@@ -237,22 +245,24 @@ export default function DoctorCitasDetails() {
                   fondoGris={true}
                 />
               ))}
-              <Button onClick={handleAgregarRecetaMedica}>Agregar Receta</Button>
+              <Button onClick={handleAgregarRecetaMedica}>
+                Agregar Receta
+              </Button>
             </div>
           )}
         </Card>
         <Card
           title="SOLICITAR EXAMEN A LABORATORIO"
           headStyle={{
-            background: '#3E5BA5',
-            color: 'white',
-            borderBottom: '3px solid black',
+            background: "#3E5BA5",
+            color: "white",
+            borderBottom: "3px solid black",
           }}
           style={{
-            width: 'calc(50% - 8px)',
+            width: "calc(50% - 8px)",
             marginBottom: 16,
             marginRight: 8,
-            border: '3px solid black',
+            border: "3px solid black",
           }}
         >
           {mostrarExamenLab ? (
@@ -277,12 +287,13 @@ export default function DoctorCitasDetails() {
                   fondoGris={true}
                 />
               ))}
-              <Button onClick={handleAgregarExamenLab}>Agregar Examen Laboratorio</Button>
+              <Button onClick={handleAgregarExamenLab}>
+                Agregar Examen Laboratorio
+              </Button>
             </div>
           )}
         </Card>
       </div>
-
     );
   };
 
@@ -295,8 +306,10 @@ export default function DoctorCitasDetails() {
             <td>
               <a
                 href="#"
-                className={selectedOption === 'Historial Clínico' ? 'selected' : ''}
-                onClick={() => setSelectedOption('Historial Clínico')}
+                className={
+                  selectedOption === "Historial Clínico" ? "selected" : ""
+                }
+                onClick={() => setSelectedOption("Historial Clínico")}
               >
                 Historial Clínico
               </a>
@@ -304,8 +317,10 @@ export default function DoctorCitasDetails() {
             <td>
               <a
                 href="#"
-                className={selectedOption === 'Realizar Diagnóstico' ? 'selected' : ''}
-                onClick={() => setSelectedOption('Realizar Diagnóstico')}
+                className={
+                  selectedOption === "Realizar Diagnóstico" ? "selected" : ""
+                }
+                onClick={() => setSelectedOption("Realizar Diagnóstico")}
               >
                 Realizar Diagnóstico
               </a>
@@ -315,8 +330,8 @@ export default function DoctorCitasDetails() {
       </table>
 
       {/* Renderiza el contenido según la opción seleccionada */}
-      {selectedOption === 'Historial Clínico' && renderHistorialClinico()}
-      {selectedOption === 'Realizar Diagnóstico' && (
+      {selectedOption === "Historial Clínico" && renderHistorialClinico()}
+      {selectedOption === "Realizar Diagnóstico" && (
         <>
           {renderRealizarDiagnostico()}
           {renderRecetaMedicaSolicitarExamen()}

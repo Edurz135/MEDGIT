@@ -27,10 +27,11 @@ const getPastAppointmentsService = async (DoctorId) => {
 const getFutureAppointmentsService = async (DoctorId) => {
   try {
     const appointments = await Models.Appointment.findAll({
-      attributes: ["startDate", "endDate","intervalDigit", "state", "diagnostic"],
+      attributes: ["id", "startDate", "endDate","intervalDigit", "state", "diagnostic"],
       where: {
         DoctorId: DoctorId,
         pending: true,
+        state: 2,
       },
       include:[
         {

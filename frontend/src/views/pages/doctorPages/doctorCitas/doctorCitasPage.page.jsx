@@ -30,9 +30,6 @@ const columns = [
     dataIndex: "detalle",
     key: "detalle",
     width: 100,
-    render: (text, record) => (
-    <Link to={`../doctorCitasDetails/doctorCitasDetails.page`}>Ver Detalle</Link>    ),
-    /*<Link to={`/patientCitasDetails/${record.key}`}>Ver Detalle</Link>),*/
   },
 ];
 
@@ -72,6 +69,7 @@ export default class DoctorCitasPage extends Component {
       fecha: cita.startDate.substring(0, 10),
       hora: dayjs(cita.startDate).format("HH:mm") + " - " + dayjs(cita.endDate).format("HH:mm"),
       paciente: cita.Patient.name + " " + cita.Patient.lastName,
+      detalle: <Link to={`/auth/doctor/citaDetail/${cita.id}`}>Ver Detalle</Link>,
     }));
     console.log(citasProximas);
     return (
