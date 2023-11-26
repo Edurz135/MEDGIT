@@ -50,7 +50,7 @@ const server = () => {
   const create_update_appointsments_pending_status = require("./stored_procedures/sp_update_appointments_pending_status.js");
 
   db.sequelize
-    .sync({ force: true })
+    .sync()
     .then(() => {
       //create_update_appointsments_pending_status(); // Crea el procedimiento almacenado
       db.sequelize

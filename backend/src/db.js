@@ -24,6 +24,7 @@ const ContenMedCi = require("./models/contenMedCi.model.js")(sequelize, Sequeliz
 const ContenPacAle = require("./models/contenPacAle.model.js")(sequelize, Sequelize);
 const Specialty = require("./models/specialty.model.js")(sequelize, Sequelize);
 const WeeklyTransaction = require("./models/weeklyTransaction.model.js")(sequelize, Sequelize);
+const TipExMedLabAnalyst = require("./models/tipExMedLabAnalyst.model.js")(sequelize, Sequelize);
 const Administrator = require("./models/administrator.model.js")(sequelize, Sequelize);
 
 // Associations
@@ -32,10 +33,14 @@ const Administrator = require("./models/administrator.model.js")(sequelize, Sequ
 Patient.hasMany(Appointment);
 Doctor.hasMany(Appointment);
 Appointment.hasMany(ExaMed);
-TipExMed.hasMany(ExaMed);
+//TipExMed.hasMany(ExaMed);
 Allergy.hasMany(Patient);
-ExaMed.hasMany(LabAnalyst);
+//ExaMed.hasMany(LabAnalyst);
 Doctor.belongsTo(Specialty);
+ExaMed.belongsTo(Appointment, {foreignKey: 'AppointmentId'});
+
+TipExMed.belongsToMany(LabAnalyst, { through: "TipExMedLabAnalyst"});
+LabAnalyst.belongsToMany(TipExMed, { through: "TipExMedLabAnalystS"});
 
 //Muchos a muchos --> N a N
 Medicine.belongsToMany(Appointment,{through: 'ContenMedCi'});
@@ -46,6 +51,7 @@ Appointment.belongsTo(Patient);
 
 Allergy.hasMany(ContenPacAle);
 Patient.hasMany(ContenPacAle);  
+Appointment.hasMany(TipExMedLabAnalyst);
 
 Doctor.hasMany(ContenMedAle);
 Allergy.hasMany(ContenMedAle);

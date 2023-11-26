@@ -4,6 +4,7 @@ const { authenticateToken } = require("../middlewares/auth.middleware");
 const {
     getupdatelabAnalyst,
     getVisualiseLabAnalyst,
+    getPendingExaMeds,
 } = require("../controllers/labAnalyst.controller");
 const labAnalystRouter = Router();
 
@@ -14,9 +15,14 @@ labAnalystRouter.put(
     authenticateToken,
     getupdatelabAnalyst
   );
-  labAnalystRouter.get(
-    "/api/labAnalyst/getVisualiseLabAnalyst",
-    authenticateToken,
-    getVisualiseLabAnalyst
-  );
+labAnalystRouter.get(
+  "/api/labAnalyst/getVisualiseLabAnalyst",
+  authenticateToken,
+  getVisualiseLabAnalyst
+);
+labAnalystRouter.get(
+  "/api/labAnalyst/getPendingExaMeds",
+  authenticateToken,
+  getPendingExaMeds
+);
 module.exports = labAnalystRouter;
