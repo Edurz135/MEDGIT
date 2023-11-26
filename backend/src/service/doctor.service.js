@@ -33,6 +33,7 @@ const getFutureAppointmentsService = async (DoctorId) => {
   try {
     const appointments = await Models.Appointment.findAll({
       attributes: [
+        "id",
         "startDate",
         "endDate",
         "intervalDigit",
@@ -42,6 +43,7 @@ const getFutureAppointmentsService = async (DoctorId) => {
       where: {
         DoctorId: DoctorId,
         pending: true,
+        state: 2,
       },
       include: [
         {
@@ -56,6 +58,35 @@ const getFutureAppointmentsService = async (DoctorId) => {
     throw new Error(e.message);
   }
 };
+
+const getFutureAppointmentDetailService = async (appointmentId) => {
+  try {
+    const appointments = await Models.Appointment.findAll({
+      attributes: [
+        "id",
+        "startDate",
+        "endDate",
+        "diagnostic",
+      ],
+      where: {
+        id: appointmentId,
+      },
+      include: [
+        {
+          model: Models.Patient,
+        },
+        {
+          model: Models.Doctor,
+        },
+      ],
+    });
+
+    return appointments;
+  } catch (e) {
+    throw new Error(e.message);
+  }
+};
+
 // Trae los detalles de una cita
 
 const getAppointmentDetailsService = async (id) => {
@@ -225,16 +256,48 @@ const getDoctorsService = async (ids = []) => {
     return doctor;
   } catch (e) {
     throw Error("Error while finding a Patient");
+
+const updateAppointmentService = async (body) => {
+  try {
+    const result = await Models.Appointment.findOne({
+      where: {
+        id: body.id,
+      },
+    });
+
+    await result.update({
+      pending: false,
+      diagnostic: body.diagnostico,
+    });
+
+    // if(body.receta != []) {
+    //   body.receta.map((receta) => {
+
+    //   })
+    // }
+
+    // if(body.examenesLab != []) {
+    //   body.receta.map((receta) => {
+        
+    //   })
+    // }
+
+    return result;
+  } catch (e) {
+    throw new Error(e.message);
+
   }
 };
 
 module.exports = {
   getPastAppointmentsService,
   getFutureAppointmentsService,
+  getFutureAppointmentDetailService,
   getAppointmentDetailsService,
   getAvailabilityService,
   getUpdateDoctorService,
   getVisualiseDoctorService,
   updateAvailabilityService,
-  getDoctorsService
+  getDoctorsService,
+  updateAppointmentService,
 };

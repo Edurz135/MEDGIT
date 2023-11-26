@@ -66,7 +66,7 @@ const server = () => {
           );
         });
       loadData().then(() => {
-        executeWeeklyTransactionIfNeeded();
+      executeWeeklyTransactionIfNeeded();
       });
       console.log("DB Synced and Updated.");
     })
