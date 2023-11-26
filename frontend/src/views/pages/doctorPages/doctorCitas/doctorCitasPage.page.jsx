@@ -4,6 +4,7 @@ import axios from "axios";
 import { LocalStorageServices } from "../../../../services";
 import { Table } from "antd";
 import dayjs from "dayjs";
+import { Link } from 'react-router-dom';
 
 const columns = [
   {
@@ -23,6 +24,15 @@ const columns = [
     dataIndex: "paciente",
     key: "paciente",
     width: 250,
+  },
+  {
+    title: "Detalle",
+    dataIndex: "detalle",
+    key: "detalle",
+    width: 100,
+    render: (text, record) => (
+    <Link to={`../doctorCitasDetails/doctorCitasDetails.page`}>Ver Detalle</Link>    ),
+    /*<Link to={`/patientCitasDetails/${record.key}`}>Ver Detalle</Link>),*/
   },
 ];
 
@@ -58,6 +68,7 @@ export default class DoctorCitasPage extends Component {
     const { citasProximas } = this.state;
 
     const data = citasProximas.map((cita, index) => ({
+      key: cita.id,
       fecha: cita.startDate.substring(0, 10),
       hora: dayjs(cita.startDate).format("HH:mm") + " - " + dayjs(cita.endDate).format("HH:mm"),
       paciente: cita.Patient.name + " " + cita.Patient.lastName,
@@ -82,3 +93,4 @@ export default class DoctorCitasPage extends Component {
     );
   }
 }
+
