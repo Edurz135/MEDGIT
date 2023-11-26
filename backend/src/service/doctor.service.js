@@ -5,19 +5,24 @@ const bcrypt = require("bcrypt");
 const getPastAppointmentsService = async (DoctorId) => {
   try {
     const appointments = await Models.Appointment.findAll({
-      attributes: ["startDate", "endDate","intervalDigit", "state", "diagnostic"],
+      attributes: [
+        "startDate",
+        "endDate",
+        "intervalDigit",
+        "state",
+        "diagnostic",
+      ],
       where: {
         DoctorId: DoctorId,
         pending: false,
       },
-      include:[
+      include: [
         {
           model: Models.Patient,
           attributes: ["name", "lastName"],
-        }
-      ]
+        },
+      ],
     });
-  
 
     return appointments;
   } catch (e) {
@@ -27,17 +32,25 @@ const getPastAppointmentsService = async (DoctorId) => {
 const getFutureAppointmentsService = async (DoctorId) => {
   try {
     const appointments = await Models.Appointment.findAll({
-      attributes: ["startDate", "endDate","intervalDigit", "state", "diagnostic"],
+      attributes: [
+        "id",
+        "startDate",
+        "endDate",
+        "intervalDigit",
+        "state",
+        "diagnostic",
+      ],
       where: {
         DoctorId: DoctorId,
         pending: true,
+        state: 2,
       },
-      include:[
+      include: [
         {
           model: Models.Patient,
           attributes: ["name", "lastName"],
-        }
-      ]
+        },
+      ],
     });
 
     return appointments;
@@ -45,44 +58,84 @@ const getFutureAppointmentsService = async (DoctorId) => {
     throw new Error(e.message);
   }
 };
+
+const getFutureAppointmentDetailService = async (appointmentId) => {
+  try {
+    const appointments = await Models.Appointment.findAll({
+      attributes: [
+        "id",
+        "startDate",
+        "endDate",
+        "diagnostic",
+      ],
+      where: {
+        id: appointmentId,
+      },
+      include: [
+        {
+          model: Models.Patient,
+        },
+        {
+          model: Models.Doctor,
+        },
+      ],
+    });
+
+    return appointments;
+  } catch (e) {
+    throw new Error(e.message);
+  }
+};
+
 // Trae los detalles de una cita
 
 const getAppointmentDetailsService = async (id) => {
   try {
     const appointment = await Models.Appointment.findOne({
-      attributes: ["startDate", "endDate","intervalDigit", "state", "diagnostic"],
+      attributes: [
+        "startDate",
+        "endDate",
+        "intervalDigit",
+        "state",
+        "diagnostic",
+      ],
       where: {
         id: id,
       },
-      include: [//Examen medico y tipo de examen
+      include: [
+        //Examen medico y tipo de examen
         {
           model: Models.ExaMed,
           attributes: ["comment"],
-          include:[{
-            model: Models.TipExMed,
-            attributes: ["name"],
-          }]
+          include: [
+            {
+              model: Models.TipExMed,
+              attributes: ["name"],
+            },
+          ],
         },
       ],
-      include: [ // Medicamentos
+      include: [
+        // Medicamentos
         {
           model: Models.Medicine,
-          attributes: ["name", "description","dose"],
-        }
+          attributes: ["name", "description", "dose"],
+        },
       ],
-      include:[ // Paciente
+      include: [
+        // Paciente
         {
           model: Models.Patient,
-          attributes: ["name", "lastName","email","phone"],
-        }
-      ]
+          attributes: ["name", "lastName", "email", "phone"],
+        },
+      ],
     });
 
     return appointment;
   } catch (e) {
     throw new Error(e.message);
   }
-}
+};
 const getAvailabilityService = async (id) => {
   try {
     const result = await Models.Doctor.findOne({
@@ -154,8 +207,8 @@ const updateAvailabilityService = async (id, body) => {
     throw new Error(e.message);
   }
 };
-const getUpdateDoctorService = async (body) =>{
-  try{
+const getUpdateDoctorService = async (body) => {
+  try {
     const hashedPassword = await bcrypt.hash(body.password, 10);
     const doctor = await Models.Doctor.findOne({
       where: {
@@ -163,19 +216,28 @@ const getUpdateDoctorService = async (body) =>{
       },
     });
     await doctor.update({
-      email:body.email,
-      password:hashedPassword,
-      phone:body.phone,
-      });
+      email: body.email,
+      password: hashedPassword,
+      phone: body.phone,
+    });
     return doctor;
-    }catch (error) {
+  } catch (error) {
     throw new Error(error.message);
   }
 };
 const getVisualiseDoctorService = async (DoctorId) => {
   try {
     const doctor = await Models.Doctor.findOne({
-      attributes: ["name", "lastName","email","password", "identityDoc","nroColegiatura","gender","phone"],
+      attributes: [
+        "name",
+        "lastName",
+        "email",
+        "password",
+        "identityDoc",
+        "nroColegiatura",
+        "gender",
+        "phone",
+      ],
       where: {
         id: DoctorId,
       },
@@ -184,10 +246,11 @@ const getVisualiseDoctorService = async (DoctorId) => {
   } catch (e) {
     throw new Error(e.message);
   }
-  };
+};
 module.exports = {
   getPastAppointmentsService,
   getFutureAppointmentsService,
+  getFutureAppointmentDetailService,
   getAppointmentDetailsService,
   getAvailabilityService,
   getUpdateDoctorService,

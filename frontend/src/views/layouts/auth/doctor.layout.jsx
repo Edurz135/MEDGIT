@@ -5,6 +5,7 @@ import {
   DoctorHistorialPage,
   DoctorPerfilPage,
   DoctorAvalabilityPage,
+  DoctorCitasDetails,
 } from "../../pages";
 import {
   HomeOutlined,
@@ -60,7 +61,12 @@ export default function PatientLayout() {
       url: "availability",
       hidden: true,
     },
-    
+    {
+      index: 4,
+      component: <DoctorCitasDetails />,
+      url: "citaDetail/*",
+      hidden: true,
+    },
   ];
 
   const handlePerfilClick = () => {

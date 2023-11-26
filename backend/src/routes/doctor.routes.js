@@ -1,10 +1,11 @@
 const {
   getPastAppointments,
-  getAppointmentsDetails,
+  getFutureAppointmentDetail,
   getAvailability,
   updateAvailability,
   getFutureAppointments,
   getVisualiseDoctor,
+  getAppointmentsDetails,
   getupdateDoctor,
 } = require("../controllers/doctor.controller");
 
@@ -46,8 +47,15 @@ doctorRouter.get(
 // Rutas del doctor
 
 doctorRouter.get(
-  "/api/doctor/getFutureAppointments", authenticateToken, 
-  getFutureAppointments);
+  "/api/doctor/getFutureAppointments",
+  authenticateToken,
+  getFutureAppointments
+);
 
+doctorRouter.post(
+  "/api/doctor/getFutureAppointmentDetail",
+  authenticateToken,
+  getFutureAppointmentDetail
+);
 
 module.exports = doctorRouter;
