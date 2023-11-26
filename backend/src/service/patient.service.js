@@ -13,12 +13,13 @@ const getPastAppointmentsService = async (PatientId) => {
         pending: false,
         state: 2,
       },
-      include:[ //Nombre doctor
+      include: [
+        //Nombre doctor
         {
           model: Models.Doctor,
           attributes: ["name", "lastName"],
-        }
-      ]
+        },
+      ],
     });
     return appointments;
   } catch (e) {
@@ -28,39 +29,50 @@ const getPastAppointmentsService = async (PatientId) => {
 const getAppointmentDetailsService = async (id) => {
   try {
     const appointment = await Models.Appointment.findOne({
-      attributes: ["startDate", "endDate","intervalDigit", "state", "diagnostic"],
+      attributes: [
+        "startDate",
+        "endDate",
+        "intervalDigit",
+        "state",
+        "diagnostic",
+      ],
       where: {
         id: id,
       },
-      include: [//Examen medico y tipo de examen
+      include: [
+        //Examen medico y tipo de examen
         {
           model: Models.ExaMed,
           attributes: ["comment"],
-          include:[{
-            model: Models.TipExMed,
-            attributes: ["name"],
-          }]
+          include: [
+            {
+              model: Models.TipExMed,
+              attributes: ["name"],
+            },
+          ],
         },
       ],
-      include: [ // Medicamentos
+      include: [
+        // Medicamentos
         {
           model: Models.Medicine,
-          attributes: ["name", "description","dose"],
-        }
+          attributes: ["name", "description", "dose"],
+        },
       ],
-      include:[ // Medico
+      include: [
+        // Medico
         {
           model: Models.Doctor,
           attributes: ["name", "lastName"],
-        }
-      ]
+        },
+      ],
     });
 
     return appointment;
   } catch (e) {
     throw new Error(e.message);
   }
-}
+};
 const getListDoctorsService = async () => {
   try {
     const result = await Models.Doctor.findAll({
@@ -184,21 +196,21 @@ const getFutureAppointmentsService = async (PatientId) => {
         pending: true,
         state: 2,
       },
-      include:[
+      include: [
         {
           model: Models.Doctor,
           attributes: ["name", "lastName"],
-        }
-      ]
+        },
+      ],
     });
 
     return appointments;
   } catch (e) {
     throw new Error(e.message);
   }
-}; 
-const getUpdatePacientService = async (body) =>{
-  try{
+};
+const getUpdatePacientService = async (body) => {
+  try {
     const hashedPassword = await bcrypt.hash(body.password, 10);
     const patient = await Models.Patient.findOne({
       where: {
@@ -206,19 +218,27 @@ const getUpdatePacientService = async (body) =>{
       },
     });
     await patient.update({
-      email:body.email,
-      password:hashedPassword,
-      phone:body.phone,
-      });
+      email: body.email,
+      password: hashedPassword,
+      phone: body.phone,
+    });
     return patient;
-    }catch (error) {
+  } catch (error) {
     throw new Error(error.message);
   }
 };
 const getVisualisePacientService = async (PatientId) => {
   try {
     const patient = await Models.Patient.findOne({
-      attributes: ["name", "lastName","email","password", "identityDoc","gender","phone"],
+      attributes: [
+        "name",
+        "lastName",
+        "email",
+        "password",
+        "identityDoc",
+        "gender",
+        "phone",
+      ],
       where: {
         id: PatientId,
       },
@@ -228,6 +248,18 @@ const getVisualisePacientService = async (PatientId) => {
     throw new Error(e.message);
   }
 };
+
+const getPatientsService = async (ids = []) => {
+  try {
+    const patient = await Models.Patient.findAll({
+      where: { identityDoc: ids },
+    });
+    return patient;
+  } catch (e) {
+    throw Error("Error while finding a Patient");
+  }
+};
+
 module.exports = {
   getPastAppointmentsService,
   getFutureAppointmentsService,
@@ -238,4 +270,5 @@ module.exports = {
   getUpdatePacientService,
   getVisualisePacientService,
   bookAppointmentService,
+  getPatientsService,
 };
