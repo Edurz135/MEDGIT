@@ -5,16 +5,11 @@ const bcrypt = require("bcrypt");
 const getPastAppointmentsService = async (DoctorId) => {
   try {
     const appointments = await Models.Appointment.findAll({
-      attributes: [
-        "startDate",
-        "endDate",
-        "intervalDigit",
-        "state",
-        "diagnostic",
-      ],
+      attributes: ["id","startDate", "endDate","intervalDigit", "diagnostic"],
       where: {
         DoctorId: DoctorId,
         pending: false,
+        state: 2,
       },
       include: [
         {
@@ -32,14 +27,7 @@ const getPastAppointmentsService = async (DoctorId) => {
 const getFutureAppointmentsService = async (DoctorId) => {
   try {
     const appointments = await Models.Appointment.findAll({
-      attributes: [
-        "id",
-        "startDate",
-        "endDate",
-        "intervalDigit",
-        "state",
-        "diagnostic",
-      ],
+      attributes: ["id","startDate", "endDate","intervalDigit", "diagnostic"],
       where: {
         DoctorId: DoctorId,
         pending: true,

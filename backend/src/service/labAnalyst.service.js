@@ -32,7 +32,37 @@ const getVisualiseLabAnalystService = async (LabAnalystId) => {
     throw new Error(e.message);
   }
   };
+const getPendingExaMedsService = async (LabAnalystId) => {
+  try {
+    const ExaMeds = await Models.ExaMed.findAll({
+      attributes: ["id"],
+      where: {
+        LabAnalystId: LabAnalystId,
+        state: 0,
+      },
+      include:[
+        {
+          model: Models.TipExMed,
+          attributes: ["name"],
+        }
+      ],
+      include:[
+        {
+          model: Models.Appointment,
+          where: {
+            pending: true,
+            state: 2,
+          },
+        }
+      ]
+    });
+    return ExaMeds;
+  } catch (e) {
+    throw new Error(e.message);
+  }
+}
 module.exports={
+    getPendingExaMedsService,
     getUpdatelabAnalystService,
     getVisualiseLabAnalystService,
 };
