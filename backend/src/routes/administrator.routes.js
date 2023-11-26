@@ -19,7 +19,6 @@ const upload = multer({ storage: storage });
 // const upload = multer({ dest: "src/uploads/" });
 administratorRouter.post(
   "/api/uploadAppointmentData",
-  authenticateToken,
   upload.single("file"),
   UploadAppointmentData
 );
