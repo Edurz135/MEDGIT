@@ -248,6 +248,15 @@ const getVisualiseDoctorService = async (DoctorId) => {
   }
 };
 
+const getDoctorsService = async (ids = []) => {
+  try {
+    const doctor = await Models.Doctor.findAll({
+      where: { identityDoc: ids },
+    });
+    return doctor;
+  } catch (e) {
+    throw Error("Error while finding a Patient");
+
 const updateAppointmentService = async (body) => {
   try {
     const result = await Models.Appointment.findOne({
@@ -276,6 +285,7 @@ const updateAppointmentService = async (body) => {
     return result;
   } catch (e) {
     throw new Error(e.message);
+
   }
 };
 
@@ -288,5 +298,6 @@ module.exports = {
   getUpdateDoctorService,
   getVisualiseDoctorService,
   updateAvailabilityService,
-  updateAppointmentService
+  getDoctorsService,
+  updateAppointmentService,
 };

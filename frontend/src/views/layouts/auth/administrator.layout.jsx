@@ -1,18 +1,6 @@
 import React from "react";
-import {
-  PatientMainPage,
-  PatientCitasPage,
-  PatientHistorialPage,
-  PatientPerfilPage,
-  PatientAppointmentBookingPage,
-  AdministratorMainPage,
-} from "../../pages";
-import {
-  HomeOutlined,
-  FolderOpenOutlined,
-  ReadOutlined,
-  SearchOutlined,
-} from "@ant-design/icons";
+import { AdministratorMainPage, AdministratorDataIngestion } from "../../pages";
+import { HomeOutlined, DatabaseOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import LayoutBase from "./layoutBase";
 import Sidebar from "./sidebar"; // Importa el componente Sidebar
@@ -36,6 +24,14 @@ export default function AdministratorLayout() {
       component: <AdministratorMainPage />,
       label: "Inicio",
       url: "inicio",
+      hidden: false,
+    },
+    {
+      index: 1,
+      icon: <DatabaseOutlined />,
+      component: <AdministratorDataIngestion />,
+      label: "Carga Masiva",
+      url: "dataIngestion",
       hidden: false,
     },
   ];

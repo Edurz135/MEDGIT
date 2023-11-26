@@ -4,6 +4,7 @@ const userRouter = require("./routes/user.routes");
 const patientRouter = require("./routes/patient.routes");
 const doctorRouter = require("./routes/doctor.routes");
 const labAnalystRouter = require("./routes/labAnalyst.routes");
+const administratorRouter = require("./routes/administrator.routes.js")
 //Para cargar las tablas
 const { routesAllergy } = require("./LoadData/allergy.load");
 const { routesAppointment } = require("./LoadData/appointment.load");
@@ -29,6 +30,7 @@ const server = () => {
   app.use(doctorRouter);
   app.use(labAnalystRouter);
   app.use(patientRouter);
+  app.use(administratorRouter);
   //Generador de tabla
   app.use(routesAllergy);
   app.use(routesAppointment);
@@ -52,7 +54,7 @@ const server = () => {
   db.sequelize
     .sync({ force: false })
     .then(() => {
-      //create_update_appointsments_pending_status(); // Crea el procedimiento almacenado
+      // create_update_appointsments_pending_status(); // Crea el procedimiento almacenado
       db.sequelize
         .query("CALL sp_update_appointments_pending_status();") //Cambia las citas futuras a pasadas
         .then(() => {
