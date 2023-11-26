@@ -7,6 +7,7 @@ const {
   getVisualiseDoctor,
   getAppointmentsDetails,
   getupdateDoctor,
+  updateAppointment,
 } = require("../controllers/doctor.controller");
 
 const Router = require("express");
@@ -56,6 +57,12 @@ doctorRouter.post(
   "/api/doctor/getFutureAppointmentDetail",
   authenticateToken,
   getFutureAppointmentDetail
+);
+
+doctorRouter.put(
+  "/api/doctor/updateAppointment",
+  authenticateToken,
+  updateAppointment
 );
 
 module.exports = doctorRouter;

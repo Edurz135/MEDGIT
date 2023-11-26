@@ -109,6 +109,19 @@ const getupdateDoctor = async (req, res) => {
 const getVisualiseDoctor = async (req, res) => {
   try {
     const result = (await getVisualiseDoctorService(req.user.id)) || [];
+    return res.status(200).json({
+      status: 200,
+      result: result,
+      message: "Succesfully Doctor Returned",
+    });
+  } catch (e) {
+    return res.status(400).json({ status: 400, message: e.message });
+  }
+};
+
+const updateAppointment = async (req, res) => {
+  try {
+    const result = (await updateAppointmentService(req.body.data)) || [];
 
     return res.status(200).json({
       status: 200,
@@ -129,4 +142,5 @@ module.exports = {
   updateAvailability,
   getFutureAppointmentDetail,
   getAppointmentsDetails,
+  updateAppointment,
 };

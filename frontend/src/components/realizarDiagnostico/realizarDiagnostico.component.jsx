@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from "react";
-
-import { Card, Row, Col, Tabs, Button, Input, Space } from "antd";
+import { CloseOutlined } from "@ant-design/icons";
+import { Card, Row, Col, Button, Input, Space } from "antd";
 import axios from "axios";
 import { LocalStorageServices } from "../../services";
 const { TextArea } = Input;
+
 const RecetaMedicaCard = ({ receta, onDelete, fondoGris }) => (
   <Card
-    bordered={false}
+    bordered={true}
     style={{
       marginBottom: 8,
       padding: 0,
-      border: "none",
-      background: fondoGris ? "lightgrey" : "transparent",
-      height: "50px",
+      height: "40px",
       display: "flex",
       flexDirection: "column",
       justifyContent: "center",
@@ -20,8 +19,8 @@ const RecetaMedicaCard = ({ receta, onDelete, fondoGris }) => (
   >
     <Space style={{ width: "100%", justifyContent: "space-between" }}>
       <p style={{ margin: 0 }}>{receta}</p>
-      <Button onClick={onDelete} type="link" style={{ fontWeight: "bold" }}>
-        X
+      <Button onClick={onDelete} style={{ fontWeight: "bold", border: "none" }}>
+        <CloseOutlined />
       </Button>
     </Space>
   </Card>
@@ -29,13 +28,11 @@ const RecetaMedicaCard = ({ receta, onDelete, fondoGris }) => (
 
 const ExamenLabCard = ({ examenLab, onDelete, fondoGris }) => (
   <Card
-    bordered={false}
+    bordered={true}
     style={{
       marginBottom: 8,
       padding: 0,
-      border: "none",
-      background: fondoGris ? "lightgrey" : "transparent",
-      height: "50px",
+      height: "40px",
       display: "flex",
       flexDirection: "column",
       justifyContent: "center",
@@ -43,8 +40,8 @@ const ExamenLabCard = ({ examenLab, onDelete, fondoGris }) => (
   >
     <Space style={{ width: "100%", justifyContent: "space-between" }}>
       <p style={{ margin: 0 }}>{examenLab}</p>
-      <Button onClick={onDelete} type="link" style={{ fontWeight: "bold" }}>
-        X
+      <Button onClick={onDelete} style={{ fontWeight: "bold", border: "none" }}>
+        <CloseOutlined />
       </Button>
     </Space>
   </Card>
@@ -61,33 +58,33 @@ export default function RealizarDiagnostico(props) {
   const [examenLab, setExamenLab] = useState("");
   const [examenLabGuardadas, setExamenLabGuardadas] = useState([]);
 
-  const [datosConsulta, setDatosConsulta] = useState({
-    diagnostico: "",
-    recetas: recetasGuardadas,
-    examenesLab: examenLabGuardadas,
-  });
-
-  const handleGuardarDiagnostico = () => {
-    console.log("Diagnóstico guardado:", diagnostico);
-    let id = 0;
+  const handleGuardarDiagnostico = async (data) => {
     try {
       const accessToken = LocalStorageServices.GetData("accessToken");
-      //const appointmentId = ;
-      axios.put(
-        `http://localhost:3100/api/appointment/${id}`,
-        { diagnostic: diagnostico },
-        { headers: { Authorization: accessToken } }
-      );
-
+      let config = {
+        method: "put",
+        maxBodyLength: Infinity,
+        url: "http://localhost:3100/api/doctor/updateAppointment",
+        headers: {
+          Authorization: accessToken,
+        },
+        data: {
+          data: data,
+        },
+      };
+      const resp = await axios
+        .request(config)
+        .then((response) => {
+          return response.data.result;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
       console.log("Diagnóstico actualizado en la base de datos");
+      return resp;
     } catch (error) {
       console.error("Error al actualizar el diagnóstico:", error);
     }
-
-    setDatosConsulta((prevDatosConsulta) => ({
-      ...prevDatosConsulta,
-      diagnostico: diagnostico,
-    }));
   };
 
   const handleAgregarRecetaMedica = () => {
@@ -97,10 +94,6 @@ export default function RealizarDiagnostico(props) {
   const handleGuardarRecetaMedica = () => {
     console.log("Receta guardada:", recetaMedica);
     setRecetasGuardadas((prevRecetas) => [...prevRecetas, recetaMedica]);
-    setDatosConsulta((prevDatosConsulta) => ({
-      ...prevDatosConsulta,
-      recetas: [...prevDatosConsulta.recetas, recetaMedica],
-    }));
     setMostrarRecetaMedica(false);
     setRecetaMedica("");
   };
@@ -118,10 +111,6 @@ export default function RealizarDiagnostico(props) {
   const handleGuardarExamenLab = () => {
     console.log("ExamenLab guardada:", examenLab);
     setExamenLabGuardadas((prevExamenLab) => [...prevExamenLab, examenLab]);
-    setDatosConsulta((prevDatosConsulta) => ({
-      ...prevDatosConsulta,
-      examenesLab: [...prevDatosConsulta.examenesLab, examenLab],
-    }));
     setMostrarExamenLab(false);
     setExamenLab("");
   };
@@ -133,16 +122,18 @@ export default function RealizarDiagnostico(props) {
   };
 
   const handleTerminarConsulta = () => {
-    handleGuardarDiagnostico();
-    console.log("Datos de la consulta:", datosConsulta);
-    // setDatosConsulta({ diagnostico: '', recetas: [], examenesLab: [] });
-    // setRecetasGuardadas([]);
-    // setExamenLabGuardadas([]);
+    const data = {
+      appointmentId: props.data[0].id,
+      diagnostico: diagnostico,
+      receta: recetasGuardadas,
+      examenesLab: examenLabGuardadas,
+    };
+    handleGuardarDiagnostico(data);
+    console.log("Datos de la consulta:", data);
   };
 
   useEffect(() => {
     console.log(props.data);
-    // hacer una consulta de citas pasadas
   }, []);
 
   return (
@@ -162,9 +153,13 @@ export default function RealizarDiagnostico(props) {
           >
             <TextArea
               rows={4}
+              placeholder="Diagnóstico médico"
+              maxLength={500}
               style={{ height: "100%" }}
               value={diagnostico}
-              onChange={(e) => setDiagnostico(e.target.value)}
+              onChange={(e) => {
+                setDiagnostico(e.target.value);
+              }}
             />
           </Card>
         </Col>
@@ -257,7 +252,7 @@ export default function RealizarDiagnostico(props) {
           </Card>
         </Col>
       </Row>
-      <br/>
+      <br />
       <Button onClick={handleTerminarConsulta} type="primary">
         Terminar consulta
       </Button>
