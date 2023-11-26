@@ -69,7 +69,7 @@ export default class DoctorCitasPage extends Component {
       fecha: cita.startDate.substring(0, 10),
       hora: dayjs(cita.startDate).format("HH:mm") + " - " + dayjs(cita.endDate).format("HH:mm"),
       paciente: cita.Patient.name + " " + cita.Patient.lastName,
-      detalle: <Link to={`/auth/doctor/citaDetail/${cita.id}`}>Ver Detalle</Link>,
+      detalle: <Link to={`/auth/doctor/citaDetail?citaId=${cita.id}`}>Ver Detalle</Link>,
     }));
     console.log(citasProximas);
     return (

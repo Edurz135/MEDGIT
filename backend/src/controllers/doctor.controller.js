@@ -6,12 +6,13 @@ const {
   getUpdateDoctorService,
   getVisualiseDoctorService,
   updateAvailabilityService,
+  getFutureAppointmentDetailService,
 } = require("../service/doctor.service.js");
 const getPastAppointments = async (req, res) => {
   try {
-    console.log("getPastAppointments========================================")
+    console.log("getPastAppointments========================================");
     console.log(req.user);
-    console.log("getPastAppointments========================================")
+    console.log("getPastAppointments========================================");
     // Envía el id del paciente
     const result = (await getPastAppointmentsService(req.user.id)) || [];
 
@@ -26,8 +27,22 @@ const getPastAppointments = async (req, res) => {
 };
 const getFutureAppointments = async (req, res) => {
   try {
-    const result = await getFutureAppointmentsService(req.user.id) || [];
+    const result = (await getFutureAppointmentsService(req.user.id)) || [];
 
+    return res.status(200).json({
+      status: 200,
+      result: result,
+      message: "Succesfully Appointments Returned",
+    });
+  } catch (e) {
+    return res.status(400).json({ status: 400, message: e.message });
+  }
+};
+
+const getFutureAppointmentDetail = async (req, res) => {
+  try {
+    const result =
+      (await getFutureAppointmentDetailService(req.body.appointmentId)) || [];
     return res.status(200).json({
       status: 200,
       result: result,
@@ -40,7 +55,8 @@ const getFutureAppointments = async (req, res) => {
 const getAppointmentsDetails = async (req, res) => {
   try {
     // Envía el id de la cita
-    const result = (await getAppointmentDetailsService(req.body.appointmentId)) || [];
+    const result =
+      (await getAppointmentDetailsService(req.body.appointmentId)) || [];
     return res.status(200).json({
       status: 200,
       result: result,
@@ -78,7 +94,6 @@ const updateAvailability = async (req, res) => {
   }
 };
 const getupdateDoctor = async (req, res) => {
-
   console.log(req.body);
   try {
     const result = await getUpdateDoctorService(req.body);
@@ -93,7 +108,7 @@ const getupdateDoctor = async (req, res) => {
 };
 const getVisualiseDoctor = async (req, res) => {
   try {
-    const result = await getVisualiseDoctorService(req.user.id) || [];
+    const result = (await getVisualiseDoctorService(req.user.id)) || [];
 
     return res.status(200).json({
       status: 200,
@@ -112,4 +127,6 @@ module.exports = {
   getupdateDoctor,
   getVisualiseDoctor,
   updateAvailability,
+  getFutureAppointmentDetail,
+  getAppointmentsDetails,
 };
