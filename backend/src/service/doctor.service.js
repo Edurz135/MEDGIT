@@ -247,6 +247,38 @@ const getVisualiseDoctorService = async (DoctorId) => {
     throw new Error(e.message);
   }
 };
+
+const updateAppointmentService = async (body) => {
+  try {
+    const result = await Models.Appointment.findOne({
+      where: {
+        id: body.id,
+      },
+    });
+
+    await result.update({
+      pending: false,
+      diagnostic: body.diagnostico,
+    });
+
+    // if(body.receta != []) {
+    //   body.receta.map((receta) => {
+
+    //   })
+    // }
+
+    // if(body.examenesLab != []) {
+    //   body.receta.map((receta) => {
+        
+    //   })
+    // }
+
+    return result;
+  } catch (e) {
+    throw new Error(e.message);
+  }
+};
+
 module.exports = {
   getPastAppointmentsService,
   getFutureAppointmentsService,
@@ -256,4 +288,5 @@ module.exports = {
   getUpdateDoctorService,
   getVisualiseDoctorService,
   updateAvailabilityService,
+  updateAppointmentService
 };
