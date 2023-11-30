@@ -84,10 +84,6 @@ const LaboratoryPerfilPage = () => {
         <Card className="laboratory-profile-card" title="Detalles del Paciente">
           <Descriptions bordered>
             <Descriptions.Item label="Nombre">{laboratoryData.name}</Descriptions.Item>
-            <Descriptions.Item label="Apellido">{laboratoryData.lastName}</Descriptions.Item>
-            <Descriptions.Item label="DNI">{laboratoryData.identityDoc}</Descriptions.Item>
-            <Descriptions.Item label="Género">{laboratoryData.gender}</Descriptions.Item>
-            <Descriptions.Item label="Teléfono">{laboratoryData.phone}</Descriptions.Item>
             <Descriptions.Item label="Email">{laboratoryData.email}</Descriptions.Item>
           </Descriptions>
           <Button type="primary" onClick={handleEdit}>
@@ -104,9 +100,6 @@ const LaboratoryPerfilPage = () => {
       >
         <Form form={form} layout="vertical">
           <Form.Item label="Email" name="email" rules={[{ required: true, message: "Por favor ingresa un email válido" }]}>
-            <Input />
-          </Form.Item>
-          <Form.Item label="Teléfono" name="phone" rules={[{ required: true, message: "Por favor ingresa un número de teléfono válido" }]}>
             <Input />
           </Form.Item>
           <Form.Item label="Nueva Contraseña" name="password">
