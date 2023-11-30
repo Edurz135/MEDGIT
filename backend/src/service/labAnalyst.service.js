@@ -32,17 +32,38 @@ const getVisualiseLabAnalystService = async (LabAnalystId) => {
     throw new Error(e.message);
   }
   };
-const getPendingExaMedsService = async (LabAnalystId) => {
-  try {
-    const ExaMeds = await Models.ExaMed.findAll({
-      attributes: ["id"],
+const getLabAnalystTipExMedSupport = async (LabAnalystId) => {
+  try{
+    const tipExMedIds = await Models.TipExMedLabAnalyst.findall({
+      attributes: ["tipExMedId"],
       where: {
         LabAnalystId: LabAnalystId,
+      },
+    });
+    return tipExMedIds;
+  } catch (e) {
+    throw new Error(e.message);
+  }
+
+}
+// Pide el examen medico que no está hecho
+const getPendingExaMedsService = async (LabAnalystId) => {
+  try {
+    let tipExMedIds= getLabAnalystTipExMedSupport(LabAnalystId);
+    const ExaMeds = await Models.ExaMed.findAll({
+      attributes: ["id", "comment"],
+      where: {
         state: 0,
       },
       include:[
         {
           model: Models.TipExMed,
+          where: {
+            
+            id:{
+              [Op.or]:tipExMedIds,
+            }
+          },
           attributes: ["name"],
         }
       ],

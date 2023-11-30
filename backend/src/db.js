@@ -39,8 +39,8 @@ Allergy.hasMany(Patient);
 Doctor.belongsTo(Specialty);
 ExaMed.belongsTo(Appointment, {foreignKey: 'AppointmentId'});
 
-TipExMed.belongsToMany(LabAnalyst, { through: "TipExMedLabAnalyst"});
-LabAnalyst.belongsToMany(TipExMed, { through: "TipExMedLabAnalystS"});
+TipExMed.belongsToMany(LabAnalyst, { through: TipExMedLabAnalyst});
+LabAnalyst.belongsToMany(TipExMed, { through: TipExMedLabAnalyst});
 
 //Muchos a muchos --> N a N
 Medicine.belongsToMany(Appointment, { through: ContenMedCi });
@@ -72,5 +72,6 @@ Models.ContenPacAle = ContenPacAle;
 Models.Specialty = Specialty;
 Models.WeeklyTransaction = WeeklyTransaction;
 Models.Administrator = Administrator;
+Models.TipExMedLabAnalyst = TipExMedLabAnalyst;
 
 module.exports = { db, Models };
