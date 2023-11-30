@@ -190,7 +190,7 @@ const updateAvailabilityService = async (id, body) => {
     throw new Error(e.message);
   }
 };
-const getUpdateDoctorService = async (body) => {
+const getUpdateDoctorService = async (body, DoctorId) => {
   try {
     const hashedPassword = await bcrypt.hash(body.password, 10);
     const doctor = await Models.Doctor.findOne({
@@ -241,6 +241,7 @@ const getDoctorsService = async (ids = []) => {
     throw Error("Error while finding a Patient");
   }
 };
+
 const updateAppointmentService = async (body) => {
   try {
     console.log(body);
