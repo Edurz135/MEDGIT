@@ -27,8 +27,9 @@ const getPastAppointments = async (req, res) => {
 const getAppointmentDetails = async (req, res) => {
   try {
     // Envía el id de la cita
-    
-    const result = (await getAppointmentDetailsService(req.body.appointmentId)) || [];
+
+    const result =
+      (await getAppointmentDetailsService(req.body.appointmentId)) || [];
     return res.status(200).json({
       status: 200,
       result: result,
@@ -124,7 +125,7 @@ const getupdatePacient = async (req, res) => {
 };
 const getVisualisePacient = async (req, res) => {
   try {
-    const result = await getVisualisePacientService(req.user.id) || [];
+    const result = (await getVisualisePacientService(req.user.id)) || [];
 
     return res.status(200).json({
       status: 200,

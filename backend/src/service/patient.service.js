@@ -208,6 +208,7 @@ const getFutureAppointmentsService = async (PatientId) => {
   } catch (e) {
     throw new Error(e.message);
   }
+}
 const getUpdatePacientService = async (body, PatientId) =>{
   try{
     const hashedPassword = await bcrypt.hash(body.password, 10);

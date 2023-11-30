@@ -244,6 +244,8 @@ const getDoctorsService = async (ids = []) => {
     return doctor;
   } catch (e) {
     throw Error("Error while finding a Patient");
+  }
+}
 
 const updateAppointmentService = async (body) => {
   try {
