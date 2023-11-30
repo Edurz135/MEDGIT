@@ -78,10 +78,19 @@ async function seedLabAnalysts() {
       name: "Lab",
     };
     await Models.LabAnalyst.create(body)
-      .then((result) => {
-        console.log("Data inserted:", result);
+      .then(async (nuevoLab) => {
+        console.log(nuevoLab)
+        const idNuevalab = nuevoLab.dataValues.id;
+        for (let index = 1; index < 21; index++) {
+          await Models.TipExMedLabAnalyst.create({
+            LabAnalystId: idNuevalab,
+            TipExMedId: index,
+          });
+        }
       })
-      .catch((error) => {});
+      .catch((error) => {
+        console.log("#########" + error)
+      });
     console.log("Especialidades agregadas con éxito.");
   } catch (error) {
     console.log("error on seedLabAnalysts");
@@ -125,12 +134,12 @@ async function seedTipoExamenesMedicos() {
 
 const loadData = async () => {
   const seeders = [
+    seedTipoExamenesMedicos,
     seedSpecialties,
     seedDoctors,
     seedPatients,
-    seedLabAnalysts,
     seedAdministrator,
-    seedTipoExamenesMedicos,
+    seedLabAnalysts,
   ];
 
   for (let seed of seeders) {

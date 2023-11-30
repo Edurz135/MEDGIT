@@ -76,7 +76,16 @@ const registerLabAnalystService = async (body) => {
       nroColegitura: nroColegiatura,
       gender: body.gender,
       phone: 0,
-    });
+    }).then(async (nuevoLab) => {
+      const idNuevalab = nuevoLab.dataValues.id;
+      for (let index = 1; index < 21; index++) {
+        await Models.TipExMedLabAnalyst.create({
+          LabAnalystId: idNuevalab,
+          TipExMedId: index,
+        });
+      }
+    })
+
     return LabAnalyst;
   } catch (e) {
     throw Error("Error while creating User: " + e);
@@ -137,10 +146,7 @@ const loginLabAnalystService = async (email, password) => {
 const loginAdministratorService = async (email, password) => {
   try {
     const admin = await getAdministratorService(email);
-    const match = await bcrypt.compare(
-      password,
-      admin.dataValues.password
-    );
+    const match = await bcrypt.compare(password, admin.dataValues.password);
     if (!match) throw new Error("Invalid credentials");
 
     const accessToken = await jwt.sign(

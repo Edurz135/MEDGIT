@@ -24,7 +24,7 @@ const ContenMedCi = require("./models/contenMedCi.model.js")(sequelize, Sequeliz
 const ContenPacAle = require("./models/contenPacAle.model.js")(sequelize, Sequelize);
 const Specialty = require("./models/specialty.model.js")(sequelize, Sequelize);
 const WeeklyTransaction = require("./models/weeklyTransaction.model.js")(sequelize, Sequelize);
-const TipExMedLabAnalyst = require("./models/tipExMedLabAnalyst.model.js")(sequelize, Sequelize);
+const TipExMedLabAnalyst = require("./models/tipExMedLabAnalyst.js")(sequelize, Sequelize);
 const Administrator = require("./models/administrator.model.js")(sequelize, Sequelize);
 
 // Associations
