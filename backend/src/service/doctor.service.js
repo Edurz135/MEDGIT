@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt");
 const getPastAppointmentsService = async (DoctorId) => {
   try {
     const appointments = await Models.Appointment.findAll({
-      attributes: ["id","startDate", "endDate","intervalDigit", "diagnostic"],
+      attributes: ["id", "startDate", "endDate", "intervalDigit", "diagnostic"],
       where: {
         DoctorId: DoctorId,
         pending: false,
@@ -27,7 +27,7 @@ const getPastAppointmentsService = async (DoctorId) => {
 const getFutureAppointmentsService = async (DoctorId) => {
   try {
     const appointments = await Models.Appointment.findAll({
-      attributes: ["id","startDate", "endDate","intervalDigit", "diagnostic"],
+      attributes: ["id", "startDate", "endDate", "intervalDigit", "diagnostic"],
       where: {
         DoctorId: DoctorId,
         pending: true,
@@ -50,12 +50,7 @@ const getFutureAppointmentsService = async (DoctorId) => {
 const getFutureAppointmentDetailService = async (appointmentId) => {
   try {
     const appointments = await Models.Appointment.findAll({
-      attributes: [
-        "id",
-        "startDate",
-        "endDate",
-        "diagnostic",
-      ],
+      attributes: ["id", "startDate", "endDate", "diagnostic"],
       where: {
         id: appointmentId,
       },
@@ -245,37 +240,60 @@ const getDoctorsService = async (ids = []) => {
   } catch (e) {
     throw Error("Error while finding a Patient");
   }
-}
+};
 
 const updateAppointmentService = async (body) => {
   try {
-    const result = await Models.Appointment.findOne({
+    console.log(body);
+    const appointment = await Models.Appointment.findOne({
       where: {
-        id: body.id,
+        id: body.appointmentId,
       },
     });
 
-    await result.update({
+    await appointment.update({
       pending: false,
       diagnostic: body.diagnostico,
+      tipExMeds: body.examenesLab,
     });
 
-    // if(body.receta != []) {
-    //   body.receta.map((receta) => {
+    console.log(appointment);
+    if(body.receta != []) {
+      body.receta.map(async (receta) => {
+        await Models.Medicine.create(receta).then(async (nuevaMedicina) => {
+          const idNuevaMedicina = nuevaMedicina.dataValues.id;
+          await Models.ContenMedCi.create({
+            AppointmentId: body.appointmentId,
+            MedicineId: idNuevaMedicina,
+          });
+        });
+      })
+    }
 
-    //   })
-    // }
+    if (body.examenesLab != []) {
+      body.examenesLab.map(async (examenMedico) => {
+        await Models.ExaMed.create({
+          state: 0,
+          comment: "",
+          AppointmentId: body.appointmentId,
+          TipExMedId: examenMedico.value,
+        });
+      });
+    }
 
-    // if(body.examenesLab != []) {
-    //   body.receta.map((receta) => {
-        
-    //   })
-    // }
-
+    result = appointment;
     return result;
   } catch (e) {
     throw new Error(e.message);
+  }
+};
 
+const getListTypesMedicalExamsService = async (ids = []) => {
+  try {
+    const result = await Models.TipExMed.findAll();
+    return result;
+  } catch (e) {
+    throw Error("Error while finding a Patient");
   }
 };
 
@@ -290,4 +308,5 @@ module.exports = {
   updateAvailabilityService,
   getDoctorsService,
   updateAppointmentService,
+  getListTypesMedicalExamsService,
 };

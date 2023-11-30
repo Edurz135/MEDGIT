@@ -8,6 +8,7 @@ const {
   getAppointmentsDetails,
   getupdateDoctor,
   updateAppointment,
+  getListTypesMedicalExams,
 } = require("../controllers/doctor.controller");
 
 const Router = require("express");
@@ -63,6 +64,12 @@ doctorRouter.put(
   "/api/doctor/updateAppointment",
   authenticateToken,
   updateAppointment
+);
+
+doctorRouter.get(
+  "/api/doctor/getListTypesMedicalExams",
+  authenticateToken,
+  getListTypesMedicalExams
 );
 
 module.exports = doctorRouter;
