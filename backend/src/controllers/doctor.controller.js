@@ -78,10 +78,10 @@ const updateAvailability = async (req, res) => {
   }
 };
 const getupdateDoctor = async (req, res) => {
-
+  console.log(req.user)
   console.log(req.body);
   try {
-    const result = await getUpdateDoctorService(req.body);
+    const result = await getUpdateDoctorService(req.body, req.user.id);
     return res.status(200).json({
       status: 200,
       result: result,

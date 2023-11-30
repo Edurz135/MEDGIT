@@ -195,7 +195,7 @@ const getFutureAppointmentsService = async (PatientId) => {
     throw new Error(e.message);
   }
 }; 
-const getUpdatePacientService = async (body) =>{
+const getUpdatePacientService = async (body, PatientId) =>{
   try{
     const hashedPassword = await bcrypt.hash(body.password, 10);
     const patient = await Models.Patient.findOne({

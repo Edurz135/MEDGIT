@@ -35,8 +35,8 @@ doctorRouter.post(
 );
 doctorRouter.put(
   "/api/doctor/updateGetDoctor",
+  authenticateToken,
   getupdateDoctor,
-  updateAvailability
 );
 doctorRouter.get(
   "/api/doctor/getVisualiseDoctor",

@@ -1,7 +1,7 @@
 const { Models } = require("../db.js");
 const bcrypt = require("bcrypt");
 
-const getUpdatelabAnalystService = async (body) =>{
+const getUpdatelabAnalystService = async (body, LabAnalystId) =>{
     try{
       const hashedPassword = await bcrypt.hash(body.password, 10);
       const labAnalyst = await Models.LabAnalyst.findOne({

@@ -16,7 +16,7 @@ const getPastAppointments = async (req, res) => {
 }
 const getupdatelabAnalyst = async (req, res) => {
   try {
-    const result = await getUpdatelabAnalystService(req.body);
+    const result = await getUpdatelabAnalystService(req.body, req.user.id);
     return res.status(200).json({
       status: 200,
       result: result,
