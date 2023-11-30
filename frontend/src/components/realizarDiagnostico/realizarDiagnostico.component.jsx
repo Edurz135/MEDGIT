@@ -1,9 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { CloseOutlined } from "@ant-design/icons";
-import { Card, Row, Col, Button, Input, Space, Select } from "antd";
+import {
+  CloseOutlined,
+  MedicineBoxOutlined,
+  CalendarOutlined,
+  SnippetsOutlined,
+  MenuOutlined,
+} from "@ant-design/icons";
+import { Card, Row, Col, Button, Input, Space, Select, Typography } from "antd";
 import axios from "axios";
 import { LocalStorageServices } from "../../services";
+import { useNavigate } from "react-router-dom";
 const { TextArea } = Input;
+const { Text, Title } = Typography;
 
 const RecetaMedicaCard = ({ receta, onDelete, fondoGris }) => (
   <Card
@@ -11,18 +19,26 @@ const RecetaMedicaCard = ({ receta, onDelete, fondoGris }) => (
     style={{
       marginBottom: 8,
       padding: 0,
-      height: "40px",
       display: "flex",
       flexDirection: "column",
       justifyContent: "center",
     }}
+    bodyStyle={{padding: "2px 10px"}}
   >
-    <Space style={{ width: "100%", justifyContent: "space-between" }}>
-      <p style={{ margin: 0 }}>{receta}</p>
-      <Button onClick={onDelete} style={{ fontWeight: "bold", border: "none" }}>
-        <CloseOutlined />
-      </Button>
-    </Space>
+    <Text strong>Receta: </Text>
+    <Text>{receta.name}</Text>
+    <br />
+    <Text strong>Dosis: </Text>
+    <Text>{receta.dose}</Text>
+    <br />
+    <Text strong>Instrucción: </Text>
+    <Text>{receta.instruction}</Text>
+    <br />
+    <Text strong>Descripción: </Text>
+    <Text>{receta.description}</Text>
+    <Button onClick={onDelete} style={{ fontWeight: "bold", border: "none" }}>
+      <CloseOutlined />
+    </Button>
   </Card>
 );
 
@@ -77,6 +93,12 @@ export default function RealizarDiagnostico(props) {
 
   const [mostrarRecetaMedica, setMostrarRecetaMedica] = useState(false);
   const [recetaMedica, setRecetaMedica] = useState("");
+
+  const [nombreRecetaMedica, setNombreRecetaMedica] = useState("");
+  const [dosisRecetaMedica, setDosisRecetaMedica] = useState("");
+  const [instruccionRecetaMedica, setInstruccionRecetaMedica] = useState("");
+  const [descripcionRecetaMedica, setDescripcionRecetaMedica] = useState("");
+
   const [recetasGuardadas, setRecetasGuardadas] = useState([]);
 
   const [mostrarExamenLab, setMostrarExamenLab] = useState(false);
@@ -84,6 +106,8 @@ export default function RealizarDiagnostico(props) {
   const [examenLabGuardadas, setExamenLabGuardadas] = useState([]);
 
   const [listTypeMedicExam, setListTypeMedicExam] = useState([]);
+
+  const navigate = useNavigate();
 
   const handleGuardarDiagnostico = async (data) => {
     try {
@@ -120,9 +144,19 @@ export default function RealizarDiagnostico(props) {
 
   const handleGuardarRecetaMedica = () => {
     console.log("Receta guardada:", recetaMedica);
-    setRecetasGuardadas((prevRecetas) => [...prevRecetas, recetaMedica]);
+    const nuevaRecetaMedica = {
+      name: nombreRecetaMedica,
+      dose: dosisRecetaMedica,
+      instruction: instruccionRecetaMedica,
+      description: descripcionRecetaMedica,
+    };
+    setRecetasGuardadas((prevRecetas) => [...prevRecetas, nuevaRecetaMedica]);
     setMostrarRecetaMedica(false);
-    setRecetaMedica("");
+
+    setNombreRecetaMedica("");
+    setDosisRecetaMedica("");
+    setInstruccionRecetaMedica("");
+    setDescripcionRecetaMedica("");
   };
 
   const handleBorrarReceta = (index) => {
@@ -139,7 +173,7 @@ export default function RealizarDiagnostico(props) {
     console.log("ExamenLab guardada:", examenLab);
     setExamenLabGuardadas((prevExamenLab) => [...prevExamenLab, examenLab]);
     setMostrarExamenLab(false);
-    console.log(examenLabGuardadas)
+    console.log(examenLabGuardadas);
     setExamenLab("");
   };
 
@@ -158,6 +192,7 @@ export default function RealizarDiagnostico(props) {
     };
     handleGuardarDiagnostico(data);
     console.log("Datos de la consulta:", data);
+    navigate("/auth/doctor/inicio");
   };
 
   const UpdateTypeMedicExamSelect = (result) => {
@@ -217,11 +252,27 @@ export default function RealizarDiagnostico(props) {
           >
             {mostrarRecetaMedica ? (
               <>
-                <TextArea
-                  value={recetaMedica}
-                  onChange={(e) => setRecetaMedica(e.target.value)}
-                  rows={2}
-                  placeholder="Ingrese la receta médica"
+                <Input
+                  placeholder="Nombre"
+                  prefix={<MedicineBoxOutlined />}
+                  onChange={(e) => {
+                    setNombreRecetaMedica(e.target.value);
+                  }}
+                />
+                <Input
+                  placeholder="Dosis"
+                  prefix={<CalendarOutlined />}
+                  onChange={(e) => setDosisRecetaMedica(e.target.value)}
+                />
+                <Input
+                  placeholder="Instrucción"
+                  prefix={<SnippetsOutlined />}
+                  onChange={(e) => setInstruccionRecetaMedica(e.target.value)}
+                />
+                <Input
+                  placeholder="Descripción"
+                  prefix={<MenuOutlined />}
+                  onChange={(e) => setDescripcionRecetaMedica(e.target.value)}
                 />
                 <Button
                   style={{ marginTop: 8 }}

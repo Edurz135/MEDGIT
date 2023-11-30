@@ -243,29 +243,44 @@ const getDoctorsService = async (ids = []) => {
 };
 const updateAppointmentService = async (body) => {
   try {
-    const result = await Models.Appointment.findOne({
+    console.log(body);
+    const appointment = await Models.Appointment.findOne({
       where: {
-        id: body.id,
+        id: body.appointmentId,
       },
     });
 
-    await result.update({
+    await appointment.update({
       pending: false,
       diagnostic: body.diagnostico,
+      tipExMeds: body.examenesLab,
     });
 
-    // if(body.receta != []) {
-    //   body.receta.map((receta) => {
+    console.log(appointment);
+    if(body.receta != []) {
+      body.receta.map(async (receta) => {
+        await Models.Medicine.create(receta).then(async (nuevaMedicina) => {
+          const idNuevaMedicina = nuevaMedicina.dataValues.id;
+          await Models.ContenMedCi.create({
+            AppointmentId: body.appointmentId,
+            MedicineId: idNuevaMedicina,
+          });
+        });
+      })
+    }
 
-    //   })
-    // }
+    if (body.examenesLab != []) {
+      body.examenesLab.map(async (examenMedico) => {
+        await Models.ExaMed.create({
+          state: 0,
+          comment: "",
+          AppointmentId: body.appointmentId,
+          TipExMedId: examenMedico.value,
+        });
+      });
+    }
 
-    // if(body.examenesLab != []) {
-    //   body.receta.map((receta) => {
-
-    //   })
-    // }
-
+    result = appointment;
     return result;
   } catch (e) {
     throw new Error(e.message);

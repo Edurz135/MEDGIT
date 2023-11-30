@@ -43,15 +43,16 @@ TipExMed.belongsToMany(LabAnalyst, { through: "TipExMedLabAnalyst"});
 LabAnalyst.belongsToMany(TipExMed, { through: "TipExMedLabAnalystS"});
 
 //Muchos a muchos --> N a N
-Medicine.belongsToMany(Appointment,{through: 'ContenMedCi'});
-Appointment.belongsToMany(Medicine,{through: 'ContenMedCi'});
+Medicine.belongsToMany(Appointment, { through: ContenMedCi });
+Appointment.belongsToMany(Medicine, { through: ContenMedCi });
 
 Appointment.belongsTo(Doctor);
 Appointment.belongsTo(Patient);
 
 Allergy.hasMany(ContenPacAle);
 Patient.hasMany(ContenPacAle);  
-Appointment.hasMany(TipExMedLabAnalyst);
+Appointment.belongsToMany(TipExMed, { through: ExaMed });
+TipExMed.belongsToMany(Appointment, { through: ExaMed });
 
 Doctor.hasMany(ContenMedAle);
 Allergy.hasMany(ContenMedAle);

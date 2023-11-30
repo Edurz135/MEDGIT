@@ -8,6 +8,7 @@ const {
   updateAvailabilityService,
   getFutureAppointmentDetailService,
   getListTypesMedicalExamsService,
+  updateAppointmentService,
 } = require("../service/doctor.service.js");
 const getPastAppointments = async (req, res) => {
   try {
@@ -122,6 +123,7 @@ const getVisualiseDoctor = async (req, res) => {
 
 const updateAppointment = async (req, res) => {
   try {
+    console.log(req.body.data.examenesLab)
     const result = (await updateAppointmentService(req.body.data)) || [];
 
     return res.status(200).json({
