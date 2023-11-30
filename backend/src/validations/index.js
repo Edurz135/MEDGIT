@@ -1,3 +1,4 @@
+const { LabRegistrationValidator } = require("./labAnalystRegister.validation");
 const { LoginValidator } = require("./login.validation");
 const {
   PatientRegistrationValidator,
@@ -19,8 +20,14 @@ function workerRegistrationValidator(req, res, next) {
   workerRegistrationValidator.validate(req, res, next);
 }
 
+function labRegistrationValidator(req, res, next) {
+  const labRegistrationValidator = new LabRegistrationValidator();
+  labRegistrationValidator.validate(req, res, next);
+}
+
 module.exports = {
   loginValidator,
   patientRegistrationValidator,
   workerRegistrationValidator,
+  labRegistrationValidator
 };

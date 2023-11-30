@@ -13,6 +13,7 @@ const {
   loginValidator,
   patientRegistrationValidator,
   workerRegistrationValidator,
+  labRegistrationValidator,
 } = require("../validations");
 
 const userRouter = Router();
@@ -34,7 +35,7 @@ userRouter.post(
 );
 userRouter.post(
   "/api/registerLabAnalyst",
-  workerRegistrationValidator,
+  labRegistrationValidator,
   registerLabAnalyst
 );
 

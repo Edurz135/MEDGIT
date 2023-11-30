@@ -76,11 +76,6 @@ async function seedLabAnalysts() {
       email: "lab@gmail.com",
       password: hashedPassword,
       name: "Lab",
-      lastName: "One",
-      identityDoc: "12345678",
-      gender: "masculino",
-      phone: 0,
-      nroColegitura: 123,
     };
     await Models.LabAnalyst.create(body)
       .then((result) => {
