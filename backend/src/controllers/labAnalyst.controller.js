@@ -1,19 +1,21 @@
 const{
   getUpdatelabAnalystService,
-  getVisualiseLabAnalystService
+  getVisualiseLabAnalystService,
+  getPendingExaMedsService,
 } = require("../service/labAnalyst.service.js")
-const getPastAppointments = async (req, res) => {
-    try {
-        const result = await getPastAppointmentsService(req.body);
-        return res.status(200).json({
-          status: 200,
-          result: result,
-          message: "Succesfully Appointsments Returned",
-        });
-      } catch (e) {
-        return res.status(400).json({ status: 400, message: e.message });
-      } 
+const getPendingExaMeds = async (req, res) => {
+  try {
+    const result = await getPendingExaMedsService(req.user.id) || [];
+    return res.status(200).json({
+      status: 200,
+      result: result,
+      message: "Succesfully MedExam Returned",
+    });
+  } catch (e) {
+    return res.status(400).json({ status: 400, message: e.message });
+  }
 }
+
 const getupdatelabAnalyst = async (req, res) => {
   try {
     const result = await getUpdatelabAnalystService(req.body, req.user.id);
@@ -42,4 +44,5 @@ const getVisualiseLabAnalyst = async (req, res) => {
 module.exports={
   getupdatelabAnalyst,
   getVisualiseLabAnalyst,
+  getPendingExaMeds,
 };

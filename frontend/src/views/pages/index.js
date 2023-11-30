@@ -9,6 +9,7 @@ export { default as DoctorCitasPage } from "./doctorPages/doctorCitas/doctorCita
 export { default as DoctorHistorialPage } from "./doctorPages/doctorHistorial/doctorHistorialPage.page";
 export { default as DoctorPerfilPage } from "./doctorPages/doctorPerfil/doctorPerfilPage.page";
 export { default as DoctorAvalabilityPage } from "./doctorPages/doctorAvailability/doctorAvailability.page";
+export { default as DoctorCitasDetails} from "./doctorPages/doctorCitasDetails/doctorCitasDetails.page"
 
 // PATIENT
 export { default as PatientMainPage } from "./patientPages/patientMain/patientMainPage.page";
@@ -16,6 +17,8 @@ export { default as PatientCitasPage } from "./patientPages/patientCitas/patient
 export { default as PatientHistorialPage } from "./patientPages/patientHistorial/patientHistorialPage.page";
 export { default as PatientPerfilPage } from "./patientPages/patientPerfil/patientPerfilPage.page";
 export { default as PatientAppointmentBookingPage } from "./patientPages/patientAppointmentBooking/patientAppointmentBookingPage.page";
+export { default as PatientCitasDetails} from "./patientPages/patientCitasDetails/patientCitasDetails.page";
+
 
 // LABOLATORY
 export { default as LaboratoryMainPage } from "./laboratoryPages/laboratoryMain/laboratoryMainPage.page";
@@ -23,4 +26,5 @@ export { default as LaboratoryExamenPage } from "./laboratoryPages/laboratoryExa
 export { default as LaboratoryPerfilPage } from "./laboratoryPages/laboratoryPerfil/laboratoryPerfilPage.page";
 
 // ADMINISTRATOR
-export { default as AdministratorMainPage } from "./administratorPages/administratorMain/administratorMain.page"
+export { default as AdministratorMainPage } from "./administratorPages/administratorMain/administratorMain.page";
+export { default as AdministratorDataIngestion } from "./administratorPages/administratorDataIngestion/administratorDataIngestion.page";

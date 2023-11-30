@@ -1,0 +1,41 @@
+/* Estilos para el contenedor */
+.container {
+    padding: 0px; /* Agregar un espacio alrededor del contenido */
+  }
+  
+  /* Estilos para el título */
+  h1 {
+    color: #333; /* Color de texto predeterminado */
+    margin: 0; /* Eliminar el margen superior e inferior del título */
+  }
+  
+  .custom-breadcrumb td {
+    text-align: center; /* Alinear el contenido de las celdas horizontalmente */
+    padding: 10px 20px; /* Agregar espacio alrededor del contenido */
+    position: relative; /* Establecer la posición como relativa para el subrayado */
+  }
+  
+  .custom-breadcrumb td a {
+    color: #333; /* Color de texto predeterminado */
+    font-size: 16px; /* Tamaño de fuente personalizado para las opciones */
+  }
+  
+  .custom-breadcrumb td:hover::before {
+    content: ""; /* Agregar contenido al pseudoelemento */
+    display: block; /* Hacer que el pseudoelemento sea un bloque */
+    border-bottom: 4px solid blue; /* Color y grosor de la línea inferior al pasar el mouse */
+    position: absolute; /* Establecer la posición como absoluta */
+    bottom: -4px; /* Ubicar el subrayado más abajo */
+    left: 0; /* Alinear el subrayado con el enlace */
+    width: 100%; /* Establecer el ancho al 100% del enlace */
+  }
+  
+  .custom-breadcrumb td a:hover {
+    color: blue; /* Cambiar el color del texto a azul al pasar el cursor */
+   
+  }
+  
+  .custom-breadcrumb td a:focus {
+    color: blue; /* Cambiar el color del texto a azul al seleccionar el enlace */
+  }
+  
