@@ -10,14 +10,12 @@ async function seedSpecialties() {
         .then((result) => {
           console.log("Data inserted:", result);
         })
-        .catch((error) => {
-          console.error(
-            `Error inserting SPECIALTY name="${name}", id="${id}":`
-          );
-        });
+        .catch((error) => {});
     });
     console.log("Especialidades agregadas con éxito.");
-  } catch (error) {}
+  } catch (error) {
+    console.log("error on seedSpecialties");
+  }
 }
 
 async function seedDoctors() {
@@ -40,14 +38,12 @@ async function seedDoctors() {
         .then((result) => {
           console.log("Data inserted:", result);
         })
-        .catch((error) => {
-          console.error(
-            `Error inserting DOCTOR name="${body.name}", id="${body.id}":`
-          );
-        });
+        .catch((error) => {});
     });
     console.log("Especialidades agregadas con éxito.");
-  } catch (error) {}
+  } catch (error) {
+    console.log("error on seedDoctors");
+  }
 }
 
 async function seedPatients() {
@@ -66,13 +62,11 @@ async function seedPatients() {
       .then((result) => {
         console.log("Data inserted:", result);
       })
-      .catch((error) => {
-        console.error(
-          `Error inserting PATIENT name="${body.name}", id="${body.id}":`
-        );
-      });
+      .catch((error) => {});
     console.log("Especialidades agregadas con éxito.");
-  } catch (error) {}
+  } catch (error) {
+    console.log("error on seedPatients");
+  }
 }
 
 async function seedLabAnalysts() {
@@ -92,13 +86,11 @@ async function seedLabAnalysts() {
       .then((result) => {
         console.log("Data inserted:", result);
       })
-      .catch((error) => {
-        console.error(
-          `Error inserting LAB name="${body.name}", id="${body.id}":`
-        );
-      });
+      .catch((error) => {});
     console.log("Especialidades agregadas con éxito.");
-  } catch (error) {}
+  } catch (error) {
+    console.log("error on seedLabAnalysts");
+  }
 }
 
 async function seedAdministrator() {
@@ -112,13 +104,28 @@ async function seedAdministrator() {
       .then((result) => {
         console.log("Data inserted:", result);
       })
-      .catch((error) => {
-        console.error(
-          `Error inserting ADMINISTRATOR name="${body.name}", id="${body.id}":`
-        );
-      });
+      .catch((error) => {});
     console.log("Especialidades agregadas con éxito.");
-  } catch (error) {}
+  } catch (error) {
+    console.log("error on seedAdministrator");
+  }
+}
+
+async function seedTipoExamenesMedicos() {
+  try {
+    const tiposExamenesMedicos = require("./tipExMed.data");
+
+    tiposExamenesMedicos.map(async (body, id) => {
+      await Models.TipExMed.create(body)
+        .then((result) => {
+          console.log("Data inserted:", result);
+        })
+        .catch((error) => {});
+    });
+    console.log("TipoExamenesMedicos agregadas con éxito.");
+  } catch (error) {
+    console.log("error on seedTipoExamenesMedicos");
+  }
 }
 
 const loadData = async () => {
@@ -128,6 +135,7 @@ const loadData = async () => {
     seedPatients,
     seedLabAnalysts,
     seedAdministrator,
+    seedTipoExamenesMedicos,
   ];
 
   for (let seed of seeders) {

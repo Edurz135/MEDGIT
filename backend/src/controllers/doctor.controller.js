@@ -7,6 +7,7 @@ const {
   getVisualiseDoctorService,
   updateAvailabilityService,
   getFutureAppointmentDetailService,
+  getListTypesMedicalExamsService,
 } = require("../service/doctor.service.js");
 const getPastAppointments = async (req, res) => {
   try {
@@ -132,6 +133,21 @@ const updateAppointment = async (req, res) => {
     return res.status(400).json({ status: 400, message: e.message });
   }
 };
+
+const getListTypesMedicalExams = async (req, res) => {
+  try {
+    const result = (await getListTypesMedicalExamsService(req.body.data)) || [];
+
+    return res.status(200).json({
+      status: 200,
+      result: result,
+      message: "Succesfully Doctor Returned",
+    });
+  } catch (e) {
+    return res.status(400).json({ status: 400, message: e.message });
+  }
+};
+
 module.exports = {
   getPastAppointments,
   getFutureAppointments,
@@ -143,4 +159,5 @@ module.exports = {
   getFutureAppointmentDetail,
   getAppointmentsDetails,
   updateAppointment,
+  getListTypesMedicalExams,
 };

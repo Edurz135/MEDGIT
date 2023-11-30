@@ -54,14 +54,14 @@ export default function DoctorCitasDetails() {
     },
   ];
 
-  useEffect(() => {
+   useEffect(() => {
     const fetchAppointmentDetail = async () => {
       return await getAppointmentDetail(citaId);
     };
 
     fetchAppointmentDetail().then((data) => {
       setData(data);
-    });
+    });    
   }, []);
 
   return (

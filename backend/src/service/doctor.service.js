@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt");
 const getPastAppointmentsService = async (DoctorId) => {
   try {
     const appointments = await Models.Appointment.findAll({
-      attributes: ["id","startDate", "endDate","intervalDigit", "diagnostic"],
+      attributes: ["id", "startDate", "endDate", "intervalDigit", "diagnostic"],
       where: {
         DoctorId: DoctorId,
         pending: false,
@@ -27,7 +27,7 @@ const getPastAppointmentsService = async (DoctorId) => {
 const getFutureAppointmentsService = async (DoctorId) => {
   try {
     const appointments = await Models.Appointment.findAll({
-      attributes: ["id","startDate", "endDate","intervalDigit", "diagnostic"],
+      attributes: ["id", "startDate", "endDate", "intervalDigit", "diagnostic"],
       where: {
         DoctorId: DoctorId,
         pending: true,
@@ -50,12 +50,7 @@ const getFutureAppointmentsService = async (DoctorId) => {
 const getFutureAppointmentDetailService = async (appointmentId) => {
   try {
     const appointments = await Models.Appointment.findAll({
-      attributes: [
-        "id",
-        "startDate",
-        "endDate",
-        "diagnostic",
-      ],
+      attributes: ["id", "startDate", "endDate", "diagnostic"],
       where: {
         id: appointmentId,
       },
@@ -244,7 +239,8 @@ const getDoctorsService = async (ids = []) => {
     return doctor;
   } catch (e) {
     throw Error("Error while finding a Patient");
-
+  }
+};
 const updateAppointmentService = async (body) => {
   try {
     const result = await Models.Appointment.findOne({
@@ -266,14 +262,22 @@ const updateAppointmentService = async (body) => {
 
     // if(body.examenesLab != []) {
     //   body.receta.map((receta) => {
-        
+
     //   })
     // }
 
     return result;
   } catch (e) {
     throw new Error(e.message);
+  }
+};
 
+const getListTypesMedicalExamsService = async (ids = []) => {
+  try {
+    const result = await Models.TipExMed.findAll();
+    return result;
+  } catch (e) {
+    throw Error("Error while finding a Patient");
   }
 };
 
@@ -288,4 +292,5 @@ module.exports = {
   updateAvailabilityService,
   getDoctorsService,
   updateAppointmentService,
+  getListTypesMedicalExamsService,
 };

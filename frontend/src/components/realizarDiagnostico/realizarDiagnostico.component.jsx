@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { CloseOutlined } from "@ant-design/icons";
-import { Card, Row, Col, Button, Input, Space } from "antd";
+import { Card, Row, Col, Button, Input, Space, Select } from "antd";
 import axios from "axios";
 import { LocalStorageServices } from "../../services";
 const { TextArea } = Input;
@@ -47,6 +47,31 @@ const ExamenLabCard = ({ examenLab, onDelete, fondoGris }) => (
   </Card>
 );
 
+async function getListOfTypeMedicExam() {
+  const accessToken = await LocalStorageServices.GetData("accessToken");
+  let config = {
+    method: "get",
+    maxBodyLength: Infinity,
+    url: "http://localhost:3100/api/doctor/getListTypesMedicalExams",
+    headers: {
+      Authorization: accessToken,
+    },
+  };
+
+  const resp = await axios
+    .request(config)
+    .then((response) => {
+      return response.data.result;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  return resp;
+}
+
+const filterOption = (input, option) =>
+  (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
+
 export default function RealizarDiagnostico(props) {
   const [diagnostico, setDiagnostico] = useState("");
 
@@ -57,6 +82,8 @@ export default function RealizarDiagnostico(props) {
   const [mostrarExamenLab, setMostrarExamenLab] = useState(false);
   const [examenLab, setExamenLab] = useState("");
   const [examenLabGuardadas, setExamenLabGuardadas] = useState([]);
+
+  const [listTypeMedicExam, setListTypeMedicExam] = useState([]);
 
   const handleGuardarDiagnostico = async (data) => {
     try {
@@ -112,6 +139,7 @@ export default function RealizarDiagnostico(props) {
     console.log("ExamenLab guardada:", examenLab);
     setExamenLabGuardadas((prevExamenLab) => [...prevExamenLab, examenLab]);
     setMostrarExamenLab(false);
+    console.log(examenLabGuardadas)
     setExamenLab("");
   };
 
@@ -132,8 +160,20 @@ export default function RealizarDiagnostico(props) {
     console.log("Datos de la consulta:", data);
   };
 
+  const UpdateTypeMedicExamSelect = (result) => {
+    if (result == null) return;
+    const data = result.map((typeMedicExam) => {
+      return {
+        value: String(typeMedicExam.id),
+        label: typeMedicExam.name,
+      };
+    });
+    setListTypeMedicExam(data);
+  };
+
   useEffect(() => {
     console.log(props.data);
+    getListOfTypeMedicExam().then(UpdateTypeMedicExamSelect);
   }, []);
 
   return (
@@ -221,11 +261,20 @@ export default function RealizarDiagnostico(props) {
           >
             {mostrarExamenLab ? (
               <>
-                <TextArea
-                  value={examenLab}
-                  onChange={(e) => setExamenLab(e.target.value)}
-                  rows={2}
-                  placeholder="Ingrese el examen de laboratorio"
+                <Select
+                  showSearch
+                  style={{
+                    marginLeft: "1rem",
+                    width: 200,
+                  }}
+                  defaultValue="Seleccione"
+                  placeholder="Examen médico"
+                  optionFilterProp="children"
+                  filterOption={filterOption}
+                  options={listTypeMedicExam}
+                  onChange={(value, label) => {
+                    setExamenLab(label);
+                  }}
                 />
                 <Button
                   style={{ marginTop: 8 }}
@@ -239,7 +288,7 @@ export default function RealizarDiagnostico(props) {
                 {examenLabGuardadas.map((examenLab, index) => (
                   <ExamenLabCard
                     key={index}
-                    examenLab={examenLab}
+                    examenLab={examenLab.label}
                     onDelete={() => handleBorrarExamenLab(index)}
                     fondoGris={true}
                   />
