@@ -1,4 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
+  // Es un laboratorio en sí, le decimos analista porque es el que analiza los exámenes
   const LabAnalyst = sequelize.define("LabAnalyst", {
     id: {
       type: Sequelize.INTEGER,
@@ -6,9 +7,6 @@ module.exports = (sequelize, Sequelize) => {
       primaryKey: true,
     },
     name: {
-      type: Sequelize.STRING,
-    },
-    lastName: {
       type: Sequelize.STRING,
     },
     email: {
@@ -19,19 +17,7 @@ module.exports = (sequelize, Sequelize) => {
     password: {
       type: Sequelize.STRING,
       allowNull: false,
-    },
-    identityDoc: {
-      type: Sequelize.INTEGER,
-    },
-    nroColegiatura: {
-      type: Sequelize.INTEGER,
-    },
-    gender: {
-      type: Sequelize.STRING,
-    },
-    phone: {
-      type: Sequelize.INTEGER,
-    },
+    }
   });
   return LabAnalyst;
 };
