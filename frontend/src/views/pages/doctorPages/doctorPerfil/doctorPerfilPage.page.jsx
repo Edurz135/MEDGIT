@@ -3,10 +3,12 @@ import axios from "axios";
 import { LocalStorageServices } from "../../../../services";
 import { Card, Descriptions, Modal, Form, Input, Button } from "antd";
 import "./doctorPerfilPage.styles.css";
+import { useNavigate } from "react-router-dom";
 
 const { Meta } = Card;
 
 const DoctorPerfilPage = () => {
+  const navigate = useNavigate();
   const [doctorData, setDoctorData] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [form] = Form.useForm();
@@ -31,7 +33,7 @@ const DoctorPerfilPage = () => {
         console.log("Error al obtener datos del paciente:", error);
       }
     };
-
+    
     fetchData();
   }, []);
 
@@ -51,7 +53,6 @@ const DoctorPerfilPage = () => {
   const handleSave = async () => {
     try {
       const values = await form.validateFields();
-
       const accessToken = await LocalStorageServices.GetData("accessToken");
       const apiUrl = "http://localhost:3100/api/doctor/updateGetDoctor";
       const config = {
@@ -73,7 +74,10 @@ const DoctorPerfilPage = () => {
 
       setIsEditing(false);
     } catch (error) {
-      console.log("Error al validar el formulario o al enviar la solicitud:", error);
+      console.log(
+        "Error al validar el formulario o al enviar la solicitud:",
+        error
+      );
     }
   };
 
@@ -83,18 +87,32 @@ const DoctorPerfilPage = () => {
       {doctorData && (
         <Card className="doctor-profile-card" title="Detalles del Paciente">
           <Descriptions bordered>
-            <Descriptions.Item label="Nombre">{doctorData.name}</Descriptions.Item>
-            <Descriptions.Item label="Apellido">{doctorData.lastName}</Descriptions.Item>
-            <Descriptions.Item label="DNI">{doctorData.identityDoc}</Descriptions.Item>
-            <Descriptions.Item label="Género">{doctorData.gender}</Descriptions.Item>
-            <Descriptions.Item label="Teléfono">{doctorData.phone}</Descriptions.Item>
-            <Descriptions.Item label="Email">{doctorData.email}</Descriptions.Item>
+            <Descriptions.Item label="Nombre">
+              {doctorData.name}
+            </Descriptions.Item>
+            <Descriptions.Item label="Apellido">
+              {doctorData.lastName}
+            </Descriptions.Item>
+            <Descriptions.Item label="DNI">
+              {doctorData.identityDoc}
+            </Descriptions.Item>
+            <Descriptions.Item label="Género">
+              {doctorData.gender}
+            </Descriptions.Item>
+            <Descriptions.Item label="Teléfono">
+              {doctorData.phone}
+            </Descriptions.Item>
+            <Descriptions.Item label="Email">
+              {doctorData.email}
+            </Descriptions.Item>
           </Descriptions>
           <Button type="primary" onClick={handleEdit}>
             Editar
           </Button>
         </Card>
       )}
+      <br/>
+      <Button onClick={() => {navigate("/auth/doctor/availability")}}> Modificar Disponibilidad </Button>
 
       <Modal
         title="Editar Perfil"
@@ -103,10 +121,25 @@ const DoctorPerfilPage = () => {
         onOk={handleSave}
       >
         <Form form={form} layout="vertical">
-          <Form.Item label="Email" name="email" rules={[{ required: true, message: "Por favor ingresa un email válido" }]}>
+          <Form.Item
+            label="Email"
+            name="email"
+            rules={[
+              { required: true, message: "Por favor ingresa un email válido" },
+            ]}
+          >
             <Input />
           </Form.Item>
-          <Form.Item label="Teléfono" name="phone" rules={[{ required: true, message: "Por favor ingresa un número de teléfono válido" }]}>
+          <Form.Item
+            label="Teléfono"
+            name="phone"
+            rules={[
+              {
+                required: true,
+                message: "Por favor ingresa un número de teléfono válido",
+              },
+            ]}
+          >
             <Input />
           </Form.Item>
           <Form.Item label="Nueva Contraseña" name="password">
