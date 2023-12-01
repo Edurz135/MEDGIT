@@ -12,9 +12,6 @@ const {
 } = require("../service/doctor.service.js");
 const getPastAppointments = async (req, res) => {
   try {
-    console.log("getPastAppointments========================================");
-    console.log(req.user);
-    console.log("getPastAppointments========================================");
     // Envía el id del paciente
     const result = (await getPastAppointmentsService(req.user.id)) || [];
 

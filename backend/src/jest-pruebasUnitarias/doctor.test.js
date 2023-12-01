@@ -63,6 +63,20 @@ const GetDoctorAvailability = async (accessToken) => {
   const res = await axios.request(config);
   return res.data;
 };
+const PostUpdateAppointment = async (accessToken, body) => {
+  let config = {
+    method: "post",
+    maxBodyLength: Infinity,
+    url: "http://localhost:3100/api/doctor/updateAppointment",
+    headers: {
+      Authorization: accessToken,
+    },
+    data: body,
+  };
+
+  const res = await axios.request(config);
+  return res.data;
+}
 
 describe("########## DOCTOR TESTS", () => {
   var accessToken = "";
@@ -74,7 +88,6 @@ describe("########## DOCTOR TESTS", () => {
       accessToken = res.accessToken;
     });
   });
-
   describe("GET /api/doctor/getPastAppointments", () => {
     it("Debería retornar el status 200 y el resultado debe ser un arreglo", async () => {
       GetPastAppointments(accessToken).then((res) => {
@@ -126,6 +139,60 @@ describe("########## DOCTOR TESTS", () => {
         expect(res.result.fridayDisponibility != null).toBe(true);
         expect(res.result.saturdayDisponibility != null).toBe(true);
         expect(res.result.sundayDisponibility != null).toBe(true);
+        expect(res.status).toEqual(200);
+      });
+    });
+  });
+  describe("POST /api/doctor/updateAppointment", () => {
+    const body1 = {
+      data:{
+        "AppointmentId":331,
+        "diagnostico": "diagnosticoPrueba",
+        "examenesLab": "Hemograma completo",
+      }
+    };
+    const body2 = {
+      data:{
+        "AppointmentId":331,
+        "diagnostico": "",
+        "examenesLab": "Hemograma completo",
+      }
+    };
+    const body3 = {
+      data:{
+        "AppointmentId":331,
+        "diagnostico": "diagnosticoPrueba",
+        "examenesLab": "",
+      }
+    };
+    const body4 = {
+      data:{
+        "AppointmentId":331,
+        "diagnostico": "",
+        "examenesLab": "",
+      }
+    };
+    it("Debería retornar el status 200", async () => {
+      PostUpdateAppointment(accessToken, body1).then((res) => {
+        
+        expect(res.status).toEqual(200);
+      });
+    });
+    it("Debería retornar el status 200", async () => {
+      PostUpdateAppointment(accessToken, body2).then((res) => {
+        
+        expect(res.status).toEqual(200);
+      });
+    });
+    it("Debería retornar el status 200", async () => {
+      PostUpdateAppointment(accessToken, body3).then((res) => {
+        
+        expect(res.status).toEqual(200);
+      });
+    });
+    it("Debería retornar el status 200", async () => {
+      PostUpdateAppointment(accessToken, body4).then((res) => {
+        
         expect(res.status).toEqual(200);
       });
     });
