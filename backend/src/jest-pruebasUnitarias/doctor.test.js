@@ -82,6 +82,8 @@ describe("########## DOCTOR TESTS", () => {
         expect(res.status).toEqual(200);
       });
     });
+  });
+  describe("GET /api/doctor/getFutureAppointments", () => {
     it("Debería retornar el status 200 y el resultado debe ser un arreglo", async () => {
       GetFutureAppointments(accessToken).then((res) => {
         expect(Array.isArray(res.result)).toBe(true);
@@ -89,7 +91,6 @@ describe("########## DOCTOR TESTS", () => {
       });
     });
   });
-
   describe("POST /api/doctor/updateAvailability", () => {
     const body = {
       mondayDisponibility: "001110110000",

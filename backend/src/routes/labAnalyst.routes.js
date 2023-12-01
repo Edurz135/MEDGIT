@@ -5,6 +5,7 @@ const {
     getupdatelabAnalyst,
     getVisualiseLabAnalyst,
     getPendingExaMeds,
+    updateExaMed,
 } = require("../controllers/labAnalyst.controller");
 const labAnalystRouter = Router();
 
@@ -24,5 +25,10 @@ labAnalystRouter.get(
   "/api/labAnalyst/getPendingExaMeds",
   authenticateToken,
   getPendingExaMeds
+);
+labAnalystRouter.post(
+  "/api/labAnalyst/updateExaMed",
+  authenticateToken,
+  updateExaMed
 );
 module.exports = labAnalystRouter;
