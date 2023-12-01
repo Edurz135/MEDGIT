@@ -71,7 +71,6 @@ const getFutureAppointmentDetailService = async (appointmentId) => {
 };
 
 // Trae los detalles de una cita
-
 const getAppointmentDetailsService = async (id) => {
   try {
     const appointment = await Models.Appointment.findOne({
@@ -97,15 +96,10 @@ const getAppointmentDetailsService = async (id) => {
             },
           ],
         },
-      ],
-      include: [
-        // Medicamentos
         {
           model: Models.Medicine,
           attributes: ["name", "description", "dose"],
         },
-      ],
-      include: [
         // Paciente
         {
           model: Models.Patient,

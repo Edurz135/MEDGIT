@@ -27,7 +27,7 @@ const getPastAppointments = async (req, res) => {
 const getAppointmentDetails = async (req, res) => {
   try {
     // Envía el id de la cita
-
+    console.log(req.body.appointmentId);
     const result =
       (await getAppointmentDetailsService(req.body.appointmentId)) || [];
     return res.status(200).json({

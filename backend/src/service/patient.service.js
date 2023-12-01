@@ -51,21 +51,16 @@ const getAppointmentDetailsService = async (id) => {
             },
           ],
         },
-      ],
-      include: [
-        // Medicamentos
         {
           model: Models.Medicine,
           attributes: ["name", "description", "dose"],
         },
-      ],
-      include: [
-        // Medico
         {
           model: Models.Doctor,
           attributes: ["name", "lastName"],
         },
       ],
+      
     });
 
     return appointment;

@@ -33,7 +33,8 @@ const Administrator = require("./models/administrator.model.js")(sequelize, Sequ
 Patient.hasMany(Appointment);
 Doctor.hasMany(Appointment);
 Appointment.hasMany(ExaMed);
-//TipExMed.hasMany(ExaMed);
+TipExMed.hasMany(ExaMed);
+ExaMed.belongsTo(TipExMed);
 Allergy.hasMany(Patient);
 //ExaMed.hasMany(LabAnalyst);
 Doctor.belongsTo(Specialty);
