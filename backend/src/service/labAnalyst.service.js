@@ -96,7 +96,9 @@ const updateExaMedService = async (body) => {
         id: body.ExaMedId,
       },
     });
-
+    if (body.comment === "") {
+      throw new Error("Comment is empty");
+    }
     await exaMed.update({
       comment: body.comment,
       state: 1,

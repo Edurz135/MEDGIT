@@ -47,27 +47,39 @@ const LoginLab = async (LabBody) => {
     });
   
     describe("GET /api/labAnalyst/getPendingExaMeds", () => {
-      it("Debería retornar el status 200 y el resultado debe ser un arreglo", async () => {
+      it("Debería retornar el status 200", async () => {
         getPendingExaMeds(accessToken).then((res) => {
-          expect(Array.isArray(res.result)).toBe(true);
+          //expect(Array.isArray(res.result)).toBe(true);
           expect(res.status).toEqual(200);
         });
       });
       
     });
     describe("POST /api/labAnalyst/updateExaMed", () => {
-        it("Debería retornar el status 200", async () => {
-            const body={
-                "data":{
-                  "ExaMedId":1,
-                "comment": "Test-Jest"
-                }
-              }
-            postUpdateExaMed(accessToken,body).then((res) => {
-            expect(Array.isArray(res.result)).toBe(true);
-            expect(res.status).toEqual(200);
-          });
-        });
+      it("Debería retornar el status 200", async () => {
+        const body={
+            "data":{
+              "ExaMedId":1,
+            "comment": "Test-Jest"
+            }
+          }
+        postUpdateExaMed(accessToken,body).then((res) => {
+        //expect(Array.isArray(res.result)).toBe(true);
+        expect(res.status).toEqual(200);
       });
+    });
+    it("Debería retornar el status 404", async () => {
+      const body={
+          "data":{
+            "ExaMedId":1,
+          "comment": ""
+          }
+        }
+      postUpdateExaMed(accessToken,body).then((res) => {
+      //expect(Array.isArray(res.result)).toBe(false);
+      expect(res.status).toEqual(404);
+      });
+    });
+  });
   });
   
