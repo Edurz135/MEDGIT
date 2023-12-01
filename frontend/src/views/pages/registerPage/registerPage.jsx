@@ -262,7 +262,6 @@ const RegisterPage = () => {
                 {
                   required: true,
                   message: "Por favor, selecciona tu especialidad",
-                  whitespace: true
                 },
               ]}
             >
@@ -275,19 +274,21 @@ const RegisterPage = () => {
               </Select>
             </Form.Item>
           )}
-          <Form.Item
-            label="Número de Colegiatura"
-            name="colegiatura"
-            rules={[
-              {
-                required: true,
-                message: "Por favor, ingresa tu número de colegiatura",
-                whitespace: true
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
+
+          {isWorker && (
+            <Form.Item
+              label="Número de Colegiatura"
+              name="colegiatura"
+              rules={[
+                {
+                  required: true,
+                  message: "Por favor, ingresa tu número de colegiatura",
+                  whitespace: true
+                },
+              ]}
+            >
+              <Input />
+            </Form.Item>)}
           <Form.Item>
             <Button type="primary" htmlType="submit">
               Registrar
