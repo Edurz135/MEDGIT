@@ -1,8 +1,34 @@
 import React, { useState } from "react";
 import "./register.style.css";
-import { Form, Input, Button, Radio, Modal } from "antd";
+import { Form, Input, Button, Radio, Modal, Select } from "antd";
 import { Link } from "react-router-dom";
 import axios from "axios";
+
+const specialties = [
+  "Medicina Familiar",
+  "Medicina Interna",
+  "Endocrinología",
+  "Pediatría",
+  "Gineco obstetricia",
+  "Cirugía",
+  "Psiquiatría",
+  "Cardiología",
+  "Dermatología",
+  "Gastroenterología",
+  "Infectología",
+  "Nefrología",
+  "Oftalmología",
+  "Otorrinolaringología",
+  "Neumología",
+  "Neurología",
+  "Radiología",
+  "Anestesiología",
+  "Oncología",
+  "Patología",
+  "Urología",
+  "Medicina física y rehabilitación",
+  "Medicina Intensiva",
+];
 
 const RegisterPage = () => {
   const [isWorker, setIsWorker] = useState(false);
@@ -43,6 +69,7 @@ const RegisterPage = () => {
       gender: values.genero,
       identityDoc: values.dni,
       nroColegiatura: values.colegiatura || "",
+      specialtyId: values.especialidad,
     };
 
     axios
@@ -134,7 +161,7 @@ const RegisterPage = () => {
             name="puesto"
             rules={[
               {
-                message: "Por favor, selecciona tu género",
+                message: "Por favor, selecciona tu puesto",
               },
             ]}
           >
@@ -151,6 +178,7 @@ const RegisterPage = () => {
               {
                 required: true,
                 message: "Por favor, ingresa tu nombre",
+                whitespace: true
               },
             ]}
           >
@@ -163,6 +191,7 @@ const RegisterPage = () => {
               {
                 required: true,
                 message: "Por favor, ingresa tu apellido",
+                whitespace: true
               },
             ]}
           >
@@ -175,6 +204,7 @@ const RegisterPage = () => {
               {
                 required: true,
                 message: "Por favor, selecciona tu género",
+                whitespace: true
               },
             ]}
           >
@@ -190,6 +220,7 @@ const RegisterPage = () => {
               {
                 required: true,
                 message: "Por favor, ingresa tu DNI",
+                whitespace: true
               },
             ]}
           >
@@ -203,6 +234,7 @@ const RegisterPage = () => {
                 required: true,
                 type: "email",
                 message: "Por favor, ingresa un correo electrónico válido",
+                whitespace: true
               },
             ]}
           >
@@ -215,26 +247,47 @@ const RegisterPage = () => {
               {
                 required: true,
                 message: "Por favor, ingresa tu contraseña",
+                whitespace: true
               },
-              { min: 6, message: "Contraseña debe tener mínimo 6 carácteres." },
+              { min: 6, message: "Contraseña debe tener mínimo 6 caracteres." },
             ]}
           >
             <Input.Password />
           </Form.Item>
-          {(isWorker || isLaboratory) && ( // Muestra el campo de colegiatura si es "Trabajador" o "Laboratorio"
+          {isWorker && (
             <Form.Item
-              label="Número de Colegiatura"
-              name="colegiatura"
+              label="Especialidad"
+              name="especialidad"
               rules={[
                 {
                   required: true,
-                  message: "Por favor, ingresa tu número de colegiatura",
+                  message: "Por favor, selecciona tu especialidad",
+                  whitespace: true
                 },
               ]}
             >
-              <Input />
+              <Select>
+                {specialties.map((specialty, index) => (
+                  <Select.Option key={index} value={index}>
+                    {specialty}
+                  </Select.Option>
+                ))}
+              </Select>
             </Form.Item>
           )}
+          <Form.Item
+            label="Número de Colegiatura"
+            name="colegiatura"
+            rules={[
+              {
+                required: true,
+                message: "Por favor, ingresa tu número de colegiatura",
+                whitespace: true
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
           <Form.Item>
             <Button type="primary" htmlType="submit">
               Registrar
@@ -244,8 +297,7 @@ const RegisterPage = () => {
             ¿Ya tienes una cuenta? <Link to="/login">Inicia sesión aquí</Link>
           </Form.Item>
           <Form.Item>
-            Únete a la plataforma de almacenaje de historias clínicas
-            compartidas más grandes de Perú
+            Únete a la plataforma de almacenaje de historias clínicas compartidas más grandes de Perú
           </Form.Item>
         </Form>
       </div>
