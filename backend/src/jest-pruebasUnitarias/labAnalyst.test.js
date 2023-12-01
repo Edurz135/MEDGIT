@@ -56,7 +56,7 @@ const LoginLab = async (LabBody) => {
       
     });
     describe("POST /api/labAnalyst/updateExaMed", () => {
-        it("Debería retornar el status 200 y el resultado debe ser un arreglo", async () => {
+        it("Debería retornar el status 200", async () => {
             const body={
                 "data":{
                   "ExaMedId":1,
