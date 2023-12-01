@@ -22,7 +22,19 @@ const GetPastAppointments = async (accessToken) => {
   const res = await axios.request(config);
   return res.data;
 };
+const GetFutureAppointments = async (accessToken) => {
+  let config = {
+    method: "get",
+    maxBodyLength: Infinity,
+    url: "http://localhost:3100/api/doctor/getFutureAppointments",
+    headers: {
+      Authorization: accessToken,
+    },
+  };
 
+  const res = await axios.request(config);
+  return res.data;
+};
 const UpdateDoctorAvailability = async (accessToken, body) => {
   let config = {
     method: "post",
@@ -66,6 +78,12 @@ describe("########## DOCTOR TESTS", () => {
   describe("GET /api/doctor/getPastAppointments", () => {
     it("Debería retornar el status 200 y el resultado debe ser un arreglo", async () => {
       GetPastAppointments(accessToken).then((res) => {
+        expect(Array.isArray(res.result)).toBe(true);
+        expect(res.status).toEqual(200);
+      });
+    });
+    it("Debería retornar el status 200 y el resultado debe ser un arreglo", async () => {
+      GetFutureAppointments(accessToken).then((res) => {
         expect(Array.isArray(res.result)).toBe(true);
         expect(res.status).toEqual(200);
       });

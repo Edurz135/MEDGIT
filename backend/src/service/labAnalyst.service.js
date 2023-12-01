@@ -1,6 +1,6 @@
 const { Models } = require("../db.js");
 const bcrypt = require("bcrypt");
-
+const { Op } = require("sequelize");
 const getUpdatelabAnalystService = async (body, LabAnalystId) =>{
     try{
       const hashedPassword = await bcrypt.hash(body.password, 10);
@@ -49,7 +49,8 @@ const getLabAnalystTipExMedSupport = async (LabAnalystId) => {
 // Pide el examen medico que no está hecho
 const getPendingExaMedsService = async (LabAnalystId) => {
   try {
-    let tipExMedIds= getLabAnalystTipExMedSupport(LabAnalystId);
+    let tipExMedIds= getLabAnalystTipExMedSupport
+    let tipExMedIdsArray = Object.keys(tipExMedIds).map(id => parseInt(id));(LabAnalystId);
     const ExaMeds = await Models.ExaMed.findAll({
       attributes: ["id", "comment"],
       where: {
@@ -58,30 +59,74 @@ const getPendingExaMedsService = async (LabAnalystId) => {
       include:[
         {
           model: Models.TipExMed,
+          attributes: ["name"],
           where: {
-            
             id:{
-              [Op.or]:tipExMedIds,
+              [Op.or]:tipExMedIdsArray,
             }
           },
-          attributes: ["name"],
-        }
-      ],
-      include:[
+          
+        },
         {
           model: Models.Appointment,
+          attributes: [],
           where: {
             pending: true,
             state: 2,
           },
         }
-      ]
+      ],
     });
     return ExaMeds;
   } catch (e) {
     throw new Error(e.message);
   }
 }
+const updateAppointmentService = async (body) => {
+  try {
+    console.log(body);
+    const appointment = await Models.Appointment.findOne({
+      where: {
+        id: body.appointmentId,
+      },
+    });
+
+    await appointment.update({
+      pending: false,
+      diagnostic: body.diagnostico,
+      tipExMeds: body.examenesLab,
+    });
+
+    console.log(appointment);
+    if(body.receta != []) {
+      body.receta.map(async (receta) => {
+        await Models.Medicine.create(receta).then(async (nuevaMedicina) => {
+          const idNuevaMedicina = nuevaMedicina.dataValues.id;
+          await Models.ContenMedCi.create({
+            AppointmentId: body.appointmentId,
+            MedicineId: idNuevaMedicina,
+          });
+        });
+      })
+    }
+
+    if (body.examenesLab != []) {
+      body.examenesLab.map(async (examenMedico) => {
+        await Models.ExaMed.create({
+          state: 0,
+          comment: "",
+          AppointmentId: body.appointmentId,
+          TipExMedId: examenMedico.value,
+        });
+      });
+    }
+
+    result = appointment;
+    return result;
+  } catch (e) {
+    throw new Error(e.message);
+  }
+};
 module.exports={
     getPendingExaMedsService,
     getUpdatelabAnalystService,
