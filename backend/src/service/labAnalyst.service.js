@@ -74,6 +74,12 @@ const getPendingExaMedsService = async (LabAnalystId) => {
             pending: true,
             state: 2,
           },
+          include: [
+            {
+              model: Models.Patient,
+              attributes: ["name", "lastName"],
+            },
+          ],
         }
       ],
     });
@@ -82,52 +88,29 @@ const getPendingExaMedsService = async (LabAnalystId) => {
     throw new Error(e.message);
   }
 }
-const updateAppointmentService = async (body) => {
+const updateExaMedService = async (body) => {
   try {
     console.log(body);
-    const appointment = await Models.Appointment.findOne({
+    const exaMed = await Models.ExaMed.findOne({
       where: {
-        id: body.appointmentId,
+        id: body.ExaMedId,
       },
     });
 
-    await appointment.update({
-      pending: false,
-      diagnostic: body.diagnostico,
-      tipExMeds: body.examenesLab,
+    await exaMed.update({
+      comment: body.comment,
+      state: 1,
     });
 
-    console.log(appointment);
-    if(body.receta != []) {
-      body.receta.map(async (receta) => {
-        await Models.Medicine.create(receta).then(async (nuevaMedicina) => {
-          const idNuevaMedicina = nuevaMedicina.dataValues.id;
-          await Models.ContenMedCi.create({
-            AppointmentId: body.appointmentId,
-            MedicineId: idNuevaMedicina,
-          });
-        });
-      })
-    }
-
-    if (body.examenesLab != []) {
-      body.examenesLab.map(async (examenMedico) => {
-        await Models.ExaMed.create({
-          state: 0,
-          comment: "",
-          AppointmentId: body.appointmentId,
-          TipExMedId: examenMedico.value,
-        });
-      });
-    }
-
-    result = appointment;
-    return result;
+    console.log(exaMed);
+    
+    return exaMed;
   } catch (e) {
     throw new Error(e.message);
   }
 };
 module.exports={
+    updateExaMedService,
     getPendingExaMedsService,
     getUpdatelabAnalystService,
     getVisualiseLabAnalystService,
