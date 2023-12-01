@@ -71,7 +71,7 @@ const getPendingExaMedsService = async (LabAnalystId) => {
           model: Models.Appointment,
           attributes: [],
           where: {
-            pending: true,
+            pending: false,
             state: 2,
           },
           include: [
